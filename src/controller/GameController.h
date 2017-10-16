@@ -5,6 +5,7 @@
 #include "../Model/Level.h"
 #include "../View/View.h"
 #include "../model/Model.h"
+#include "Controller.h"
 
 const auto TICK_PER_SEC = 60;
 const auto MS_PER_UPDATE = 1000. / TICK_PER_SEC;
@@ -16,6 +17,7 @@ public:
     {
         TITLE_SCREEN,
         START_GAME,
+        OPTIONS,
         _LENGTH
     };
 private:
@@ -27,6 +29,7 @@ private:
     Level *maps;
     View *views[State::_LENGTH];
     Model *models[State::_LENGTH];
+    Controller *controllers[State::_LENGTH];
 public:
     GameController();
     ~GameController();

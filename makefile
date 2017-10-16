@@ -6,7 +6,7 @@ CCFLAGS_CP =
 OUT = build/
 EX = ProximaCentauri
 
-SOURCE = main.cpp controller/GameController.cpp model/Level.cpp view/menu/TitleScreenView.cpp view/menu/StartGameView.cpp view/menu/MenuView.cpp model/menu/TitleScreenModel.cpp
+SOURCE = main.cpp controller/GameController.cpp model/Level.cpp view/menu/MenuView.cpp view/menu/TitleScreenView.cpp model/menu/TitleScreenModel.cpp controller/menu/TitleScreenController.cpp view/menu/TitleScreenView.cpp model/menu/TitleScreenModel.cpp controller/menu/TitleScreenController.cpp view/menu/StartGameView.cpp model/menu/StartGameModel.cpp controller/menu/StartGameController.cpp view/menu/OptionsView.cpp model/menu/OptionsModel.cpp controller/menu/OptionsController.cpp
 LIBS = mingw32 SDL2main SDL2 SDL2_ttf SDL2_image
 
 #----------------

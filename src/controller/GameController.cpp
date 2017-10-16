@@ -4,9 +4,9 @@
 #include <SDL2/SDL_ttf.h>
 #include <SDL2/SDL_image.h>
 #include "GameController.h"
-#include "../view/menu/TitleScreenView.h"
-#include "../view/menu/StartGameView.h"
-#include "../model/menu/TitleScreenModel.h"
+#include "menu/TitleScreenController.h"
+#include "menu/StartGameController.h"
+#include "menu/OptionsController.h"
 
 GameController::GameController()
 {
@@ -50,10 +50,17 @@ GameController::GameController()
         maps[i].setFileName(temp[i]);
     }
 
-    models[TITLE_SCREEN] = new TitleScreenModel();
-    views[TITLE_SCREEN] = new TitleScreenView(models[TITLE_SCREEN]);
+    controllers[TITLE_SCREEN] = new TitleScreenController(&looping, &state);
+    models[TITLE_SCREEN] = controllers[TITLE_SCREEN]->getModel();
+    views[TITLE_SCREEN] = controllers[TITLE_SCREEN]->getView();
 
-    views[START_GAME] = new StartGameView();
+    controllers[START_GAME] = new StartGameController(&state);
+    models[START_GAME] = controllers[START_GAME]->getModel();
+    views[START_GAME] = controllers[START_GAME]->getView();
+
+    controllers[OPTIONS] = new OptionsController(&state);
+    models[OPTIONS] = controllers[OPTIONS]->getModel();
+    views[OPTIONS] = controllers[OPTIONS]->getView();
 }
 
 unsigned long long GameController::getTicks()
@@ -95,8 +102,9 @@ void GameController::init()
 
     state = TITLE_SCREEN;
 
-    views[TITLE_SCREEN]->init();
-    views[START_GAME]->init();
+    controllers[TITLE_SCREEN]->init();
+    controllers[START_GAME]->init();
+    controllers[OPTIONS]->init();
 }
 
 void GameController::start()
@@ -121,8 +129,7 @@ void GameController::loop()
     unsigned long long lastRenderTime = 0;
     unsigned long long currentTime = 0;
     unsigned long long elapsedTime = 0;
-    double lag = 0;
-    SDL_Event event;
+    long double lag = 0;
 
     while (looping)
     {
@@ -131,19 +138,8 @@ void GameController::loop()
         lastTime = currentTime;
         lag += elapsedTime;
 
-        while (SDL_PollEvent(&event))
-        {
-            if (event.type == SDL_KEYDOWN)
-            {
-                models[TITLE_SCREEN]->update(&event);
-            }
-        }
-
-        while (lag >= MS_PER_UPDATE)
-        {
-            // TODO: game logic update
-            lag -= MS_PER_UPDATE;
-        }
+        State tempState = state;
+        controllers[state]->tick(lag / MS_PER_UPDATE);
 
         if (getTicks() - lastRenderTime < 16)
         {
@@ -152,17 +148,21 @@ void GameController::loop()
 
         lastRenderTime = getTicks();
 
-        views[state]->render(window);
+        views[tempState]->render(window);
         SDL_UpdateWindowSurface(window);
+
+        if (tempState != state)
+        {
+            models[tempState]->reset();
+        }
     }
 }
 
 GameController::~GameController()
 {
-    for (auto &view : views)
+    for (auto &controller : controllers)
     {
-        delete view;
+        delete controller;
     }
-    // models are delete by view destructor
     delete[] maps;
 }

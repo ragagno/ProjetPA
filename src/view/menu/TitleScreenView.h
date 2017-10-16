@@ -2,20 +2,24 @@
 #define PROXIMACENTAURI_TITLESCREENVIEW_H
 
 #include "MenuView.h"
-#include "../../model/menu/TitleScreenModel.h"
 
 class TitleScreenView : public MenuView
 {
 private:
-    TitleScreenModel *model;
+    SDL_Rect backgroundRect;
+    SDL_Rect startGameRect;
+    SDL_Rect optionsRect;
+    SDL_Rect quitRect;
+    SDL_Rect underlineRect;
     SDL_Surface *startGame;
     SDL_Surface *options;
     SDL_Surface *quit;
 public:
-    explicit TitleScreenView(Model *model);
+    TitleScreenView();
     ~TitleScreenView() override;
     void init() override;
     void render(SDL_Window *window) override;
+    void preRender(unsigned int selectedIndex);
 };
 
 #endif //PROXIMACENTAURI_TITLESCREENVIEW_H

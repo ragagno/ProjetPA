@@ -7,7 +7,7 @@ void StartGameView::init()
 
 void StartGameView::render(SDL_Window *window)
 {
-    SDL_Rect rect = {0, WINDOW_HEIGHT / 2, WINDOW_WIDTH, WINDOW_HEIGHT / 2};
-    SDL_FillRect(SDL_GetWindowSurface(window), &rect, 0x0000FF00);
+    SDL_Rect backgroundRect = {0, WINDOW_HEIGHT / 2, WINDOW_WIDTH, WINDOW_HEIGHT / 2};
+    SDL_FillRect(SDL_GetWindowSurface(window), &backgroundRect, 0x00FF0000);
     MenuView::render(window);
 }
