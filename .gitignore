@@ -1,4 +1,6 @@
+.idea
 cmake-build-debug
 obj
 SDL
 CMakeLists.txt
+build/ProximaCentauri.exe

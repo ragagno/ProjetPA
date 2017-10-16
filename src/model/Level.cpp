@@ -6,15 +6,11 @@
 
 Level::Level()
 {
-    repeatPattern = -1;
-    patternSize = -1;
     pattern = nullptr;
 }
 
-void Level::setFileName(const std::string &fileName)
+void Level::init()
 {
-    this->fileName = fileName;
-
     std::ifstream fin("maps/" + this->fileName);
 
     if (fin.is_open())
@@ -34,6 +30,11 @@ void Level::setFileName(const std::string &fileName)
         std::cerr << "Error while getting a map name in its file.\n";
         exit(EXIT_FAILURE);
     }
+}
+
+void Level::setFileName(const std::string &fileName)
+{
+    this->fileName = fileName;
 }
 
 void Level::loadLevel()
@@ -59,7 +60,7 @@ void Level::loadLevel()
 
         try
         {
-            repeatPattern = std::stoi(line);
+            repeatPattern = static_cast<uint32_t>(std::stoi(line));
         }
         catch (std::invalid_argument &e)
         {
@@ -87,7 +88,7 @@ void Level::loadLevel()
         }
 
         pattern = new std::string[patternSize];
-        for (int i = 0; i < patternSize; i++)
+        for (uint32_t i = 0; i < patternSize; i++)
         {
             pattern[i] = temp[i];
         }

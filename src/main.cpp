@@ -1,5 +1,5 @@
 #include <iostream>
-#include "Controller/Game.h"
+#include "Controller/GameController.h"
 
 // TODO: Graphics
 
@@ -10,8 +10,7 @@ int main(int argc, char *argv[])
         std::cout << "Unknown argument " << argv[i] << std::endl;
     }
 
-    Game g;
-
+    GameController g;
     g.init();
     g.start();
     g.shutdown();
