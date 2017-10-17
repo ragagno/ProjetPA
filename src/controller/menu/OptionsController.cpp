@@ -41,7 +41,8 @@ void OptionsController::tick(long double ticks)
                             model.flipSound();
                             break;
                         case 2:
-                            // TODO: controls
+                            model.setResetable(false);
+                            *state = GameController::CONTROLS;
                             break;
                         case 3:
                             *state = GameController::TITLE_SCREEN;

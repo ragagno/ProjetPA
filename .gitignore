@@ -4,4 +4,3 @@ obj
 SDL
 CMakeLists.txt
 build/ProximaCentauri.exe
-build/*.dll

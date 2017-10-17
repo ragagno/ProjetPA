@@ -1,4 +1,3 @@
-#include <iostream>
 #include "TitleScreenModel.h"
 
 TitleScreenModel::TitleScreenModel()
@@ -18,7 +17,14 @@ unsigned int TitleScreenModel::getSelectedIndex() const
 
 void TitleScreenModel::reset()
 {
-    selectedIndex = 0;
+    if (isResetable())
+    {
+        selectedIndex = 0;
+    }
+    else
+    {
+        setResetable(true);
+    }
 }
 
 void TitleScreenModel::update(const long double tick)

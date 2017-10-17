@@ -1,15 +1,50 @@
+#include <fstream>
 #include <iostream>
 #include "OptionsModel.h"
 
 void OptionsModel::init()
 {
-    music = true;
-    sound = true;
+    std::ifstream fin("options");
+
+    if (fin.is_open())
+    {
+        music = fin.get() == 49;
+        sound = fin.get() == 49;
+        fin.close();
+    }
+    else
+    {
+        std::cerr << "Error while loading the options.\n";
+        exit(EXIT_FAILURE);
+    }
+
+    selectedIndex = 0;
 }
 
 void OptionsModel::reset()
 {
-    selectedIndex = 0;
+    if (isResetable())
+    {
+        selectedIndex = 0;
+
+        std::ofstream fout("options");
+
+        if (fout.is_open())
+        {
+            fout << music ? '1' : '0';
+            fout << sound ? '1' : '0';
+            fout.close();
+        }
+        else
+        {
+            std::cerr << "Error while saving the options.\n";
+            // NO CRASH
+        }
+    }
+    else
+    {
+        setResetable(true);
+    }
 }
 
 void OptionsModel::update(long double tick)

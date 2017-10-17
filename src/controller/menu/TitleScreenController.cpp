@@ -21,6 +21,7 @@ View *TitleScreenController::getView()
 
 void TitleScreenController::tick(long double ticks)
 {
+
     SDL_Event event;
     while (SDL_PollEvent(&event))
     {
@@ -41,6 +42,7 @@ void TitleScreenController::tick(long double ticks)
                             *state = GameController::START_GAME;
                             break;
                         case 1:
+                            model.setResetable(false);
                             *state = GameController::OPTIONS;
                             break;
                         case 2:
