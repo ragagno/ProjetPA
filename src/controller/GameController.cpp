@@ -7,7 +7,6 @@
 #include "menu/TitleScreenController.h"
 #include "menu/StartGameController.h"
 #include "menu/OptionsController.h"
-#include "menu/ControlsController.h"
 
 GameController::GameController()
 {
@@ -62,10 +61,6 @@ GameController::GameController()
     controllers[OPTIONS] = new OptionsController(&state);
     models[OPTIONS] = controllers[OPTIONS]->getModel();
     views[OPTIONS] = controllers[OPTIONS]->getView();
-
-    controllers[CONTROLS] = new ControlsController(&state);
-    models[CONTROLS] = controllers[CONTROLS]->getModel();
-    views[CONTROLS] = controllers[CONTROLS]->getView();
 }
 
 unsigned long long GameController::getTicks()
@@ -110,7 +105,6 @@ void GameController::init()
     controllers[TITLE_SCREEN]->init();
     controllers[START_GAME]->init();
     controllers[OPTIONS]->init();
-    controllers[CONTROLS]->init();
 }
 
 void GameController::start()

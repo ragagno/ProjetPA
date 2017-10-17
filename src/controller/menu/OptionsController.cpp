@@ -23,6 +23,10 @@ void OptionsController::tick(long double ticks)
     {
         if (event.type == SDL_KEYDOWN)
         {
+            if (event.key.repeat)
+            {
+                continue;
+            }
             switch (event.key.keysym.sym)
             {
                 case SDLK_DOWN:
@@ -30,6 +34,12 @@ void OptionsController::tick(long double ticks)
                     break;
                 case SDLK_UP:
                     model.up();
+                    break;
+                case SDLK_LEFT:
+                    model.previousLayout();
+                    break;
+                case SDLK_RIGHT:
+                    model.nextLayout();
                     break;
                 case SDLK_RETURN:
                     switch (model.getSelectedIndex())
@@ -41,8 +51,7 @@ void OptionsController::tick(long double ticks)
                             model.flipSound();
                             break;
                         case 2:
-                            model.setResetable(false);
-                            *state = GameController::CONTROLS;
+                            model.nextLayout();
                             break;
                         case 3:
                             *state = GameController::TITLE_SCREEN;
@@ -59,7 +68,7 @@ void OptionsController::tick(long double ticks)
             }
         }
     }
-    view.preRender(model.isMusicOn(), model.isSoundOn(), model.getSelectedIndex());
+    view.preRender(model.isMusicOn(), model.isSoundOn(), model.getSelectedIndex(), model.getSelecedLayout());
     model.update(ticks);
 }
 

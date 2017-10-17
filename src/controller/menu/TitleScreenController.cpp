@@ -27,6 +27,10 @@ void TitleScreenController::tick(long double ticks)
     {
         if (event.type == SDL_KEYDOWN)
         {
+            if (event.key.repeat)
+            {
+                continue;
+            }
             switch (event.key.keysym.sym)
             {
                 case SDLK_DOWN:

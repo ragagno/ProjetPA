@@ -10,6 +10,7 @@ void OptionsModel::init()
     {
         music = fin.get() == 49;
         sound = fin.get() == 49;
+        selectedLayout = static_cast<unsigned int>(fin.get() % 48);
         fin.close();
     }
     else
@@ -33,6 +34,7 @@ void OptionsModel::reset()
         {
             fout << music ? '1' : '0';
             fout << sound ? '1' : '0';
+            fout << (selectedLayout == 0 ? '0' : selectedLayout == 1 ? '1' : '2');
             fout.close();
         }
         else
@@ -84,4 +86,19 @@ void OptionsModel::flipSound()
 unsigned int OptionsModel::getSelectedIndex() const
 {
     return selectedIndex;
+}
+
+void OptionsModel::nextLayout()
+{
+    selectedLayout = selectedLayout == 2 ? 0 : selectedLayout + 1;
+}
+
+void OptionsModel::previousLayout()
+{
+    selectedLayout = selectedLayout == 0 ? 2 : selectedLayout - 1;
+}
+
+unsigned int OptionsModel::getSelecedLayout() const
+{
+    return selectedLayout;
 }

@@ -9,6 +9,7 @@ private:
     bool music;
     bool sound;
     unsigned int selectedIndex;
+    unsigned int selectedLayout;
 public:
     void init() override;
     void reset() override;
@@ -17,7 +18,10 @@ public:
     void down();
     void flipMusic();
     void flipSound();
+    void nextLayout();
+    void previousLayout();
     unsigned int getSelectedIndex() const;
+    unsigned int getSelecedLayout() const;
     bool isMusicOn();
     bool isSoundOn();
 };

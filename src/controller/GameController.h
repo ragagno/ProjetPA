@@ -18,7 +18,6 @@ public:
         TITLE_SCREEN,
         START_GAME,
         OPTIONS,
-        CONTROLS,
         _LENGTH
     };
 private:
