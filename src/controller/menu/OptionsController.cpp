@@ -1,5 +1,16 @@
 #include "OptionsController.h"
 
+OptionsController::OptionsController(GameController::State *state)
+{
+    this->state = state;
+}
+
+void OptionsController::init()
+{
+    model.init();
+    view.init();
+}
+
 Model *OptionsController::getModel()
 {
     return &model;
@@ -8,12 +19,6 @@ Model *OptionsController::getModel()
 View *OptionsController::getView()
 {
     return &view;
-}
-
-void OptionsController::init()
-{
-    model.init();
-    view.init();
 }
 
 void OptionsController::tick(long double ticks)
@@ -70,9 +75,4 @@ void OptionsController::tick(long double ticks)
     }
     view.preRender(model.isMusicOn(), model.isSoundOn(), model.getSelectedIndex(), model.getSelecedLayout());
     model.update(ticks);
-}
-
-OptionsController::OptionsController(GameController::State *state)
-{
-    this->state = state;
 }

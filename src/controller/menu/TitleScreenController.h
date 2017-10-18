@@ -9,16 +9,16 @@
 class TitleScreenController : public Controller
 {
 private:
-    bool *looping;
-    GameController::State *state;
     TitleScreenModel model;
     TitleScreenView view;
+    bool *looping;
+    GameController::State *state;
 public:
     TitleScreenController(bool *looping, GameController::State *state);
-    ~TitleScreenController() override;
+    void init() override;
+    ~TitleScreenController() override = default;
     Model *getModel() override;
     View *getView() override;
-    void init() override;
     void tick(long double ticks) override;
 };
 

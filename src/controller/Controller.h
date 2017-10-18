@@ -8,10 +8,10 @@ class Controller
 {
 public:
     Controller() = default;
+    virtual void init() = 0;
     virtual ~Controller() = default;
     virtual Model *getModel() = 0;
     virtual View *getView() = 0;
-    virtual void init() = 0;
     virtual void tick(long double ticks) = 0;
 };
 

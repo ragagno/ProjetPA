@@ -28,16 +28,11 @@ void TitleScreenView::init()
     quitRect = {(WINDOW_WIDTH - quit->w) / 2 + 3, 7 * WINDOW_HEIGHT / 8 - quit->h / 2 + 5, 0, 0};
 }
 
-void TitleScreenView::render(SDL_Window *window)
+TitleScreenView::~TitleScreenView()
 {
-    SDL_FillRect(SDL_GetWindowSurface(window), &backgroundRect, 0x00FFFFFF);
-    SDL_FillRect(SDL_GetWindowSurface(window), &underlineRect, 0x00000000);
-
-    SDL_BlitSurface(startGame, nullptr, SDL_GetWindowSurface(window), &startGameRect);
-    SDL_BlitSurface(options, nullptr, SDL_GetWindowSurface(window), &optionsRect);
-    SDL_BlitSurface(quit, nullptr, SDL_GetWindowSurface(window), &quitRect);
-
-    MenuView::render(window);
+    SDL_free(startGame);
+    SDL_free(options);
+    SDL_free(quit);
 }
 
 void TitleScreenView::preRender(unsigned int selectedIndex)
@@ -58,9 +53,14 @@ void TitleScreenView::preRender(unsigned int selectedIndex)
     }
 }
 
-TitleScreenView::~TitleScreenView()
+void TitleScreenView::render(SDL_Window *window)
 {
-    SDL_free(startGame);
-    SDL_free(options);
-    SDL_free(quit);
+    SDL_FillRect(SDL_GetWindowSurface(window), &backgroundRect, 0x00FFFFFF);
+    SDL_FillRect(SDL_GetWindowSurface(window), &underlineRect, 0x00000000);
+
+    SDL_BlitSurface(startGame, nullptr, SDL_GetWindowSurface(window), &startGameRect);
+    SDL_BlitSurface(options, nullptr, SDL_GetWindowSurface(window), &optionsRect);
+    SDL_BlitSurface(quit, nullptr, SDL_GetWindowSurface(window), &quitRect);
+
+    MenuView::render(window);
 }

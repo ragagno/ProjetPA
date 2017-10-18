@@ -9,14 +9,15 @@
 class StartGameController : public Controller
 {
 private:
-    GameController::State *state;
     StartGameModel model;
     StartGameView view;
+    GameController::State *state;
 public:
     explicit StartGameController(GameController::State *state);
+    void init() override;
+    ~StartGameController() override = default;
     Model *getModel() override;
     View *getView() override;
-    void init() override;
     void tick(long double ticks) override;
 };
 

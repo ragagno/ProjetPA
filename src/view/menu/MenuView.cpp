@@ -32,6 +32,16 @@ void MenuView::init()
     TTF_CloseFont(munroSmall);
 }
 
+MenuView::~MenuView()
+{
+    SDL_FreeSurface(proxima);
+    SDL_FreeSurface(cent);
+    SDL_FreeSurface(spaceship);
+    SDL_FreeSurface(uri);
+    SDL_FreeSurface(version);
+    SDL_FreeSurface(author);
+}
+
 void MenuView::render(SDL_Window *window)
 {
     static SDL_Rect backgroundRect = {0, 0, WINDOW_WIDTH, WINDOW_HEIGHT / 2};
@@ -53,14 +63,4 @@ void MenuView::render(SDL_Window *window)
     SDL_BlitSurface(uri, nullptr, SDL_GetWindowSurface(window), &uriRect);
     SDL_BlitSurface(version, nullptr, SDL_GetWindowSurface(window), &versionRect);
     SDL_BlitSurface(author, nullptr, SDL_GetWindowSurface(window), &authorRect);
-}
-
-MenuView::~MenuView()
-{
-    SDL_FreeSurface(proxima);
-    SDL_FreeSurface(cent);
-    SDL_FreeSurface(spaceship);
-    SDL_FreeSurface(uri);
-    SDL_FreeSurface(version);
-    SDL_FreeSurface(author);
 }

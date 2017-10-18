@@ -32,11 +32,11 @@ private:
     Controller *controllers[State::_LENGTH];
 public:
     GameController();
-    ~GameController();
-    inline unsigned long long getTicks();
     void init();
+    ~GameController();
     void start();
     void shutdown();
+    inline unsigned long long getTicks();
 private:
     void loop();
 };

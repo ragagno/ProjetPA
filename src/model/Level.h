@@ -13,8 +13,8 @@ private:
     std::string *pattern;
 public:
     Level();
-    ~Level();
     void init();
+    ~Level();
     void setFileName(const std::string &fileName);
     void loadLevel();
 };

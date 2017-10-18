@@ -9,14 +9,15 @@
 class OptionsController : public Controller
 {
 private:
-    GameController::State *state;
     OptionsModel model;
     OptionsView view;
+    GameController::State *state;
 public:
     explicit OptionsController(GameController::State *state);
+    void init() override;
+    ~OptionsController() override = default;
     Model *getModel() override;
     View *getView() override;
-    void init() override;
     void tick(long double ticks) override;
 };
 

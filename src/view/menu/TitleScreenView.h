@@ -16,10 +16,10 @@ private:
     SDL_Surface *quit;
 public:
     TitleScreenView();
-    ~TitleScreenView() override;
     void init() override;
-    void render(SDL_Window *window) override;
+    ~TitleScreenView() override;
     void preRender(unsigned int selectedIndex);
+    void render(SDL_Window *window) override;
 };
 
 #endif //PROXIMACENTAURI_TITLESCREENVIEW_H

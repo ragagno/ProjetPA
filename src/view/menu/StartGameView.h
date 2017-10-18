@@ -7,8 +7,8 @@ class StartGameView : public MenuView
 {
 public:
     StartGameView() = default;
-    ~StartGameView() override = default;
     void init() override;
+    ~StartGameView() override = default;
     void render(SDL_Window *window) override;
 };
 

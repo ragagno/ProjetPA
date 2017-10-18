@@ -32,6 +32,11 @@ void Level::init()
     }
 }
 
+Level::~Level()
+{
+    delete[] pattern;
+}
+
 void Level::setFileName(const std::string &fileName)
 {
     this->fileName = fileName;
@@ -98,9 +103,4 @@ void Level::loadLevel()
         std::cerr << "Error while loading the map.\n";
         exit(EXIT_FAILURE);
     }
-}
-
-Level::~Level()
-{
-    delete[] pattern;
 }

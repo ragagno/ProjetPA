@@ -1,6 +1,18 @@
 #include <SDL2/SDL_ttf.h>
-#include <iostream>
 #include "OptionsView.h"
+
+OptionsView::OptionsView()
+{
+    music = nullptr;
+    sound = nullptr;
+    layout = nullptr;
+    back = nullptr;
+    on = nullptr;
+    off = nullptr;
+    WASD = nullptr;
+    ZQSD = nullptr;
+    arrows = nullptr;
+}
 
 void OptionsView::init()
 {
@@ -23,48 +35,6 @@ void OptionsView::init()
 
     backgroundRect = {0, WINDOW_HEIGHT / 2, WINDOW_WIDTH, WINDOW_HEIGHT / 2};
     backRect = {(WINDOW_WIDTH - back->w) / 2 + 3, 9 * WINDOW_HEIGHT / 10 - back->h / 2 + 5, 0, 0};
-}
-
-void OptionsView::render(SDL_Window *window)
-{
-    SDL_FillRect(SDL_GetWindowSurface(window), &backgroundRect, 0x00FFFFFF);
-    SDL_FillRect(SDL_GetWindowSurface(window), &underlineRect, 0x00000000);
-
-    SDL_BlitSurface(music, nullptr, SDL_GetWindowSurface(window), &musicRect);
-    SDL_BlitSurface(musicState ? on : off, nullptr, SDL_GetWindowSurface(window), &musicStateRect);
-    SDL_BlitSurface(sound, nullptr, SDL_GetWindowSurface(window), &soundRect);
-    SDL_BlitSurface(soundState ? on : off, nullptr, SDL_GetWindowSurface(window), &soundStateRect);
-    SDL_BlitSurface(layout, nullptr, SDL_GetWindowSurface(window), &layoutRect);
-    SDL_BlitSurface(back, nullptr, SDL_GetWindowSurface(window), &backRect);
-    switch (selectedLayout)
-    {
-        case 0:
-            SDL_BlitSurface(WASD, nullptr, SDL_GetWindowSurface(window), &WASDRect);
-            break;
-        case 1:
-            SDL_BlitSurface(ZQSD, nullptr, SDL_GetWindowSurface(window), &ZQSDRect);
-            break;
-        case 2:
-            SDL_BlitSurface(arrows, nullptr, SDL_GetWindowSurface(window), &arrowsSRect);
-            break;
-        default:
-            break;
-    }
-
-    MenuView::render(window);
-}
-
-OptionsView::OptionsView()
-{
-    music = nullptr;
-    sound = nullptr;
-    layout = nullptr;
-    back = nullptr;
-    on = nullptr;
-    off = nullptr;
-    WASD = nullptr;
-    ZQSD = nullptr;
-    arrows = nullptr;
 }
 
 OptionsView::~OptionsView()
@@ -141,4 +111,33 @@ void OptionsView::preRender(bool music, bool sound, unsigned int selectedIndex, 
         default:
             break;
     }
+}
+
+void OptionsView::render(SDL_Window *window)
+{
+    SDL_FillRect(SDL_GetWindowSurface(window), &backgroundRect, 0x00FFFFFF);
+    SDL_FillRect(SDL_GetWindowSurface(window), &underlineRect, 0x00000000);
+
+    SDL_BlitSurface(music, nullptr, SDL_GetWindowSurface(window), &musicRect);
+    SDL_BlitSurface(musicState ? on : off, nullptr, SDL_GetWindowSurface(window), &musicStateRect);
+    SDL_BlitSurface(sound, nullptr, SDL_GetWindowSurface(window), &soundRect);
+    SDL_BlitSurface(soundState ? on : off, nullptr, SDL_GetWindowSurface(window), &soundStateRect);
+    SDL_BlitSurface(layout, nullptr, SDL_GetWindowSurface(window), &layoutRect);
+    SDL_BlitSurface(back, nullptr, SDL_GetWindowSurface(window), &backRect);
+    switch (selectedLayout)
+    {
+        case 0:
+            SDL_BlitSurface(WASD, nullptr, SDL_GetWindowSurface(window), &WASDRect);
+            break;
+        case 1:
+            SDL_BlitSurface(ZQSD, nullptr, SDL_GetWindowSurface(window), &ZQSDRect);
+            break;
+        case 2:
+            SDL_BlitSurface(arrows, nullptr, SDL_GetWindowSurface(window), &arrowsSRect);
+            break;
+        default:
+            break;
+    }
+
+    MenuView::render(window);
 }

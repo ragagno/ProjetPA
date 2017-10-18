@@ -1,5 +1,16 @@
 #include "StartGameController.h"
 
+StartGameController::StartGameController(GameController::State *state)
+{
+    this->state = state;
+}
+
+void StartGameController::init()
+{
+    model.init();
+    view.init();
+}
+
 Model *StartGameController::getModel()
 {
     return &model;
@@ -8,12 +19,6 @@ Model *StartGameController::getModel()
 View *StartGameController::getView()
 {
     return &view;
-}
-
-void StartGameController::init()
-{
-    model.init();
-    view.init();
 }
 
 void StartGameController::tick(long double ticks)
@@ -33,9 +38,4 @@ void StartGameController::tick(long double ticks)
             }
         }
     }
-}
-
-StartGameController::StartGameController(GameController::State *state)
-{
-    this->state = state;
 }

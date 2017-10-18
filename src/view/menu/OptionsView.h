@@ -31,9 +31,9 @@ private:
     SDL_Surface *arrows;
 public:
     OptionsView();
+    void init() override;
     ~OptionsView() override;
     void preRender(bool music, bool sound, unsigned int selectedIndex, unsigned int selectedLayout);
-    void init() override;
     void render(SDL_Window *window) override;
 };
 

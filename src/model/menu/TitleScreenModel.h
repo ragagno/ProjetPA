@@ -9,13 +9,13 @@ private:
     unsigned int selectedIndex;
 public:
     TitleScreenModel();
+    void init() override;
     ~TitleScreenModel() override = default;
     unsigned int getSelectedIndex() const;
     void up();
     void down();
     void reset() override;
     void update(long double tick) override;
-    void init() override;
 };
 
 #endif //PROXIMACENTAURI_TITLESCREENMODEL_H

@@ -1,13 +1,13 @@
 #include <iostream>
 #include "Controller/GameController.h"
 
-// TODO: Graphics
+// TODO: game interface
 
 int main(int argc, char *argv[])
 {
     for (int i = 1; i < argc; i++)
     {
-        std::cout << "Unknown argument " << argv[i] << std::endl;
+        std::cout << "Unknown parameter " << argv[i] << std::endl;
     }
 
     GameController g;

@@ -2,6 +2,14 @@
 #include <iostream>
 #include "OptionsModel.h"
 
+OptionsModel::OptionsModel()
+{
+    music = false;
+    sound = false;
+    selectedLayout = 0;
+    selectedIndex = 0;
+}
+
 void OptionsModel::init()
 {
     std::ifstream fin("options");
@@ -32,8 +40,8 @@ void OptionsModel::reset()
 
         if (fout.is_open())
         {
-            fout << music ? '1' : '0';
-            fout << sound ? '1' : '0';
+            fout << (music ? '1' : '0');
+            fout << (sound ? '1' : '0');
             fout << (selectedLayout == 0 ? '0' : selectedLayout == 1 ? '1' : '2');
             fout.close();
         }
@@ -51,6 +59,16 @@ void OptionsModel::reset()
 
 void OptionsModel::update(long double tick)
 {
+}
+
+unsigned int OptionsModel::getSelectedIndex() const
+{
+    return selectedIndex;
+}
+
+unsigned int OptionsModel::getSelecedLayout() const
+{
+    return selectedLayout;
 }
 
 bool OptionsModel::isMusicOn()
@@ -83,11 +101,6 @@ void OptionsModel::flipSound()
     sound = !sound;
 }
 
-unsigned int OptionsModel::getSelectedIndex() const
-{
-    return selectedIndex;
-}
-
 void OptionsModel::nextLayout()
 {
     selectedLayout = selectedLayout == 2 ? 0 : selectedLayout + 1;
@@ -96,9 +109,4 @@ void OptionsModel::nextLayout()
 void OptionsModel::previousLayout()
 {
     selectedLayout = selectedLayout == 0 ? 2 : selectedLayout - 1;
-}
-
-unsigned int OptionsModel::getSelecedLayout() const
-{
-    return selectedLayout;
 }

@@ -1,7 +1,12 @@
 #include <SDL2/SDL_keycode.h>
 #include <SDL2/SDL_events.h>
-#include <iostream>
 #include "TitleScreenController.h"
+
+TitleScreenController::TitleScreenController(bool *looping, GameController::State *state)
+{
+    this->looping = looping;
+    this->state = state;
+}
 
 void TitleScreenController::init()
 {
@@ -63,11 +68,3 @@ void TitleScreenController::tick(long double ticks)
     model.update(ticks);
     view.preRender(model.getSelectedIndex());
 }
-
-TitleScreenController::TitleScreenController(bool *looping, GameController::State *state)
-{
-    this->looping = looping;
-    this->state = state;
-}
-
-TitleScreenController::~TitleScreenController() = default;

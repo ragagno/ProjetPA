@@ -6,7 +6,9 @@
 class StartGameModel : public Model
 {
 public:
+    StartGameModel() = default;
     void init() override;
+    ~StartGameModel() override = default;
     void reset() override;
     void update(long double tick) override;
 };

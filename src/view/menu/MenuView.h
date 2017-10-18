@@ -17,8 +17,8 @@ private:
     SDL_Surface *author;
 public:
     MenuView();
-    ~MenuView() override;
     void init() override;
+    ~MenuView() override;
     void render(SDL_Window *window) override;
 };
 

@@ -11,8 +11,8 @@ class View
 {
 public:
     View() = default;
-    virtual ~View() = default;
     virtual void init() = 0;
+    virtual ~View() = default;
     virtual void render(SDL_Window *window) = 0;
 };
 

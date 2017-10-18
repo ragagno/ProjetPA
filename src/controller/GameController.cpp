@@ -63,11 +63,6 @@ GameController::GameController()
     views[OPTIONS] = controllers[OPTIONS]->getView();
 }
 
-unsigned long long GameController::getTicks()
-{
-    return SDL_GetPerformanceCounter() / freq;
-}
-
 void GameController::init()
 {
     if (SDL_Init(SDL_INIT_VIDEO) == -1)
@@ -107,6 +102,15 @@ void GameController::init()
     controllers[OPTIONS]->init();
 }
 
+GameController::~GameController()
+{
+    for (auto &controller : controllers)
+    {
+        delete controller;
+    }
+    delete[] maps;
+}
+
 void GameController::start()
 {
     SDL_ShowWindow(window);
@@ -121,6 +125,11 @@ void GameController::shutdown()
     SDL_Quit();
     TTF_Quit();
     IMG_Quit();
+}
+
+unsigned long long GameController::getTicks()
+{
+    return SDL_GetPerformanceCounter() / freq;
 }
 
 void GameController::loop()
@@ -156,13 +165,4 @@ void GameController::loop()
             models[tempState]->reset();
         }
     }
-}
-
-GameController::~GameController()
-{
-    for (auto &controller : controllers)
-    {
-        delete controller;
-    }
-    delete[] maps;
 }

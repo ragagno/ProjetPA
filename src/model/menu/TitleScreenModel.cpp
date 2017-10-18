@@ -15,6 +15,17 @@ unsigned int TitleScreenModel::getSelectedIndex() const
     return selectedIndex;
 }
 
+void TitleScreenModel::up()
+{
+    selectedIndex = selectedIndex == 0 ? 2 : selectedIndex - 1;
+}
+
+void TitleScreenModel::down()
+{
+    selectedIndex = selectedIndex == 2 ? 0 : selectedIndex + 1;
+}
+
+
 void TitleScreenModel::reset()
 {
     if (isResetable())
@@ -29,14 +40,4 @@ void TitleScreenModel::reset()
 
 void TitleScreenModel::update(const long double tick)
 {
-}
-
-void TitleScreenModel::up()
-{
-    selectedIndex = selectedIndex == 0 ? 2 : selectedIndex - 1;
-}
-
-void TitleScreenModel::down()
-{
-    selectedIndex = selectedIndex == 2 ? 0 : selectedIndex + 1;
 }
