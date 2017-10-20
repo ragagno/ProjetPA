@@ -21,9 +21,9 @@ View *OptionsController::getView()
     return &view;
 }
 
-void OptionsController::tick(long double ticks)
+void OptionsController::tick(const long double ticks)
 {
-    SDL_Event event;
+    SDL_Event event = {};
     while (SDL_PollEvent(&event))
     {
         if (event.type == SDL_KEYDOWN)

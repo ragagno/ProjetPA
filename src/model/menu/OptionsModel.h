@@ -14,12 +14,12 @@ public:
     OptionsModel();
     void init() override;
     ~OptionsModel() override = default;
-    void reset() override;
-    void update(long double tick) override;
     unsigned int getSelectedIndex() const;
     unsigned int getSelecedLayout() const;
     bool isMusicOn();
     bool isSoundOn();
+    void reset() override;
+    void update(long double) override;
     void up();
     void down();
     void flipMusic();

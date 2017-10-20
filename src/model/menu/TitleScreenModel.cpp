@@ -38,6 +38,6 @@ void TitleScreenModel::reset()
     }
 }
 
-void TitleScreenModel::update(const long double tick)
+void TitleScreenModel::update(long double)
 {
 }

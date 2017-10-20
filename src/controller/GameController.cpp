@@ -54,7 +54,7 @@ GameController::GameController()
     models[TITLE_SCREEN] = controllers[TITLE_SCREEN]->getModel();
     views[TITLE_SCREEN] = controllers[TITLE_SCREEN]->getView();
 
-    controllers[START_GAME] = new StartGameController(&state);
+    controllers[START_GAME] = new StartGameController(&state, mapNumber, &maps);
     models[START_GAME] = controllers[START_GAME]->getModel();
     views[START_GAME] = controllers[START_GAME]->getView();
 

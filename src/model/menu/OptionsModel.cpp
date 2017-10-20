@@ -30,6 +30,26 @@ void OptionsModel::init()
     selectedIndex = 0;
 }
 
+unsigned int OptionsModel::getSelectedIndex() const
+{
+    return selectedIndex;
+}
+
+unsigned int OptionsModel::getSelecedLayout() const
+{
+    return selectedLayout;
+}
+
+bool OptionsModel::isMusicOn()
+{
+    return music;
+}
+
+bool OptionsModel::isSoundOn()
+{
+    return sound;
+}
+
 void OptionsModel::reset()
 {
     if (isResetable())
@@ -57,28 +77,8 @@ void OptionsModel::reset()
     }
 }
 
-void OptionsModel::update(long double tick)
+void OptionsModel::update(long double)
 {
-}
-
-unsigned int OptionsModel::getSelectedIndex() const
-{
-    return selectedIndex;
-}
-
-unsigned int OptionsModel::getSelecedLayout() const
-{
-    return selectedLayout;
-}
-
-bool OptionsModel::isMusicOn()
-{
-    return music;
-}
-
-bool OptionsModel::isSoundOn()
-{
-    return sound;
 }
 
 void OptionsModel::up()

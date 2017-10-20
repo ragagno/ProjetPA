@@ -15,7 +15,7 @@ public:
     void up();
     void down();
     void reset() override;
-    void update(long double tick) override;
+    void update(long double) override;
 };
 
 #endif //PROXIMACENTAURI_TITLESCREENMODEL_H

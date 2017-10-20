@@ -6,8 +6,8 @@
 class Level
 {
 private:
-    uint32_t repeatPattern;
-    uint32_t patternSize;
+    unsigned int repeatPattern;
+    unsigned int patternSize;
     std::string name;
     std::string fileName;
     std::string *pattern;
@@ -15,6 +15,7 @@ public:
     Level();
     void init();
     ~Level();
+    std::string getName() const;
     void setFileName(const std::string &fileName);
     void loadLevel();
 };

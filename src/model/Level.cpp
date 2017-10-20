@@ -17,6 +17,19 @@ void Level::init()
     {
         std::getline(fin, name);
 
+        for (char &i : name)
+        {
+            if ((i < 65 || i > 122 || (i > 90 && i < 97)) && i != 32)
+            {
+                std::cerr << "Error while loading " + this->fileName + ": title is invalid.\n";
+                exit(EXIT_FAILURE);
+            }
+            if (i > 89)
+            {
+                i -= 32;
+            }
+        }
+
         if (name.length() == 0)
         {
             std::cerr << "Error while loading " + this->fileName + ": file is invalid.\n";
@@ -35,6 +48,11 @@ void Level::init()
 Level::~Level()
 {
     delete[] pattern;
+}
+
+std::string Level::getName() const
+{
+    return name;
 }
 
 void Level::setFileName(const std::string &fileName)
@@ -65,7 +83,7 @@ void Level::loadLevel()
 
         try
         {
-            repeatPattern = static_cast<uint32_t>(std::stoi(line));
+            repeatPattern = static_cast<unsigned int>(std::stoi(line));
         }
         catch (std::invalid_argument &e)
         {
@@ -93,7 +111,7 @@ void Level::loadLevel()
         }
 
         pattern = new std::string[patternSize];
-        for (uint32_t i = 0; i < patternSize; i++)
+        for (unsigned int i = 0; i < patternSize; i++)
         {
             pattern[i] = temp[i];
         }

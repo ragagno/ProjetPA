@@ -13,7 +13,7 @@ private:
     StartGameView view;
     GameController::State *state;
 public:
-    explicit StartGameController(GameController::State *state);
+    explicit StartGameController(GameController::State *state, unsigned int mapNumber, Level **mapsLevel);
     void init() override;
     ~StartGameController() override = default;
     Model *getModel() override;
