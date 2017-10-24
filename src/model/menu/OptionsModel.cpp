@@ -52,7 +52,7 @@ bool OptionsModel::isSoundOn()
 
 void OptionsModel::reset()
 {
-    if (isResetable())
+    if (resetable)
     {
         selectedIndex = 0;
 
@@ -68,12 +68,11 @@ void OptionsModel::reset()
         else
         {
             std::cerr << "Error while saving the options.\n";
-            // NO CRASH
         }
     }
     else
     {
-        setResetable(true);
+        resetable = true;
     }
 }
 

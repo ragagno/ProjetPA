@@ -113,6 +113,18 @@ void OptionsView::preRender(bool music, bool sound, unsigned int selectedIndex, 
     }
 }
 
+void OptionsView::reset()
+{
+    if (resetable)
+    {
+        MenuView::reset();
+    }
+    else
+    {
+        resetable = true;
+    }
+}
+
 void OptionsView::render(SDL_Window *window)
 {
     SDL_FillRect(SDL_GetWindowSurface(window), &backgroundRect, 0x00FFFFFF);

@@ -17,11 +17,13 @@ unsigned int StartGameModel::getSelectedIndex() const
 
 void StartGameModel::reset()
 {
-    if (isResetable())
-    {}
+    if (resetable)
+    {
+        selectedIndex = 0;
+    }
     else
     {
-        setResetable(true);
+        resetable = true;
     }
 }
 

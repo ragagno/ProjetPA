@@ -53,6 +53,18 @@ void TitleScreenView::preRender(unsigned int selectedIndex)
     }
 }
 
+void TitleScreenView::reset()
+{
+    if (resetable)
+    {
+        MenuView::reset();
+    }
+    else
+    {
+        resetable = true;
+    }
+}
+
 void TitleScreenView::render(SDL_Window *window)
 {
     SDL_FillRect(SDL_GetWindowSurface(window), &backgroundRect, 0x00FFFFFF);

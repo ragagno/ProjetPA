@@ -19,6 +19,7 @@ public:
     MenuView();
     void init() override;
     ~MenuView() override;
+    void reset() override;
     void render(SDL_Window *window) override;
 };
 

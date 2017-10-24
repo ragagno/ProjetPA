@@ -29,3 +29,7 @@ proxima-centauri: $(OBJS)
 obj/%.o: src/%.cpp
 	@echo Compling ${notdir $<}...
 	@${CC} ${CCFLAGS} ${CCFLAGS_CP} -c $< -o $@
+
+.PHONY: clean
+
+clean:

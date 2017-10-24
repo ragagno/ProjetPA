@@ -22,6 +22,7 @@ public:
     StartGameView(unsigned int mapNumber, Level **mapsLevel);
     void init() override;
     ~StartGameView() override;
+    void reset() override;
     void preRender(unsigned int selectedIndex);
     void render(SDL_Window *window) override;
 };

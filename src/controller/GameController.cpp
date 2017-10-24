@@ -163,6 +163,7 @@ void GameController::loop()
         if (tempState != state)
         {
             models[tempState]->reset();
+            views[tempState]->reset();
         }
     }
 }

@@ -28,13 +28,13 @@ void TitleScreenModel::down()
 
 void TitleScreenModel::reset()
 {
-    if (isResetable())
+    if (resetable)
     {
         selectedIndex = 0;
     }
     else
     {
-        setResetable(true);
+        resetable = true;
     }
 }
 

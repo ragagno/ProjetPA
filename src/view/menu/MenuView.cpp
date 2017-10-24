@@ -42,6 +42,18 @@ MenuView::~MenuView()
     SDL_FreeSurface(author);
 }
 
+void MenuView::reset()
+{
+    if (resetable)
+    {
+
+    }
+    else
+    {
+        resetable = true;
+    }
+}
+
 void MenuView::render(SDL_Window *window)
 {
     static SDL_Rect backgroundRect = {0, 0, WINDOW_WIDTH, WINDOW_HEIGHT / 2};

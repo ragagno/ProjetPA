@@ -1,6 +1,8 @@
+#include <iostream>
 #include "StartGameController.h"
 
-StartGameController::StartGameController(GameController::State *state, unsigned int mapNumber, Level **mapsLevel): model(mapNumber), view(mapNumber, mapsLevel)
+StartGameController::StartGameController(GameController::State *state, unsigned int mapNumber, Level **mapsLevel)
+        : model(mapNumber), view(mapNumber, mapsLevel)
 {
     this->state = state;
 }
@@ -39,6 +41,9 @@ void StartGameController::tick(long double)
                     break;
                 case SDLK_UP:
                     model.up();
+                    break;
+                case SDLK_RETURN:
+                    // TODO: playing
                     break;
                 case SDLK_ESCAPE:
                     *state = GameController::TITLE_SCREEN;

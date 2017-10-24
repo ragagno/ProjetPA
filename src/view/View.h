@@ -9,10 +9,17 @@ const auto WINDOW_TITLE = "Proxima Centauri";
 
 class View
 {
+protected:
+    bool resetable = true;
 public:
     View() = default;
     virtual void init() = 0;
     virtual ~View() = default;
+    void setResetable(bool resetable)
+    {
+        this->resetable = resetable;
+    }
+    virtual void reset() = 0;
     virtual void render(SDL_Window *window) = 0;
 };
 

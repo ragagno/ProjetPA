@@ -33,6 +33,7 @@ public:
     OptionsView();
     void init() override;
     ~OptionsView() override;
+    void reset() override;
     void preRender(bool music, bool sound, unsigned int selectedIndex, unsigned int selectedLayout);
     void render(SDL_Window *window) override;
 };

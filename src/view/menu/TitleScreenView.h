@@ -18,6 +18,7 @@ public:
     TitleScreenView();
     void init() override;
     ~TitleScreenView() override;
+    void reset() override;
     void preRender(unsigned int selectedIndex);
     void render(SDL_Window *window) override;
 };

@@ -106,6 +106,19 @@ void StartGameView::preRender(unsigned int selectedIndex)
     }
 }
 
+void StartGameView::reset()
+{
+    if (resetable)
+    {
+        MenuView::reset();
+        startingMap = 0;
+    }
+    else
+    {
+        resetable = true;
+    }
+}
+
 void StartGameView::render(SDL_Window *window)
 {
     SDL_FillRect(SDL_GetWindowSurface(window), &backgroundRect, 0x00FFFFFF);
