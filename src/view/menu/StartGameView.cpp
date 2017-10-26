@@ -2,7 +2,7 @@
 #include <SDL2/SDL_ttf.h>
 #include "StartGameView.h"
 
-StartGameView::StartGameView(unsigned int mapNumber, Level **mapsLevel)
+StartGameView::StartGameView(uint_fast32_t mapNumber, Level **mapsLevel)
 {
     up = nullptr;
     down = nullptr;
@@ -30,7 +30,7 @@ void StartGameView::init()
     SDL_Color black = {0, 0, 0, 0};
     TTF_Font *munroMedium = TTF_OpenFont("resources/munro.ttf", 64);
 
-    for (unsigned int i = 0; i < mapNumber; ++i)
+    for (uint_fast32_t i = 0; i < mapNumber; ++i)
     {
         maps[i] = TTF_RenderUTF8_Blended(munroMedium, (*mapsLevel)[i].getName().c_str(), black);
         int j = 0;
@@ -70,7 +70,7 @@ StartGameView::~StartGameView()
 {
     SDL_FreeSurface(up);
     SDL_FreeSurface(down);
-    for (unsigned int i = 0; i < mapNumber; i++)
+    for (uint_fast32_t i = 0; i < mapNumber; i++)
     {
         SDL_FreeSurface(maps[i]);
     }
@@ -90,7 +90,7 @@ void StartGameView::reset()
     }
 }
 
-void StartGameView::preRender(unsigned int selectedIndex)
+void StartGameView::preRender(uint_fast32_t selectedIndex)
 {
     if (selectedIndex < startingMap)
     {

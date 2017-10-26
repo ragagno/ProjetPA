@@ -6,7 +6,7 @@
 class OptionsView : public MenuView
 {
 private:
-    unsigned int selectedLayout;
+    uint_fast32_t selectedLayout;
     bool musicState;
     bool soundState;
     SDL_Rect backgroundRect;
@@ -34,7 +34,7 @@ public:
     void init() override;
     ~OptionsView() override;
     void reset() override;
-    void preRender(bool music, bool sound, unsigned int selectedIndex, unsigned int selectedLayout);
+    void preRender(bool music, bool sound, unsigned int selectedIndex, uint_fast32_t selectedLayout);
     void render(SDL_Window *window) override;
 };
 

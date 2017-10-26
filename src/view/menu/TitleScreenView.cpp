@@ -34,7 +34,7 @@ TitleScreenView::~TitleScreenView()
     SDL_free(quit);
 }
 
-void TitleScreenView::preRender(unsigned int selectedIndex)
+void TitleScreenView::preRender(uint_fast32_t selectedIndex)
 {
     switch (selectedIndex)
     {

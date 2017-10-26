@@ -1,3 +1,4 @@
+#include <cstdint>
 #include "TitleScreenModel.h"
 
 TitleScreenModel::TitleScreenModel()
@@ -10,7 +11,7 @@ void TitleScreenModel::init()
 
 }
 
-unsigned int TitleScreenModel::getSelectedIndex() const
+uint_fast32_t TitleScreenModel::getSelectedIndex() const
 {
     return selectedIndex;
 }

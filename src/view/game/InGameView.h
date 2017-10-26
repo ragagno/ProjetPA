@@ -11,7 +11,6 @@ private:
     SDL_Rect resumeRect;
     SDL_Rect quitRect;
     SDL_Rect underlineRect;
-    SDL_Surface *pauseBackground;
     SDL_Surface *resume;
     SDL_Surface *quit;
 public:
@@ -19,7 +18,7 @@ public:
     void init() override;
     ~InGameView() override;
     void reset() override;
-    void preRender(bool paused, unsigned int selectedIndex);
+    void preRender(bool paused, uint_fast32_t selectedIndex);
     void render(SDL_Window *window) override;
 };
 

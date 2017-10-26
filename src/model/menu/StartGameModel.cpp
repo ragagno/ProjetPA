@@ -1,6 +1,7 @@
+#include <cstdint>
 #include "StartGameModel.h"
 
-StartGameModel::StartGameModel(unsigned int mapNumber)
+StartGameModel::StartGameModel(uint_fast32_t mapNumber)
 {
     selectedIndex = 0;
     this->mapNumber = mapNumber;
@@ -10,7 +11,7 @@ void StartGameModel::init()
 {
 }
 
-unsigned int StartGameModel::getSelectedIndex() const
+uint_fast32_t StartGameModel::getSelectedIndex() const
 {
     return selectedIndex;
 }

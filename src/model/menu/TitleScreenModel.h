@@ -6,12 +6,12 @@
 class TitleScreenModel : public Model
 {
 private:
-    unsigned int selectedIndex;
+    uint_fast32_t selectedIndex;
 public:
     TitleScreenModel();
     void init() override;
     ~TitleScreenModel() override = default;
-    unsigned int getSelectedIndex() const;
+    uint_fast32_t getSelectedIndex() const;
     void up();
     void down();
     void reset() override;

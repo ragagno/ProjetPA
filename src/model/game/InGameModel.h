@@ -7,15 +7,15 @@
 class InGameModel : public Model
 {
 private:
-    unsigned int selectedIndex;
+    uint_fast32_t selectedIndex;
     bool paused;
-    unsigned int *inGameLevel;
+    uint_fast32_t *inGameLevel;
     Level **maps;
 public:
-    explicit InGameModel(Level **maps, unsigned int *inGameLevel);
+    explicit InGameModel(Level **maps, uint_fast32_t *inGameLevel);
     void init() override;
     ~InGameModel() override = default;
-    unsigned int getSelectedIndex() const;
+    uint_fast32_t getSelectedIndex() const;
     bool isPaused() const;
     void pauseUp();
     void pauseDown();

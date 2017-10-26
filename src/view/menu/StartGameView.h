@@ -7,8 +7,8 @@
 class StartGameView : public MenuView
 {
 private:
-    unsigned int mapNumber;
-    unsigned int startingMap;
+    uint_fast32_t mapNumber;
+    uint_fast32_t startingMap;
     SDL_Rect backgroundRect;
     SDL_Rect underlineRect;
     SDL_Rect upRect;
@@ -19,11 +19,11 @@ private:
     SDL_Surface **maps;
     Level **mapsLevel;
 public:
-    StartGameView(unsigned int mapNumber, Level **mapsLevel);
+    StartGameView(uint_fast32_t mapNumber, Level **mapsLevel);
     void init() override;
     ~StartGameView() override;
     void reset() override;
-    void preRender(unsigned int selectedIndex);
+    void preRender(uint_fast32_t selectedIndex);
     void render(SDL_Window *window) override;
 };
 

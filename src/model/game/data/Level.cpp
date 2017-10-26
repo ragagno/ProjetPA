@@ -57,12 +57,12 @@ std::string Level::getName() const
     return name;
 }
 
-unsigned int Level::getPatternRepeat() const
+uint_fast32_t Level::getPatternRepeat() const
 {
     return patternRepeat;
 }
 
-unsigned int Level::getPatternSize() const
+uint_fast32_t Level::getPatternSize() const
 {
     return patternSize;
 }
@@ -99,7 +99,7 @@ void Level::loadLevel()
 
             try
             {
-                patternRepeat = static_cast<unsigned int>(std::stoi(line));
+                patternRepeat = static_cast<uint_fast32_t>(std::stoi(line));
             }
             catch (std::invalid_argument &e)
             {
@@ -127,7 +127,7 @@ void Level::loadLevel()
             }
 
             pattern = new std::string[patternSize];
-            for (unsigned int i = 0; i < patternSize; i++)
+            for (uint_fast32_t i = 0; i < patternSize; i++)
             {
                 pattern[i] = temp[i];
             }

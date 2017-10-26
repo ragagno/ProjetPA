@@ -16,7 +16,7 @@ private:
     GameController::State *state;
     Level **maps;
 public:
-    StartGameController(GameController::State *state, unsigned int mapNumber, Level **maps, unsigned int *inGameLevel);
+    StartGameController(GameController::State *state, uint_fast32_t mapNumber, Level **maps, uint_fast32_t *inGameLevel);
     void init() override;
     ~StartGameController() override = default;
     Model *getModel() override;

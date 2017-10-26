@@ -1,6 +1,6 @@
 #include "InGameModel.h"
 
-InGameModel::InGameModel(Level **maps, unsigned int *inGameLevel)
+InGameModel::InGameModel(Level **maps, uint_fast32_t *inGameLevel)
 {
     this->maps = maps;
     this->inGameLevel = inGameLevel;
@@ -12,7 +12,7 @@ void InGameModel::init()
 {
 }
 
-unsigned int InGameModel::getSelectedIndex() const
+uint_fast32_t InGameModel::getSelectedIndex() const
 {
     return selectedIndex;
 }

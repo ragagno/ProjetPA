@@ -6,13 +6,13 @@
 class StartGameModel : public Model
 {
 private:
-    unsigned int selectedIndex;
-    unsigned int mapNumber;
+    uint_fast32_t selectedIndex;
+    uint_fast32_t mapNumber;
 public:
-    explicit StartGameModel(unsigned int mapNumber);
+    explicit StartGameModel(uint_fast32_t mapNumber);
     void init() override;
     ~StartGameModel() override = default;
-    unsigned int getSelectedIndex() const;
+    uint_fast32_t getSelectedIndex() const;
     void reset() override;
     void update(long double) override;
     void up();

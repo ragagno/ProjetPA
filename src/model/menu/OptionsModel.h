@@ -6,16 +6,16 @@
 class OptionsModel : public Model
 {
 private:
-    unsigned int selectedIndex;
-    unsigned int selectedLayout;
+    uint_fast32_t selectedIndex;
+    uint_fast32_t selectedLayout;
     bool music;
     bool sound;
 public:
     OptionsModel();
     void init() override;
     ~OptionsModel() override = default;
-    unsigned int getSelectedIndex() const;
-    unsigned int getSelecedLayout() const;
+    uint_fast32_t getSelectedIndex() const;
+    uint_fast32_t getSelecedLayout() const;
     bool isMusicOn();
     bool isSoundOn();
     void reset() override;

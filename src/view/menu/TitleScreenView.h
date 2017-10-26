@@ -19,7 +19,7 @@ public:
     void init() override;
     ~TitleScreenView() override;
     void reset() override;
-    void preRender(unsigned int selectedIndex);
+    void preRender(uint_fast32_t selectedIndex);
     void render(SDL_Window *window) override;
 };
 

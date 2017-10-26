@@ -18,7 +18,7 @@ void OptionsModel::init()
     {
         music = fin.get() == 49;
         sound = fin.get() == 49;
-        selectedLayout = static_cast<unsigned int>(fin.get() % 48);
+        selectedLayout = static_cast<uint_fast32_t >(fin.get() % 48);
         fin.close();
     }
     else
@@ -30,12 +30,12 @@ void OptionsModel::init()
     selectedIndex = 0;
 }
 
-unsigned int OptionsModel::getSelectedIndex() const
+uint_fast32_t OptionsModel::getSelectedIndex() const
 {
     return selectedIndex;
 }
 
-unsigned int OptionsModel::getSelecedLayout() const
+uint_fast32_t OptionsModel::getSelecedLayout() const
 {
     return selectedLayout;
 }

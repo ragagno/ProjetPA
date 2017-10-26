@@ -46,12 +46,12 @@ GameController::GameController()
 
     maps = new Level[mapNumber]();
 
-    for (unsigned int i = 0; i < mapNumber; i++)
+    for (uint_fast32_t i = 0; i < mapNumber; i++)
     {
         maps[i].setFileName(temp[i]);
     }
 
-    inGameLevel = new unsigned int;
+    inGameLevel = new uint_fast32_t;
 
     controllers[TITLE_SCREEN] = new TitleScreenController(&looping, &state);
     models[TITLE_SCREEN] = controllers[TITLE_SCREEN]->getModel();
@@ -95,7 +95,7 @@ void GameController::init()
 
     freq = SDL_GetPerformanceFrequency() / 1000;
 
-    for (unsigned int i = 0; i < mapNumber; i++)
+    for (uint_fast32_t i = 0; i < mapNumber; i++)
     {
         maps[i].init();
     }
@@ -143,10 +143,10 @@ void GameController::shutdown()
 
 void GameController::loop()
 {
-    unsigned long long lastTime = 0;
-    unsigned long long lastRenderTime = 0;
-    unsigned long long currentTime = 0;
-    unsigned long long elapsedTime = 0;
+    uint_fast64_t lastTime = 0;
+    uint_fast64_t lastRenderTime = 0;
+    uint_fast64_t currentTime = 0;
+    uint_fast64_t elapsedTime = 0;
     long double lag = 0;
 
     while (looping)

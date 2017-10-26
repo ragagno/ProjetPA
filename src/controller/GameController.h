@@ -22,11 +22,11 @@ public:
         _LENGTH
     };
 private:
-    unsigned long long freq;
-    unsigned int mapNumber;
+    uint_fast64_t freq;
+    uint_fast32_t mapNumber;
     bool looping;
     State state;
-    unsigned int *inGameLevel;
+    uint_fast32_t *inGameLevel;
     SDL_Window *window;
     Level *maps;
     View *views[State::_LENGTH];
@@ -36,7 +36,7 @@ public:
     GameController();
     void init();
     ~GameController();
-    inline unsigned long long getTicks();
+    inline uint_fast64_t getTicks();
     void start();
     void shutdown();
 private:

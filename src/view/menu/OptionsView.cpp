@@ -50,7 +50,7 @@ OptionsView::~OptionsView()
     SDL_FreeSurface(arrows);
 }
 
-void OptionsView::preRender(bool music, bool sound, unsigned int selectedIndex, unsigned int selectedLayout)
+void OptionsView::preRender(bool music, bool sound, uint_fast32_t selectedIndex, uint_fast32_t selectedLayout)
 {
     musicState = music;
     soundState = sound;

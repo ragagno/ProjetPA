@@ -1,6 +1,6 @@
 #include "InGameController.h"
 
-InGameController::InGameController(GameController::State *state, Level **maps, unsigned int *inGameLevel) : model(maps, inGameLevel)
+InGameController::InGameController(GameController::State *state, Level **maps, uint_fast32_t *inGameLevel) : model(maps, inGameLevel)
 {
     this->state = state;
 }
