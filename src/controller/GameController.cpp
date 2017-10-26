@@ -51,7 +51,7 @@ GameController::GameController()
         maps[i].setFileName(temp[i]);
     }
 
-    auto *inGameLevel = new unsigned int;
+    inGameLevel = new unsigned int;
 
     controllers[TITLE_SCREEN] = new TitleScreenController(&looping, &state);
     models[TITLE_SCREEN] = controllers[TITLE_SCREEN]->getModel();
@@ -112,6 +112,7 @@ void GameController::init()
 
 GameController::~GameController()
 {
+    delete inGameLevel;
     for (auto &controller : controllers)
     {
         delete controller;

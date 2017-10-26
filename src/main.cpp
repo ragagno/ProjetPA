@@ -8,13 +8,10 @@ int main(int argc, char *argv[])
         std::cout << "Unknown parameter " << argv[i] << std::endl;
     }
 
-    for (unsigned int i = 0; i < 1; i++)
-    {
-        GameController g;
-        g.init();
-        g.start();
-        g.shutdown();
-    }
+    GameController g;
+    g.init();
+    g.start();
+    g.shutdown();
 
     return EXIT_SUCCESS;
 }

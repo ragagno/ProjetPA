@@ -77,6 +77,19 @@ StartGameView::~StartGameView()
     delete[] maps;
 }
 
+void StartGameView::reset()
+{
+    if (resetable)
+    {
+        MenuView::reset();
+        startingMap = 0;
+    }
+    else
+    {
+        resetable = true;
+    }
+}
+
 void StartGameView::preRender(unsigned int selectedIndex)
 {
     if (selectedIndex < startingMap)
@@ -102,19 +115,6 @@ void StartGameView::preRender(unsigned int selectedIndex)
             rects[2] = {(WINDOW_WIDTH - maps[startingMap + 2]->w) / 2 + 3, 19 * WINDOW_HEIGHT / 24 - maps[startingMap + 2]->h / 2, 0, 0};
             rects[3] = {(WINDOW_WIDTH - maps[startingMap + 3]->w) / 2 + 3, 21 * WINDOW_HEIGHT / 24 - maps[startingMap + 3]->h / 2, 0, 0};
             underlineRect = {rects[selectedIndex - startingMap].x, rects[selectedIndex - startingMap].y + maps[selectedIndex]->h - 8, maps[selectedIndex]->w - 6, 6};
-    }
-}
-
-void StartGameView::reset()
-{
-    if (resetable)
-    {
-        MenuView::reset();
-        startingMap = 0;
-    }
-    else
-    {
-        resetable = true;
     }
 }
 

@@ -26,6 +26,7 @@ private:
     unsigned int mapNumber;
     bool looping;
     State state;
+    unsigned int *inGameLevel;
     SDL_Window *window;
     Level *maps;
     View *views[State::_LENGTH];
