@@ -13,7 +13,6 @@ void TitleScreenView::init()
     MenuView::init();
 
     SDL_Color black = {0, 0, 0, 0};
-
     TTF_Font *munroMedium = TTF_OpenFont("resources/munro.ttf", 64);
 
     startGame = TTF_RenderUTF8_Blended(munroMedium, "START GAME", black);

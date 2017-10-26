@@ -119,6 +119,11 @@ GameController::~GameController()
     delete[] maps;
 }
 
+unsigned long long GameController::getTicks()
+{
+    return SDL_GetPerformanceCounter() / freq;
+}
+
 void GameController::start()
 {
     SDL_ShowWindow(window);
@@ -133,11 +138,6 @@ void GameController::shutdown()
     SDL_Quit();
     TTF_Quit();
     IMG_Quit();
-}
-
-unsigned long long GameController::getTicks()
-{
-    return SDL_GetPerformanceCounter() / freq;
 }
 
 void GameController::loop()

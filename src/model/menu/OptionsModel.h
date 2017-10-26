@@ -6,10 +6,10 @@
 class OptionsModel : public Model
 {
 private:
-    bool music;
-    bool sound;
     unsigned int selectedIndex;
     unsigned int selectedLayout;
+    bool music;
+    bool sound;
 public:
     OptionsModel();
     void init() override;

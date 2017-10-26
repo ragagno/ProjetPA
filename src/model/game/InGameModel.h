@@ -15,8 +15,8 @@ public:
     explicit InGameModel(Level **maps, unsigned int *inGameLevel);
     void init() override;
     ~InGameModel() override = default;
-    bool isPaused() const;
     unsigned int getSelectedIndex() const;
+    bool isPaused() const;
     void pauseUp();
     void pauseDown();
     void flipPause();

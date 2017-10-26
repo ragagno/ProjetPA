@@ -13,7 +13,7 @@ private:
     InGameView view;
     GameController::State *state;
 public:
-    explicit InGameController(GameController::State *state, Level **maps, unsigned int *inGameLevel);
+    InGameController(GameController::State *state, Level **maps, unsigned int *inGameLevel);
     void init() override;
     ~InGameController() override = default;
     Model *getModel() override;

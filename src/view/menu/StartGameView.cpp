@@ -1,6 +1,5 @@
 #include <SDL2/SDL_image.h>
 #include <SDL2/SDL_ttf.h>
-#include <iostream>
 #include "StartGameView.h"
 
 StartGameView::StartGameView(unsigned int mapNumber, Level **mapsLevel)
@@ -45,8 +44,8 @@ void StartGameView::init()
     TTF_CloseFont(munroMedium);
 
     backgroundRect = {0, WINDOW_HEIGHT / 2, WINDOW_WIDTH, WINDOW_HEIGHT / 2};
-    upRect = {(WINDOW_WIDTH - up->w)/ 2, 13 * WINDOW_HEIGHT / 24 - up->h / 2, 0, 0};
-    downRect = {(WINDOW_WIDTH - down->w)/ 2, 23 * WINDOW_HEIGHT / 24 - down->h / 2, 0, 0};
+    upRect = {(WINDOW_WIDTH - up->w) / 2, 13 * WINDOW_HEIGHT / 24 - up->h / 2, 0, 0};
+    downRect = {(WINDOW_WIDTH - down->w) / 2, 23 * WINDOW_HEIGHT / 24 - down->h / 2, 0, 0};
 
     switch (mapNumber)
     {

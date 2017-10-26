@@ -1,4 +1,3 @@
-#include <iostream>
 #include "InGameModel.h"
 
 InGameModel::InGameModel(Level **maps, unsigned int *inGameLevel)
@@ -13,24 +12,24 @@ void InGameModel::init()
 {
 }
 
-bool InGameModel::isPaused() const
-{
-    return paused;
-}
-
 unsigned int InGameModel::getSelectedIndex() const
 {
     return selectedIndex;
 }
 
+bool InGameModel::isPaused() const
+{
+    return paused;
+}
+
 void InGameModel::pauseUp()
 {
-    selectedIndex = (selectedIndex - 1) * - 1;
+    selectedIndex = (selectedIndex - 1) * -1;
 }
 
 void InGameModel::pauseDown()
 {
-    selectedIndex = (selectedIndex - 1) * - 1;
+    selectedIndex = (selectedIndex - 1) * -1;
 }
 
 void InGameModel::flipPause()

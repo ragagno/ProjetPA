@@ -35,9 +35,9 @@ public:
     GameController();
     void init();
     ~GameController();
+    inline unsigned long long getTicks();
     void start();
     void shutdown();
-    inline unsigned long long getTicks();
 private:
     void loop();
 };

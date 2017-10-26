@@ -16,9 +16,9 @@ public:
     void init();
     ~Level();
     std::string getName() const;
-    std::string* getPattern() const;
     unsigned int getPatternRepeat() const;
     unsigned int getPatternSize() const;
+    std::string *getPattern() const;
     void setFileName(const std::string &fileName);
     void loadLevel();
 };

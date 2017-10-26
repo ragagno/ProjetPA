@@ -1,4 +1,3 @@
-#include <iostream>
 #include <SDL2/SDL_render.h>
 #include <SDL2/SDL_ttf.h>
 #include "InGameView.h"

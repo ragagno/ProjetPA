@@ -1,8 +1,6 @@
-#include <iostream>
 #include "StartGameController.h"
 
-StartGameController::StartGameController(GameController::State *state, unsigned int mapNumber, Level **maps, unsigned int  *inGameLevel)
-        : model(mapNumber), view(mapNumber, maps)
+StartGameController::StartGameController(GameController::State *state, unsigned int mapNumber, Level **maps, unsigned int *inGameLevel) : model(mapNumber), view(mapNumber, maps)
 {
     this->maps = maps;
     this->inGameLevel = inGameLevel;

@@ -6,9 +6,9 @@
 class OptionsView : public MenuView
 {
 private:
+    unsigned int selectedLayout;
     bool musicState;
     bool soundState;
-    unsigned int selectedLayout;
     SDL_Rect backgroundRect;
     SDL_Rect musicRect;
     SDL_Rect musicStateRect;

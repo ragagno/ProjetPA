@@ -25,7 +25,6 @@ void TitleScreenModel::down()
     selectedIndex = selectedIndex == 2 ? 0 : selectedIndex + 1;
 }
 
-
 void TitleScreenModel::reset()
 {
     if (resetable)

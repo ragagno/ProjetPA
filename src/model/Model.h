@@ -9,10 +9,12 @@ public:
     Model() = default;
     virtual void init() = 0;
     virtual ~Model() = default;
+
     void setResetable(bool resetable)
     {
         this->resetable = resetable;
     }
+
     virtual void reset() = 0;
     virtual void update(long double tick) = 0;
 };

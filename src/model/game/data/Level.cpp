@@ -57,11 +57,6 @@ std::string Level::getName() const
     return name;
 }
 
-std::string* Level::getPattern() const
-{
-    return pattern;
-}
-
 unsigned int Level::getPatternRepeat() const
 {
     return patternRepeat;
@@ -70,6 +65,11 @@ unsigned int Level::getPatternRepeat() const
 unsigned int Level::getPatternSize() const
 {
     return patternSize;
+}
+
+std::string *Level::getPattern() const
+{
+    return pattern;
 }
 
 void Level::setFileName(const std::string &fileName)

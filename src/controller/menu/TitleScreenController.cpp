@@ -26,7 +26,6 @@ View *TitleScreenController::getView()
 
 void TitleScreenController::tick(long double ticks)
 {
-
     SDL_Event event = {};
     while (SDL_PollEvent(&event))
     {

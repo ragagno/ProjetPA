@@ -16,7 +16,6 @@ void MenuView::init()
 {
     SDL_Color black = {0, 0, 0, 0};
     SDL_Color white = {255, 255, 255, 0};
-
     TTF_Font *munroBig = TTF_OpenFont("resources/munro.ttf", 144);
     TTF_Font *munroSmall = TTF_OpenFont("resources/munro.ttf", 32);
 
@@ -63,7 +62,6 @@ void MenuView::render(SDL_Window *window)
     static SDL_Rect uriRect = {WINDOW_WIDTH / 2 + proxima->w / 2 - uri->w + 7, WINDOW_HEIGHT / 4, 0, 0};
     static SDL_Rect versionRect = {8, WINDOW_HEIGHT - 32, 0, 0};
     static SDL_Rect authorRect = {WINDOW_WIDTH - author->w - 5, WINDOW_HEIGHT - 32, 0, 0};
-
     static int spaceshipFrame = 0;
     SDL_Rect spaceshipFrameRect = {(spaceship->w / 4) * ((spaceshipFrame++ * 2 % 40) / 10), 0, spaceship->w / 4, spaceship->h};
 
