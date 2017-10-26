@@ -35,7 +35,7 @@ uint_fast32_t OptionsModel::getSelectedIndex() const
     return selectedIndex;
 }
 
-uint_fast32_t OptionsModel::getSelecedLayout() const
+uint_fast32_t OptionsModel::getSelectedLayout() const
 {
     return selectedLayout;
 }

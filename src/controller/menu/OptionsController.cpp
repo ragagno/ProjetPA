@@ -79,6 +79,6 @@ void OptionsController::tick(const long double ticks)
             }
         }
     }
-    view.preRender(model.isMusicOn(), model.isSoundOn(), model.getSelectedIndex(), model.getSelecedLayout());
+    view.preRender(model.isMusicOn(), model.isSoundOn(), model.getSelectedIndex(), model.getSelectedLayout());
     model.update(ticks);
 }

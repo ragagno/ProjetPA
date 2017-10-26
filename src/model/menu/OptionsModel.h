@@ -15,7 +15,7 @@ public:
     void init() override;
     ~OptionsModel() override = default;
     uint_fast32_t getSelectedIndex() const;
-    uint_fast32_t getSelecedLayout() const;
+    uint_fast32_t getSelectedLayout() const;
     bool isMusicOn();
     bool isSoundOn();
     void reset() override;
