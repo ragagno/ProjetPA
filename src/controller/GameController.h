@@ -2,7 +2,7 @@
 #define PROXIMACENTAURI_GAME_H
 
 #include <SDL2/SDL.h>
-#include "../Model/Level.h"
+#include "../model/game/data/Level.h"
 #include "../View/View.h"
 #include "../model/Model.h"
 #include "Controller.h"
@@ -18,6 +18,7 @@ public:
         TITLE_SCREEN,
         START_GAME,
         OPTIONS,
+        IN_GAME,
         _LENGTH
     };
 private:

@@ -5,15 +5,18 @@
 #include "../GameController.h"
 #include "../../model/menu/StartGameModel.h"
 #include "../../view/menu/StartGameView.h"
+#include "../../model/game/InGameModel.h"
 
 class StartGameController : public Controller
 {
 private:
     StartGameModel model;
     StartGameView view;
+    unsigned int *inGameLevel;
     GameController::State *state;
+    Level **maps;
 public:
-    explicit StartGameController(GameController::State *state, unsigned int mapNumber, Level **mapsLevel);
+    StartGameController(GameController::State *state, unsigned int mapNumber, Level **maps, unsigned int  *inGameLevel);
     void init() override;
     ~StartGameController() override = default;
     Model *getModel() override;

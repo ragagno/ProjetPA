@@ -1,9 +1,11 @@
 #include <iostream>
 #include "StartGameController.h"
 
-StartGameController::StartGameController(GameController::State *state, unsigned int mapNumber, Level **mapsLevel)
-        : model(mapNumber), view(mapNumber, mapsLevel)
+StartGameController::StartGameController(GameController::State *state, unsigned int mapNumber, Level **maps, unsigned int  *inGameLevel)
+        : model(mapNumber), view(mapNumber, maps)
 {
+    this->maps = maps;
+    this->inGameLevel = inGameLevel;
     this->state = state;
 }
 
@@ -30,10 +32,6 @@ void StartGameController::tick(long double)
     {
         if (event.type == SDL_KEYDOWN)
         {
-            if (event.key.repeat)
-            {
-                continue;
-            }
             switch (event.key.keysym.sym)
             {
                 case SDLK_DOWN:
@@ -43,9 +41,19 @@ void StartGameController::tick(long double)
                     model.up();
                     break;
                 case SDLK_RETURN:
-                    // TODO: playing
+                    if (event.key.repeat)
+                    {
+                        continue;
+                    }
+                    *state = GameController::IN_GAME;
+                    *inGameLevel = model.getSelectedIndex();
+                    (*maps)[*inGameLevel].loadLevel();
                     break;
                 case SDLK_ESCAPE:
+                    if (event.key.repeat)
+                    {
+                        continue;
+                    }
                     *state = GameController::TITLE_SCREEN;
                     break;
                 default:

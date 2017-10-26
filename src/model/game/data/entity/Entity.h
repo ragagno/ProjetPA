@@ -1,0 +1,9 @@
+#ifndef PROXIMACENTAURI_ENTITY_H
+#define PROXIMACENTAURI_ENTITY_H
+
+class Entity
+{
+
+};
+
+#endif //PROXIMACENTAURI_ENTITY_H

@@ -7,6 +7,7 @@
 #include "menu/TitleScreenController.h"
 #include "menu/StartGameController.h"
 #include "menu/OptionsController.h"
+#include "game/InGameController.h"
 
 GameController::GameController()
 {
@@ -50,17 +51,23 @@ GameController::GameController()
         maps[i].setFileName(temp[i]);
     }
 
+    auto *inGameLevel = new unsigned int;
+
     controllers[TITLE_SCREEN] = new TitleScreenController(&looping, &state);
     models[TITLE_SCREEN] = controllers[TITLE_SCREEN]->getModel();
     views[TITLE_SCREEN] = controllers[TITLE_SCREEN]->getView();
 
-    controllers[START_GAME] = new StartGameController(&state, mapNumber, &maps);
+    controllers[START_GAME] = new StartGameController(&state, mapNumber, &maps, inGameLevel);
     models[START_GAME] = controllers[START_GAME]->getModel();
     views[START_GAME] = controllers[START_GAME]->getView();
 
     controllers[OPTIONS] = new OptionsController(&state);
     models[OPTIONS] = controllers[OPTIONS]->getModel();
     views[OPTIONS] = controllers[OPTIONS]->getView();
+
+    controllers[IN_GAME] = new InGameController(&state, &maps, inGameLevel);
+    models[IN_GAME] = controllers[IN_GAME]->getModel();
+    views[IN_GAME] = controllers[IN_GAME]->getView();
 }
 
 void GameController::init()
@@ -100,6 +107,7 @@ void GameController::init()
     controllers[TITLE_SCREEN]->init();
     controllers[START_GAME]->init();
     controllers[OPTIONS]->init();
+    controllers[IN_GAME]->init();
 }
 
 GameController::~GameController()

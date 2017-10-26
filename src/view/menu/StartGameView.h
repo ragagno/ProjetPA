@@ -2,7 +2,7 @@
 #define PROXIMACENTAURI_STARTGAMEVIEW_H
 
 #include "MenuView.h"
-#include "../../model/Level.h"
+#include "../../model/game/data/Level.h"
 
 class StartGameView : public MenuView
 {
