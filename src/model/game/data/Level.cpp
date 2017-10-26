@@ -131,6 +131,8 @@ void Level::loadLevel()
             {
                 pattern[i] = temp[i];
             }
+
+            fin.close();
         }
         else
         {

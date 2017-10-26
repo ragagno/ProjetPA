@@ -41,10 +41,16 @@ void OptionsController::tick(const long double ticks)
                     model.up();
                     break;
                 case SDLK_LEFT:
-                    model.previousLayout();
+                    if (model.getSelectedIndex() == 2)
+                    {
+                        model.previousLayout();
+                    }
                     break;
                 case SDLK_RIGHT:
-                    model.nextLayout();
+                    if (model.getSelectedIndex() == 2)
+                    {
+                        model.nextLayout();
+                    }
                     break;
                 case SDLK_RETURN:
                     switch (model.getSelectedIndex())
