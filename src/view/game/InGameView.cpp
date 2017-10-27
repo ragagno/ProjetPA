@@ -1,5 +1,6 @@
 #include <SDL2/SDL_ttf.h>
 #include "InGameView.h"
+#include "data/EntityRenderer.h"
 
 InGameView::InGameView()
 {
@@ -40,32 +41,36 @@ void InGameView::reset()
     }
 }
 
-void InGameView::preRender(bool paused, uint_fast32_t selectedIndex)
+void InGameView::preRenderPause(uint_fast32_t selectedIndex)
 {
-    this->paused = paused;
-    if (paused)
+    this->paused = true;
+    switch (selectedIndex)
     {
-        switch (selectedIndex)
-        {
-            case 0:
-                underlineRect = {resumeRect.x, resumeRect.y + this->resume->h - 8, this->resume->w - 6, 6};
-                break;
-            case 1:
-                underlineRect = {quitRect.x, quitRect.y + this->quit->h - 8, this->quit->w - 6, 6};
-                break;
-            default:
-                break;
-        }
+        case 0:
+            underlineRect = {resumeRect.x, resumeRect.y + this->resume->h - 8, this->resume->w - 6, 6};
+            break;
+        case 1:
+            underlineRect = {quitRect.x, quitRect.y + this->quit->h - 8, this->quit->w - 6, 6};
+            break;
+        default:
+            break;
     }
+}
+
+void InGameView::preRenderPlaying(Player *player)
+{
+    this->paused = false;
+    this->player = player;
 }
 
 void InGameView::render(SDL_Window *window)
 {
     SDL_Rect rect1 = {0, 0, WINDOW_WIDTH, WINDOW_HEIGHT};
-    SDL_Rect rect2 = {0, 0, WINDOW_WIDTH / 2, WINDOW_HEIGHT};
 
-    SDL_FillRect(SDL_GetWindowSurface(window), &rect1, 0x0000FF00);
-    SDL_FillRect(SDL_GetWindowSurface(window), &rect2, 0x00FF0000);
+    SDL_FillRect(SDL_GetWindowSurface(window), &rect1, 0x00000000);
+
+    EntityRenderer renderer;
+    renderer.render(window, player);
 
     if (paused)
     {

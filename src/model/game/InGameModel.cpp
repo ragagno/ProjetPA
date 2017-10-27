@@ -1,4 +1,5 @@
 #include "InGameModel.h"
+#include "../../view/View.h"
 
 InGameModel::InGameModel(Level **maps, uint_fast32_t *inGameLevel)
 {
@@ -10,6 +11,7 @@ InGameModel::InGameModel(Level **maps, uint_fast32_t *inGameLevel)
 
 void InGameModel::init()
 {
+    player.init(WINDOW_WIDTH / 2, 98);
 }
 
 uint_fast32_t InGameModel::getSelectedIndex() const
@@ -20,6 +22,11 @@ uint_fast32_t InGameModel::getSelectedIndex() const
 bool InGameModel::isPaused() const
 {
     return paused;
+}
+
+Player *InGameModel::getPlayer()
+{
+    return &player;
 }
 
 void InGameModel::pauseUp()

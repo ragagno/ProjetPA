@@ -154,7 +154,7 @@ void GameController::loop()
         currentTime = getTicks();
         elapsedTime = currentTime - lastTime;
         lastTime = currentTime;
-        lag += elapsedTime;
+        lag = elapsedTime;
 
         State tempState = state;
         controllers[state]->tick(lag / MS_PER_UPDATE);

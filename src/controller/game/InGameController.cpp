@@ -85,7 +85,33 @@ void InGameController::tick(long double ticks)
                 }
             }
         }
+
+        const Uint8 *state = SDL_GetKeyboardState(nullptr);
+
+        if (state[SDL_SCANCODE_UP])
+        {
+            model.getPlayer()->up(ticks);
+        }
+        if (state[SDL_SCANCODE_DOWN])
+        {
+            model.getPlayer()->down(ticks);
+        }
+        if (state[SDL_SCANCODE_LEFT])
+        {
+            model.getPlayer()->left(ticks);
+        }
+        if (state[SDL_SCANCODE_RIGHT])
+        {
+            model.getPlayer()->right(ticks);
+        }
     }
     model.update(ticks);
-    view.preRender(model.isPaused(), model.getSelectedIndex());
+    if (model.isPaused())
+    {
+        view.preRenderPause(model.getSelectedIndex());
+    }
+    else
+    {
+        view.preRenderPlaying(model.getPlayer());
+    }
 }
