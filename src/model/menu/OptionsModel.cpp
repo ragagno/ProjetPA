@@ -1,111 +1,294 @@
-#include <fstream>
 #include <iostream>
+#include <fstream>
 #include "OptionsModel.h"
 
 OptionsModel::OptionsModel()
 {
+    initialized = false;
     music = false;
     sound = false;
-    selectedLayout = 0;
+    layout = WASD;
     selectedIndex = 0;
 }
 
 void OptionsModel::init()
 {
-    std::ifstream fin("options");
-
-    if (fin.is_open())
+    if (initialized)
     {
-        music = fin.get() == 49;
-        sound = fin.get() == 49;
-        selectedLayout = static_cast<uint_fast32_t >(fin.get() % 48);
-        fin.close();
+        std::cerr << "[ERROR][" << __FILE__ << ":" << __LINE__ << "]Options model is already initialized.\n";
     }
     else
     {
-        std::cerr << "Error while loading the options.\n";
+        std::ifstream fin("options");
+
+        if (fin.is_open())
+        {
+            if (fin.eof())
+            {
+                std::cerr << "[ERROR][" << __FILE__ << ":" << __LINE__ << "]Invalid options file.\n";
+            }
+            else
+            {
+                music = fin.get() == 49;
+                if (fin.eof())
+                {
+                    std::cerr << "[ERROR][" << __FILE__ << ":" << __LINE__ << "]Invalid options file.\n";
+                }
+                else
+                {
+                    sound = fin.get() == 49;
+                    if (fin.eof())
+                    {
+                        std::cerr << "[ERROR][" << __FILE__ << ":" << __LINE__ << "]Invalid options file.\n";
+                    }
+                    else
+                    {
+                        switch (fin.get())
+                        {
+                            case 49:
+                                layout = ZQSD;
+                                break;
+                            case 50:
+                                layout = ARROWS;
+                                break;
+                            case 48:
+                            default:
+                                layout = WASD;
+                        }
+                    }
+                }
+            }
+            fin.close();
+        }
+        else
+        {
+            std::ofstream fout("options");
+
+            if (fout.is_open())
+            {
+                fout << "000";
+                fout.close();
+            }
+            else
+            {
+                std::cerr << "[ERROR][" << __FILE__ << ":" << __LINE__ << "]Error while creating options file.\n";
+            }
+        }
+
+        initialized = true;
+    }
+}
+
+OptionsModel::~OptionsModel()
+{
+
+}
+
+bool OptionsModel::isMusicOn() const
+{
+    if (initialized)
+    {
+        return music;
+    }
+    else
+    {
+        std::cerr << "[ERROR][" << __FILE__ << ":" << __LINE__ << "]Options model is not initialized.\n";
         exit(EXIT_FAILURE);
     }
+}
 
-    selectedIndex = 0;
+bool OptionsModel::isSoundon() const
+{
+    if (initialized)
+    {
+        return sound;
+    }
+    else
+    {
+        std::cerr << "[ERROR][" << __FILE__ << ":" << __LINE__ << "]Options model is not initialized.\n";
+        exit(EXIT_FAILURE);
+    }
+}
+
+OptionsModel::KeyboardLayout OptionsModel::getLayout() const
+{
+    if (initialized)
+    {
+        return layout;
+    }
+    else
+    {
+        std::cerr << "[ERROR][" << __FILE__ << ":" << __LINE__ << "]Options model is not initialized.\n";
+        exit(EXIT_FAILURE);
+    }
 }
 
 uint_fast32_t OptionsModel::getSelectedIndex() const
 {
-    return selectedIndex;
+    if (initialized)
+    {
+        return selectedIndex;
+    }
+    else
+    {
+        std::cerr << "[ERROR][" << __FILE__ << ":" << __LINE__ << "]Options model is not initialized.\n";
+        exit(EXIT_FAILURE);
+    }
 }
 
-uint_fast32_t OptionsModel::getSelectedLayout() const
+void OptionsModel::flipSound()
 {
-    return selectedLayout;
+    if (initialized)
+    {
+        sound = !sound;
+    }
+    else
+    {
+        std::cerr << "[ERROR][" << __FILE__ << ":" << __LINE__ << "]Options model is not initialized.\n";
+        exit(EXIT_FAILURE);
+    }
 }
 
-bool OptionsModel::isMusicOn()
+void OptionsModel::flipMusic()
 {
-    return music;
+    if (initialized)
+    {
+        music = !music;
+    }
+    else
+    {
+        std::cerr << "[ERROR][" << __FILE__ << ":" << __LINE__ << "]Options model is not initialized.\n";
+        exit(EXIT_FAILURE);
+    }
 }
 
-bool OptionsModel::isSoundOn()
+void OptionsModel::nextLayout()
 {
-    return sound;
+    if (initialized)
+    {
+        switch (layout)
+        {
+            case WASD:
+                layout = ZQSD;
+                break;
+            case ZQSD:
+                layout = ARROWS;
+                break;
+            case ARROWS:
+                layout = WASD;
+                break;
+            default:
+                std::cerr << "[ERROR][" << __FILE__ << ":" << __LINE__ << "]Unexpected layout: " << layout << "\n";
+                exit(EXIT_FAILURE);
+        }
+    }
+    else
+    {
+        std::cerr << "[ERROR][" << __FILE__ << ":" << __LINE__ << "]Options model is not initialized.\n";
+        exit(EXIT_FAILURE);
+    }
+}
+
+void OptionsModel::previousLayout()
+{
+    if (initialized)
+    {
+        switch (layout)
+        {
+            case WASD:
+                layout = ARROWS;
+                break;
+            case ZQSD:
+                layout = WASD;
+                break;
+            case ARROWS:
+                layout = ZQSD;
+            default:
+                std::cerr << "[ERROR][" << __FILE__ << ":" << __LINE__ << "]Unexpected layout: " << layout << "\n";
+                exit(EXIT_FAILURE);
+        }
+    }
+    else
+    {
+        std::cerr << "[ERROR][" << __FILE__ << ":" << __LINE__ << "]Options model is not initialized.\n";
+        exit(EXIT_FAILURE);
+    }
+}
+
+void OptionsModel::up()
+{
+    if (initialized)
+    {
+        if (selectedIndex == 0)
+        {
+            selectedIndex = 3;
+        }
+        else
+        {
+            selectedIndex--;
+        }
+    }
+    else
+    {
+        std::cerr << "[ERROR][" << __FILE__ << ":" << __LINE__ << "]Options model is not initialized.\n";
+        exit(EXIT_FAILURE);
+    }
+}
+
+void OptionsModel::down()
+{
+    if (initialized)
+    {
+        if (selectedIndex == 3)
+        {
+            selectedIndex = 0;
+        }
+        else
+        {
+            selectedIndex++;
+        }
+    }
+    else
+    {
+        std::cerr << "[ERROR][" << __FILE__ << ":" << __LINE__ << "]Options model is not initialized.\n";
+        exit(EXIT_FAILURE);
+    }
 }
 
 void OptionsModel::reset()
 {
-    if (resetable)
+    if (initialized)
     {
         selectedIndex = 0;
+    }
+    else
+    {
+        std::cerr << "[ERROR][" << __FILE__ << ":" << __LINE__ << "]Options model is not initialized.\n";
+        exit(EXIT_FAILURE);
+    }
+}
 
+void OptionsModel::saveOptions() const
+{
+    if (initialized)
+    {
         std::ofstream fout("options");
 
         if (fout.is_open())
         {
             fout << (music ? '1' : '0');
             fout << (sound ? '1' : '0');
-            fout << (selectedLayout == 0 ? '0' : selectedLayout == 1 ? '1' : '2');
+            fout << (layout == WASD ? '0' : (layout == ZQSD ? '1' : '2'));
             fout.close();
         }
         else
         {
-            std::cerr << "Error while saving the options.\n";
+            std::cerr << "[ERROR][" << __FILE__ << ":" << __LINE__ << "]Could not create option file.\n";
         }
     }
     else
     {
-        resetable = true;
+        std::cerr << "[ERROR][" << __FILE__ << ":" << __LINE__ << "]Options model is not initialized.\n";
+        exit(EXIT_FAILURE);
     }
-}
-
-void OptionsModel::update(long double)
-{
-}
-
-void OptionsModel::up()
-{
-    selectedIndex = selectedIndex == 0 ? 3 : selectedIndex - 1;
-}
-
-void OptionsModel::down()
-{
-    selectedIndex = selectedIndex == 3 ? 0 : selectedIndex + 1;
-}
-
-void OptionsModel::flipMusic()
-{
-    music = !music;
-}
-
-void OptionsModel::flipSound()
-{
-    sound = !sound;
-}
-
-void OptionsModel::nextLayout()
-{
-    selectedLayout = selectedLayout == 2 ? 0 : selectedLayout + 1;
-}
-
-void OptionsModel::previousLayout()
-{
-    selectedLayout = selectedLayout == 0 ? 2 : selectedLayout - 1;
 }

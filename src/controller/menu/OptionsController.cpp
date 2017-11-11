@@ -1,84 +1,172 @@
+#include <iostream>
+#include <SDL2/SDL_events.h>
 #include "OptionsController.h"
 
-OptionsController::OptionsController(GameController::State *state)
+OptionsController::OptionsController()
 {
-    this->state = state;
+    nextState = ProximaCentauri::OPTIONS;
+    initialized = false;
+
+    model = new OptionsModel;
+    view = new OptionsView;
 }
 
-void OptionsController::init()
+void OptionsController::init(SDL_Renderer *renderer)
 {
-    model.init();
-    view.init();
-}
-
-Model *OptionsController::getModel()
-{
-    return &model;
-}
-
-View *OptionsController::getView()
-{
-    return &view;
-}
-
-void OptionsController::tick(const long double ticks)
-{
-    SDL_Event event = {};
-    while (SDL_PollEvent(&event))
+    if (initialized)
     {
-        if (event.type == SDL_KEYDOWN)
+        std::cerr << "[ERROR][" << __FILE__ << ":" << __LINE__ << "]Options controller is already initialized.\n";
+    }
+    else
+    {
+        model->init();
+        view->init(renderer);
+
+        initialized = true;
+    }
+}
+
+OptionsController::~OptionsController()
+{
+    delete model;
+    delete view;
+}
+
+void OptionsController::tick(long double)
+{
+    if (initialized)
+    {
+        SDL_Event event{};
+
+        while (SDL_PollEvent(&event))
         {
-            if (event.key.repeat)
+            if (event.type == SDL_KEYDOWN)
             {
-                continue;
-            }
-            switch (event.key.keysym.sym)
-            {
-                case SDLK_DOWN:
-                    model.down();
-                    break;
-                case SDLK_UP:
-                    model.up();
-                    break;
-                case SDLK_LEFT:
-                    if (model.getSelectedIndex() == 2)
-                    {
-                        model.previousLayout();
-                    }
-                    break;
-                case SDLK_RIGHT:
-                    if (model.getSelectedIndex() == 2)
-                    {
-                        model.nextLayout();
-                    }
-                    break;
-                case SDLK_RETURN:
-                    switch (model.getSelectedIndex())
-                    {
-                        case 0:
-                            model.flipMusic();
-                            break;
-                        case 1:
-                            model.flipSound();
-                            break;
-                        case 2:
-                            model.nextLayout();
-                            break;
-                        case 3:
-                            *state = GameController::TITLE_SCREEN;
-                            break;
-                        default:
-                            break;
-                    }
-                    break;
-                case SDLK_ESCAPE:
-                    *state = GameController::TITLE_SCREEN;
-                    break;
-                default:
-                    break;
+                switch (event.key.keysym.sym)
+                {
+                    case SDLK_UP:
+                        if (event.key.repeat)
+                        {
+                            continue;
+                        }
+                        model->up();
+                        break;
+                    case SDLK_DOWN:
+                        if (event.key.repeat)
+                        {
+                            continue;
+                        }
+                        model->down();
+                        break;
+                    case SDLK_LEFT:
+                        if (event.key.repeat)
+                        {
+                            continue;
+                        }
+                        switch (model->getSelectedIndex())
+                        {
+                            case 0:
+                                model->flipMusic();
+                                break;
+                            case 1:
+                                model->flipSound();
+                                break;
+                            case 2:
+                                model->previousLayout();
+                                break;
+                            case 3:
+                                // DO NOTHING
+                                break;
+                            default:
+                                std::cerr << "[ERROR][" << __FILE__ << ":" << __LINE__ << "]Unexpected selected index: " << model->getSelectedIndex() << "\n";
+                                exit(EXIT_FAILURE);
+                        }
+                        break;
+                    case SDLK_RIGHT:
+                        if (event.key.repeat)
+                        {
+                            continue;
+                        }
+                        switch (model->getSelectedIndex())
+                        {
+                            case 0:
+                                model->flipMusic();
+                                break;
+                            case 1:
+                                model->flipSound();
+                                break;
+                            case 2:
+                                model->nextLayout();
+                                break;
+                            case 3:
+                                // DO NOTHING
+                                break;
+                            default:
+                                std::cerr << "[ERROR][" << __FILE__ << ":" << __LINE__ << "]Unexpected index: " << model->getSelectedIndex() << "\n";
+                                exit(EXIT_FAILURE);
+                        }
+                        break;
+                    case SDLK_RETURN:
+                        if (event.key.repeat)
+                        {
+                            continue;
+                        }
+                        switch (model->getSelectedIndex())
+                        {
+                            case 0:
+                                model->flipMusic();
+                                break;
+                            case 1:
+                                model->flipSound();
+                                break;
+                            case 2:
+                                model->nextLayout();
+                                break;
+                            case 3:
+                                model->saveOptions();
+                                nextState = ProximaCentauri::TITLE_SCREEN;
+                                break;
+                            default:
+                                std::cerr << "[ERROR][" << __FILE__ << ":" << __LINE__ << "]Unexpected index: " << model->getSelectedIndex() << "\n";
+                                exit(EXIT_FAILURE);
+                        }
+                        break;
+                    case SDLK_ESCAPE:
+                        if (event.key.repeat)
+                        {
+                            continue;
+                        }
+                        model->saveOptions();
+                        nextState = ProximaCentauri::TITLE_SCREEN;
+                    default:
+                        break;
+                }
             }
         }
     }
-    view.preRender(model.isMusicOn(), model.isSoundOn(), model.getSelectedIndex(), model.getSelectedLayout());
-    model.update(ticks);
+    else
+    {
+        std::cerr << "[ERROR][" << __FILE__ << ":" << __LINE__ << "]Options controller is not initialized.\n";
+        exit(EXIT_FAILURE);
+    }
+}
+
+void OptionsController::render()
+{
+    if (initialized)
+    {
+        view->render(model->getSelectedIndex(), model->isMusicOn(), model->isSoundon(), model->getLayout());
+        if (nextState != ProximaCentauri::OPTIONS)
+        {
+            ProximaCentauri::getInstance()->setState(nextState);
+            nextState = ProximaCentauri::OPTIONS;
+            model->reset();
+            view->reset();
+        }
+    }
+    else
+    {
+        std::cerr << "[ERROR][" << __FILE__ << ":" << __LINE__ << "]Options controller is not initialized.\n";
+        exit(EXIT_FAILURE);
+    }
 }

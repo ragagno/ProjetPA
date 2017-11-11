@@ -1,17 +1,17 @@
 #include <iostream>
-#include "Controller/GameController.h"
+#include <fstream>
+#include "ProximaCentauri.h"
 
 int main(int argc, char *argv[])
 {
-    for (int i = 1; i < argc; i++)
+    for (int_fast32_t i = 1; i < argc; i++)
     {
-        std::cout << "Unknown parameter " << argv[i] << std::endl;
+        std::cerr << "Unknown parameter " << argv[i] << std::endl;
     }
 
-    GameController g;
-    g.init();
-    g.start();
-    g.shutdown();
+    ProximaCentauri::getInstance()->init();
+    ProximaCentauri::getInstance()->start();
+    ProximaCentauri::getInstance()->shutdown();
 
     return EXIT_SUCCESS;
 }

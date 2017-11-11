@@ -1,41 +1,39 @@
 #ifndef PROXIMACENTAURI_OPTIONSVIEW_H
 #define PROXIMACENTAURI_OPTIONSVIEW_H
 
+#include <SDL2/SDL_render.h>
 #include "MenuView.h"
+#include "../../model/menu/OptionsModel.h"
 
-class OptionsView : public MenuView
+class OptionsView : private MenuView
 {
 private:
-    uint_fast32_t selectedLayout;
-    bool musicState;
-    bool soundState;
-    SDL_Rect backgroundRect;
-    SDL_Rect musicRect;
-    SDL_Rect musicStateRect;
-    SDL_Rect soundRect;
-    SDL_Rect soundStateRect;
-    SDL_Rect layoutRect;
-    SDL_Rect backRect;
-    SDL_Rect underlineRect;
-    SDL_Rect WASDRect;
-    SDL_Rect ZQSDRect;
-    SDL_Rect arrowsSRect;
-    SDL_Surface *music;
-    SDL_Surface *sound;
-    SDL_Surface *layout;
-    SDL_Surface *back;
-    SDL_Surface *on;
-    SDL_Surface *off;
-    SDL_Surface *WASD;
-    SDL_Surface *ZQSD;
-    SDL_Surface *arrows;
+    bool initialized;
+    SDL_Rect musicSrcRect;
+    SDL_Rect soundSrcRect;
+    SDL_Rect layoutSrcRect;
+    SDL_Rect backSrcRect;
+    SDL_Rect backDstRect;
+    SDL_Rect onSrcRect;
+    SDL_Rect offSrcRect;
+    SDL_Rect WASDSrcRect;
+    SDL_Rect ZQSDSrcRect;
+    SDL_Rect ARROWSSrcRect;
+    SDL_Texture *music;
+    SDL_Texture *sound;
+    SDL_Texture *layout;
+    SDL_Texture *back;
+    SDL_Texture *on;
+    SDL_Texture *off;
+    SDL_Texture *WASD;
+    SDL_Texture *ZQSD;
+    SDL_Texture *ARROWS;
 public:
     OptionsView();
-    void init() override;
+    void init(SDL_Renderer *renderer) override;
     ~OptionsView() override;
-    void reset() override;
-    void preRender(bool music, bool sound, unsigned int selectedIndex, uint_fast32_t selectedLayout);
-    void render(SDL_Window *window) override;
+    void render(uint_fast32_t selectedIndex, bool music, bool sound, OptionsModel::KeyboardLayout layout) const;
+    void reset() const override;
 };
 
 #endif //PROXIMACENTAURI_OPTIONSVIEW_H

@@ -1,26 +1,28 @@
 #ifndef PROXIMACENTAURI_TITLESCREENVIEW_H
 #define PROXIMACENTAURI_TITLESCREENVIEW_H
 
+#include <SDL2/SDL_render.h>
 #include "MenuView.h"
 
-class TitleScreenView : public MenuView
+class TitleScreenView : private MenuView
 {
 private:
-    SDL_Rect backgroundRect;
-    SDL_Rect startGameRect;
-    SDL_Rect optionsRect;
-    SDL_Rect quitRect;
-    SDL_Rect underlineRect;
-    SDL_Surface *startGame;
-    SDL_Surface *options;
-    SDL_Surface *quit;
+    bool initialized;
+    SDL_Rect mapSelectionSrcRect;
+    SDL_Rect mapSelectionDstRect;
+    SDL_Rect optionsSrcRect;
+    SDL_Rect optionsDstRect;
+    SDL_Rect quitSrcRect;
+    SDL_Rect quitDstRect;
+    SDL_Texture *mapSelection;
+    SDL_Texture *options;
+    SDL_Texture *quit;
 public:
     TitleScreenView();
-    void init() override;
+    void init(SDL_Renderer *renderer) override;
     ~TitleScreenView() override;
-    void reset() override;
-    void preRender(uint_fast32_t selectedIndex);
-    void render(SDL_Window *window) override;
+    void render(uint_fast32_t selectedIndex) const;
+    void reset() const override;
 };
 
 #endif //PROXIMACENTAURI_TITLESCREENVIEW_H

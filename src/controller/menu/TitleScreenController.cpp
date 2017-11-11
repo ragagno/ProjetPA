@@ -1,69 +1,111 @@
-#include <SDL2/SDL_keycode.h>
+#include <iostream>
 #include <SDL2/SDL_events.h>
 #include "TitleScreenController.h"
 
-TitleScreenController::TitleScreenController(bool *looping, GameController::State *state)
+TitleScreenController::TitleScreenController()
 {
-    this->looping = looping;
-    this->state = state;
+    nextState = ProximaCentauri::TITLE_SCREEN;
+    initialized = false;
+
+    model = new TitleScreenModel;
+    view = new TitleScreenView;
 }
 
-void TitleScreenController::init()
+void TitleScreenController::init(SDL_Renderer *renderer)
 {
-    model.init();
-    view.init();
-}
-
-Model *TitleScreenController::getModel()
-{
-    return &model;
-}
-
-View *TitleScreenController::getView()
-{
-    return &view;
-}
-
-void TitleScreenController::tick(long double ticks)
-{
-    SDL_Event event = {};
-    while (SDL_PollEvent(&event))
+    if (initialized)
     {
-        if (event.type == SDL_KEYDOWN)
+        std::cerr << "[ERROR][" << __FILE__ << ":" << __LINE__ << "]TitleScreen controller is already initialized.\n";
+    }
+    else
+    {
+        model->init();
+        view->init(renderer);
+
+        initialized = true;
+    }
+}
+
+TitleScreenController::~TitleScreenController()
+{
+    delete model;
+    delete view;
+}
+
+void TitleScreenController::tick(long double)
+{
+    if (initialized)
+    {
+        SDL_Event event{};
+
+        while (SDL_PollEvent(&event))
         {
-            if (event.key.repeat)
+            if (event.type == SDL_KEYDOWN)
             {
-                continue;
-            }
-            switch (event.key.keysym.sym)
-            {
-                case SDLK_DOWN:
-                    model.down();
-                    break;
-                case SDLK_UP:
-                    model.up();
-                    break;
-                case SDLK_RETURN:
-                    switch (model.getSelectedIndex())
-                    {
-                        case 0:
-                            *state = GameController::START_GAME;
-                            break;
-                        case 1:
-                            model.setResetable(false);
-                            *state = GameController::OPTIONS;
-                            break;
-                        case 2:
-                            *looping = false;
-                            break;
-                        default:
-                            break;
-                    }
-                default:
-                    break;
+                switch (event.key.keysym.sym)
+                {
+                    case SDLK_UP:
+                        if (event.key.repeat)
+                        {
+                            continue;
+                        }
+                        model->up();
+                        break;
+                    case SDLK_DOWN:
+                        if (event.key.repeat)
+                        {
+                            continue;
+                        }
+                        model->down();
+                        break;
+                    case SDLK_RETURN:
+                        if (event.key.repeat)
+                        {
+                            continue;
+                        }
+                        switch (model->getSelectedIndex())
+                        {
+                            case 0:
+                                nextState = ProximaCentauri::MAP_SELECTION;
+                                break;
+                            case 1:
+                                nextState = ProximaCentauri::OPTIONS;
+                                break;
+                            case 2:
+                                ProximaCentauri::getInstance()->stopGame();
+                                break;
+                            default:
+                                std::cerr << "[ERROR][" << __FILE__ << ":" << __LINE__ << "]Unexpected index: " << model->getSelectedIndex() << "\n";
+                                exit(EXIT_FAILURE);
+                        }
+                    default:
+                        break;
+                }
             }
         }
     }
-    model.update(ticks);
-    view.preRender(model.getSelectedIndex());
+    else
+    {
+        std::cerr << "[ERROR][" << __FILE__ << ":" << __LINE__ << "]TitleScreen controller is not initialized.\n";
+        exit(EXIT_FAILURE);
+    }
+}
+
+void TitleScreenController::render()
+{
+    if (initialized)
+    {
+        view->render(model->getSelectedIndex());
+        if (nextState != ProximaCentauri::TITLE_SCREEN)
+        {
+            ProximaCentauri::getInstance()->setState(nextState);
+            nextState = ProximaCentauri::TITLE_SCREEN;
+            view->reset();
+        }
+    }
+    else
+    {
+        std::cerr << "[ERROR][" << __FILE__ << ":" << __LINE__ << "]TitleScreen controller is not initialized.\n";
+        exit(EXIT_FAILURE);
+    }
 }

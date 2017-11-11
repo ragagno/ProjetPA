@@ -1,77 +1,118 @@
+#include <iostream>
 #include <SDL2/SDL_ttf.h>
 #include "TitleScreenView.h"
+#include "../../ProximaCentauri.h"
 
 TitleScreenView::TitleScreenView()
 {
-    startGame = nullptr;
+    initialized = false;
+    mapSelection = nullptr;
     options = nullptr;
     quit = nullptr;
 }
 
-void TitleScreenView::init()
+void TitleScreenView::init(SDL_Renderer *renderer)
 {
-    MenuView::init();
+    if (initialized)
+    {
+        std::cerr << "[ERROR][" << __FILE__ << ":" << __LINE__ << "]TitleScreen view is already initialized.\n";
+    }
+    else
+    {
+        MenuView::init(renderer);
 
-    SDL_Color black = {0, 0, 0, 0};
-    TTF_Font *munroMedium = TTF_OpenFont("resources/munro.ttf", 64);
+        TTF_Font *munro = TTF_OpenFont("resources/munro.ttf", 64);
+        if (munro == nullptr)
+        {
+            std::cerr << "[ERROR][" << __FILE__ << ":" << __LINE__ << "]Resource munro.ttf could not be loaded.\n";
+            exit(EXIT_FAILURE);
+        }
 
-    startGame = TTF_RenderUTF8_Blended(munroMedium, "START GAME", black);
-    options = TTF_RenderUTF8_Blended(munroMedium, "OPTIONS", black);
-    quit = TTF_RenderUTF8_Blended(munroMedium, "QUIT", black);
+        SDL_Surface *mapSelectionSurface = TTF_RenderText_Blended(munro, "START GAME", SDL_Color {0, 0, 0, 255});
+        SDL_Surface *optionsSurface = TTF_RenderText_Blended(munro, "OPTIONS", SDL_Color {0, 0, 0, 255});
+        SDL_Surface *quitSurface = TTF_RenderText_Blended(munro, "QUIT", SDL_Color {0, 0, 0, 255});
 
-    TTF_CloseFont(munroMedium);
+        mapSelection = SDL_CreateTextureFromSurface(renderer, mapSelectionSurface);
+        options = SDL_CreateTextureFromSurface(renderer, optionsSurface);
+        quit = SDL_CreateTextureFromSurface(renderer, quitSurface);
 
-    backgroundRect = {0, WINDOW_HEIGHT / 2, WINDOW_WIDTH, WINDOW_HEIGHT / 2};
-    startGameRect = {(WINDOW_WIDTH - startGame->w) / 2 + 3, 5 * WINDOW_HEIGHT / 8 - startGame->h / 2 + 5, 0, 0};
-    optionsRect = {(WINDOW_WIDTH - options->w) / 2 + 3, 3 * WINDOW_HEIGHT / 4 - options->h / 2 + 5, 0, 0};
-    quitRect = {(WINDOW_WIDTH - quit->w) / 2 + 3, 7 * WINDOW_HEIGHT / 8 - quit->h / 2 + 5, 0, 0};
+        mapSelectionSrcRect = {SDL_ttfDumbLeftMargin_64, SDL_ttfDumbTopMargin_64, mapSelectionSurface->w - static_cast<int_fast32_t>(SDL_ttfDumbRightMargin_64 + SDL_ttfDumbLeftMargin_64), mapSelectionSurface->h - static_cast<int_fast32_t>(SDL_ttfDumbTopMargin_64 + SDL_ttfDumbBottomMargin_64)};
+        mapSelectionDstRect = {static_cast<int_fast32_t>(WINDOW_WIDTH - mapSelectionSrcRect.w) / 2, static_cast<int_fast32_t>(5 * WINDOW_HEIGHT / 8) - mapSelectionSrcRect.h / 2, mapSelectionSrcRect.w, mapSelectionSrcRect.h};
+
+        optionsSrcRect = {SDL_ttfDumbLeftMargin_64, SDL_ttfDumbTopMargin_64, optionsSurface->w - static_cast<int_fast32_t>(SDL_ttfDumbRightMargin_64 + SDL_ttfDumbLeftMargin_64), optionsSurface->h - static_cast<int_fast32_t>(SDL_ttfDumbTopMargin_64 + SDL_ttfDumbBottomMargin_64)};
+        optionsDstRect = {static_cast<int_fast32_t>(WINDOW_WIDTH - optionsSrcRect.w) / 2, static_cast<int_fast32_t>(3 * WINDOW_HEIGHT / 4) - optionsSrcRect.h / 2, optionsSrcRect.w, optionsSrcRect.h};
+
+        quitSrcRect = {SDL_ttfDumbLeftMargin_64, SDL_ttfDumbTopMargin_64, quitSurface->w - static_cast<int_fast32_t>(SDL_ttfDumbRightMargin_64 + SDL_ttfDumbLeftMargin_64), quitSurface->h - static_cast<int_fast32_t>(SDL_ttfDumbTopMargin_64 + SDL_ttfDumbBottomMargin_64)};
+        quitDstRect = {static_cast<int_fast32_t>(WINDOW_WIDTH - quitSrcRect.w) / 2, static_cast<int_fast32_t>(7 * WINDOW_HEIGHT / 8) - quitSrcRect.h / 2, quitSrcRect.w, quitSrcRect.h};
+
+        SDL_FreeSurface(mapSelectionSurface);
+        SDL_FreeSurface(optionsSurface);
+        SDL_FreeSurface(quitSurface);
+
+        TTF_CloseFont(munro);
+
+        initialized = true;
+    }
 }
 
 TitleScreenView::~TitleScreenView()
 {
-    SDL_free(startGame);
-    SDL_free(options);
-    SDL_free(quit);
+    SDL_DestroyTexture(mapSelection);
+    SDL_DestroyTexture(options);
+    SDL_DestroyTexture(quit);
 }
 
-void TitleScreenView::preRender(uint_fast32_t selectedIndex)
+void TitleScreenView::render(uint_fast32_t selectedIndex) const
 {
-    switch (selectedIndex)
+    if (initialized)
     {
-        case 0:
-            underlineRect = {startGameRect.x, startGameRect.y + startGameRect.h - 8, startGameRect.w - 6, 6};
-            break;
-        case 1:
-            underlineRect = {optionsRect.x, optionsRect.y + optionsRect.h - 8, optionsRect.w - 6, 6};
-            break;
-        case 2:
-            underlineRect = {quitRect.x, quitRect.y + quitRect.h - 8, quitRect.w - 6, 6};
-            break;
-        default:
-            break;
+        MenuView::render();
+
+        SDL_Rect backgroundRect{MENU_SPACEING, WINDOW_HEIGHT / 2 + MENU_SPACEING, WINDOW_WIDTH - MENU_SPACEING * 2, WINDOW_HEIGHT / 2 - MENU_SPACEING * 2};
+
+        SDL_SetRenderDrawColor(renderer, 255, 255, 255, 127);
+
+        SDL_RenderFillRect(renderer, &backgroundRect);
+
+        SDL_RenderCopy(renderer, mapSelection, &mapSelectionSrcRect, &mapSelectionDstRect);
+        SDL_RenderCopy(renderer, options, &optionsSrcRect, &optionsDstRect);
+        SDL_RenderCopy(renderer, quit, &quitSrcRect, &quitDstRect);
+
+        SDL_Rect underlineRect = {};
+        switch (selectedIndex)
+        {
+            case 0:
+                underlineRect = {mapSelectionDstRect.x, mapSelectionDstRect.y + mapSelectionDstRect.h + static_cast<int_fast32_t>(UNDERLINE_SPACING), mapSelectionDstRect.w, UNDERLINE_THICKNESS};
+                break;
+            case 1:
+                underlineRect = {optionsDstRect.x, optionsDstRect.y + optionsDstRect.h + static_cast<int_fast32_t>(UNDERLINE_SPACING), optionsDstRect.w, UNDERLINE_THICKNESS};
+                break;
+            case 2:
+                underlineRect = {quitDstRect.x, quitDstRect.y + quitDstRect.h + static_cast<int_fast32_t>(UNDERLINE_SPACING), quitDstRect.w, UNDERLINE_THICKNESS};
+                break;
+            default:
+                std::cerr << "[ERROR][" << __FILE__ << ":" << __LINE__ << "]Unexpected index: " << selectedIndex << "\n";
+                exit(EXIT_FAILURE);
+        }
+        SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
+        SDL_RenderFillRect(renderer, &underlineRect);
+    }
+    else
+    {
+        std::cerr << "[ERROR][" << __FILE__ << ":" << __LINE__ << "]TitleScreen view is not initialized.\n";
+        exit(EXIT_FAILURE);
     }
 }
 
-void TitleScreenView::reset()
+void TitleScreenView::reset() const
 {
-    if (resetable)
+    if (initialized)
     {
         MenuView::reset();
     }
     else
     {
-        resetable = true;
+        std::cerr << "[ERROR][" << __FILE__ << ":" << __LINE__ << "]TitleScreen view is not initialized.\n";
+        exit(EXIT_FAILURE);
     }
-}
-
-void TitleScreenView::render(SDL_Window *window)
-{
-    SDL_FillRect(SDL_GetWindowSurface(window), &backgroundRect, 0x00FFFFFF);
-    SDL_FillRect(SDL_GetWindowSurface(window), &underlineRect, 0x00000000);
-
-    SDL_BlitSurface(startGame, nullptr, SDL_GetWindowSurface(window), &startGameRect);
-    SDL_BlitSurface(options, nullptr, SDL_GetWindowSurface(window), &optionsRect);
-    SDL_BlitSurface(quit, nullptr, SDL_GetWindowSurface(window), &quitRect);
-
-    MenuView::render(window);
 }

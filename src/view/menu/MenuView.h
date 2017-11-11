@@ -1,26 +1,29 @@
 #ifndef PROXIMACENTAURI_MENUVIEW_H
 #define PROXIMACENTAURI_MENUVIEW_H
 
-#include "../View.h"
+#include <SDL2/SDL_render.h>
 
-const auto VERSION = "0.0.1";
-const auto AUTHOR = "RAGAGNO";
-
-class MenuView : public View
+class MenuView
 {
-private:
-    SDL_Surface *proxima;
-    SDL_Surface *cent;
-    SDL_Surface *spaceship;
-    SDL_Surface *uri;
-    SDL_Surface *version;
-    SDL_Surface *author;
-public:
+protected:
+    mutable int_fast32_t spriteIndex;
+    SDL_Rect proximaSrcRect;
+    SDL_Rect proximaDstRect;
+    SDL_Rect centSrcRect;
+    SDL_Rect centDstRect;
+    SDL_Rect uriSrcRect;
+    SDL_Rect uriDstRect;
+    SDL_Rect spaceshipDstRect;
+    SDL_Renderer *renderer;
+    SDL_Texture *proxima;
+    SDL_Texture *cent;
+    SDL_Texture *uri;
+protected:
     MenuView();
-    void init() override;
-    ~MenuView() override;
-    void reset() override;
-    void render(SDL_Window *window) override;
+    virtual void init(SDL_Renderer *renderer);
+    virtual ~MenuView();
+    void render() const;
+    virtual void reset() const;
 };
 
 #endif //PROXIMACENTAURI_MENUVIEW_H

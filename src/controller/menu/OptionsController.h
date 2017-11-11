@@ -2,23 +2,23 @@
 #define PROXIMACENTAURI_OPTIONSCONTROLLER_H
 
 #include "../Controller.h"
-#include "../GameController.h"
 #include "../../model/menu/OptionsModel.h"
 #include "../../view/menu/OptionsView.h"
+#include "../../ProximaCentauri.h"
 
 class OptionsController : public Controller
 {
 private:
-    OptionsModel model;
-    OptionsView view;
-    GameController::State *state;
+    ProximaCentauri::GameState nextState;
+    bool initialized;
+    OptionsModel *model;
+    OptionsView *view;
 public:
-    explicit OptionsController(GameController::State *state);
-    void init() override;
-    ~OptionsController() override = default;
-    Model *getModel() override;
-    View *getView() override;
-    void tick(long double ticks) override;
+    OptionsController();
+    void init(SDL_Renderer *renderer) override;
+    ~OptionsController() override;
+    void tick(long double) override;
+    void render() override;
 };
 
 #endif //PROXIMACENTAURI_OPTIONSCONTROLLER_H
