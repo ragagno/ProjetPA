@@ -55,6 +55,7 @@ void GameModel::flipPause()
 {
     if (initialized)
     {
+        selectedPauseIndex = 0;
         paused = !paused;
     }
     else
