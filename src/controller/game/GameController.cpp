@@ -32,7 +32,7 @@ GameController::GameController::~GameController()
     delete view;
 }
 
-void GameController::GameController::tick(long double)
+void GameController::GameController::tick(long double lag)
 {
     if (initialized)
     {
@@ -98,6 +98,29 @@ void GameController::GameController::tick(long double)
                 }
             }
         }
+
+        if (!model->isPaused())
+        {
+            const Uint8 *keys = SDL_GetKeyboardState(nullptr);
+
+            if ((keys[ProximaCentauri::getInstance()->getMoveUpKey()] || keys[ProximaCentauri::getInstance()->getMoveDownKey()] || keys[ProximaCentauri::getInstance()->getMoveLeftKey()] || keys[ProximaCentauri::getInstance()->getMoveRightKey()]) && !((keys[ProximaCentauri::getInstance()->getMoveUpKey()] && keys[ProximaCentauri::getInstance()->getMoveDownKey()]) || (keys[ProximaCentauri::getInstance()->getMoveLeftKey()] && keys[ProximaCentauri::getInstance()->getMoveRightKey()])))
+            {
+                model->getPlayer().accelerate();
+                lastUp = static_cast<bool>(keys[ProximaCentauri::getInstance()->getMoveUpKey()]);
+                lastDown = static_cast<bool>(keys[ProximaCentauri::getInstance()->getMoveDownKey()]);
+                lastLeft = static_cast<bool>(keys[ProximaCentauri::getInstance()->getMoveLeftKey()]);
+                lastRight = static_cast<bool>(keys[ProximaCentauri::getInstance()->getMoveRightKey()]);
+                model->move(lastUp, lastDown, lastLeft, lastRight, lag);
+            }
+            else
+            {
+                if (model->getPlayer().getSpeed() != 0)
+                {
+                    model->move(lastUp, lastDown, lastLeft, lastRight, lag);
+                    model->getPlayer().deccelerate();
+                }
+            }
+        }
     }
     else
     {
@@ -110,7 +133,7 @@ void GameController::GameController::render()
 {
     if (initialized)
     {
-        view->render();
+        view->render(model->getPlayer());
         if (model->isPaused())
         {
             view->renderPause(model->getSelectedIndex());
@@ -120,6 +143,7 @@ void GameController::GameController::render()
             ProximaCentauri::getInstance()->setState(nextState);
             nextState = ProximaCentauri::IN_GAME;
             view->reset();
+            model->reset();
         }
     }
     else

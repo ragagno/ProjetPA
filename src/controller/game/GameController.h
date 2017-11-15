@@ -11,13 +11,17 @@ class GameController : public Controller
 private:
     ProximaCentauri::GameState nextState;
     bool initialized;
+    bool lastUp;
+    bool lastDown;
+    bool lastLeft;
+    bool lastRight;
     GameModel *model;
     GameView *view;
 public:
     GameController();
     void init(SDL_Renderer *renderer) override;
     ~GameController() override;
-    void tick(long double) override;
+    void tick(long double lag) override;
     void render() override;
 };
 

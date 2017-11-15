@@ -283,6 +283,95 @@ SDL_Texture *ProximaCentauri::getDownArrow() const
     }
 }
 
+Uint8 ProximaCentauri::getMoveUpKey()
+{
+    if (initialized)
+    {
+        return upKey;
+    }
+    else
+    {
+        std::cerr << "[ERROR][" << __FILE__ << ":" << __LINE__ << "]Game is not initialized.\n";
+        exit(EXIT_FAILURE);
+    }
+}
+
+Uint8 ProximaCentauri::getMoveDownKey()
+{
+    if (initialized)
+    {
+        return downKey;
+    }
+    else
+    {
+        std::cerr << "[ERROR][" << __FILE__ << ":" << __LINE__ << "]Game is not initialized.\n";
+        exit(EXIT_FAILURE);
+    }
+}
+
+Uint8 ProximaCentauri::getMoveLeftKey()
+{
+    if (initialized)
+    {
+        return leftKey;
+    }
+    else
+    {
+        std::cerr << "[ERROR][" << __FILE__ << ":" << __LINE__ << "]Game is not initialized.\n";
+        exit(EXIT_FAILURE);
+    }
+}
+
+Uint8 ProximaCentauri::getMoveRightKey()
+{
+    if (initialized)
+    {
+        return rightKey;
+    }
+    else
+    {
+        std::cerr << "[ERROR][" << __FILE__ << ":" << __LINE__ << "]Game is not initialized.\n";
+        exit(EXIT_FAILURE);
+    }
+}
+
+void ProximaCentauri::setLayout(OptionsModel::KeyboardLayout layout)
+{
+    if (initialized)
+    {
+        switch (layout)
+        {
+
+            case OptionsModel::WASD:
+                upKey = SDL_SCANCODE_W;
+                downKey = SDL_SCANCODE_S;
+                leftKey = SDL_SCANCODE_A;
+                rightKey = SDL_SCANCODE_D;
+                break;
+            case OptionsModel::ZQSD:
+                upKey = SDL_SCANCODE_W;
+                downKey = SDL_SCANCODE_S;
+                leftKey = SDL_SCANCODE_A;
+                rightKey = SDL_SCANCODE_D;
+                break;
+            case OptionsModel::ARROWS:
+                upKey = SDL_SCANCODE_UP;
+                downKey = SDL_SCANCODE_DOWN;
+                leftKey = SDL_SCANCODE_LEFT;
+                rightKey = SDL_SCANCODE_RIGHT;
+                break;
+            default:
+                std::cerr << "[ERROR][" << __FILE__ << ":" << __LINE__ << "]Unexpected layout: " << layout << "\n";
+                exit(EXIT_FAILURE);
+        }
+    }
+    else
+    {
+        std::cerr << "[ERROR][" << __FILE__ << ":" << __LINE__ << "]Game is not initialized.\n";
+        exit(EXIT_FAILURE);
+    }
+}
+
 void ProximaCentauri::setPaused(bool paused)
 {
     if (initialized)
@@ -395,7 +484,7 @@ void ProximaCentauri::loop()
         elapsedTime = currentTime - lastTime;
         lastTime = currentTime;
 
-        controllers[state]->tick(elapsedTime / TARGET_MS_PER_TICK);
+        controllers[state]->tick(static_cast<long double>(elapsedTime) / static_cast<long double>(TARGET_MS_PER_TICK));
 
         if (getTicks() - lastRenderTime < TARGET_MS_PER_FRAME)
         {

@@ -11,9 +11,10 @@ _MAP_SELECTION = view/menu/MapSelectionView.cpp model/menu/MapSelectionModel.cpp
 _OPTIONS = view/menu/OptionsView.cpp model/menu/OptionsModel.cpp controller/menu/OptionsController.cpp
 _GAME = view/game/GameView.cpp model/game/GameModel.cpp controller/game/GameController.cpp
 _MAP = model/game/map/Map.cpp
+_ENTITY = model/game/entity/Player.cpp
 _OTHERS = ProximaCentauri.cpp view/menu/MenuView.cpp
 
-SOURCE = main.cpp ${_OTHERS} ${_MAP} ${_TITLE_SCREEN} ${_MAP_SELECTION} ${_OPTIONS} ${_GAME}
+SOURCE = main.cpp ${_OTHERS} ${_MAP} ${_TITLE_SCREEN} ${_MAP_SELECTION} ${_OPTIONS} ${_ENTITY} ${_GAME}
 LIBS = mingw32 SDL2main SDL2 SDL2_ttf SDL2_image
 
 #----------------

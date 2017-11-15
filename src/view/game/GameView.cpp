@@ -49,7 +49,7 @@ GameView::~GameView()
 
 }
 
-void GameView::render() const
+void GameView::render(Player player) const
 {
     if (initialized)
     {
@@ -69,6 +69,10 @@ void GameView::render() const
             SDL_Rect backgroundDstRect2{0, 0, WINDOW_WIDTH, backgroundSrcRect2.h};
             SDL_RenderCopy(renderer, ProximaCentauri::getInstance()->getStarBackground(), &backgroundSrcRect2, &backgroundDstRect2);
         }
+
+        SDL_Rect playerSrcRect{0, 0, SPACESHIP_WIDTH, SPACESHIP_HEIGHT};
+        SDL_Rect playerDstRect{player.getX(), player.getY(), SPACESHIP_WIDTH, SPACESHIP_HEIGHT};
+        SDL_RenderCopy(renderer, ProximaCentauri::getInstance()->getSpaceshipSprite(), &playerSrcRect, &playerDstRect);
     }
     else
     {

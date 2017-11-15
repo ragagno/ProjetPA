@@ -1,6 +1,7 @@
 #include <iostream>
 #include <fstream>
 #include "OptionsModel.h"
+#include "../../ProximaCentauri.h"
 
 OptionsModel::OptionsModel()
 {
@@ -74,6 +75,8 @@ void OptionsModel::init()
                 std::cerr << "[ERROR][" << __FILE__ << ":" << __LINE__ << "]Error while creating options file.\n";
             }
         }
+
+        ProximaCentauri::getInstance()->setLayout(layout);
 
         initialized = true;
     }
@@ -181,6 +184,7 @@ void OptionsModel::nextLayout()
                 std::cerr << "[ERROR][" << __FILE__ << ":" << __LINE__ << "]Unexpected layout: " << layout << "\n";
                 exit(EXIT_FAILURE);
         }
+        ProximaCentauri::getInstance()->setLayout(layout);
     }
     else
     {
@@ -207,6 +211,7 @@ void OptionsModel::previousLayout()
                 std::cerr << "[ERROR][" << __FILE__ << ":" << __LINE__ << "]Unexpected layout: " << layout << "\n";
                 exit(EXIT_FAILURE);
         }
+        ProximaCentauri::getInstance()->setLayout(layout);
     }
     else
     {

@@ -4,6 +4,7 @@
 #include <SDL2/SDL_timer.h>
 #include "controller/Controller.h"
 #include "model/game/map/Map.h"
+#include "model/menu/OptionsModel.h"
 
 // FPS constants
 const auto TARGET_FPS = 60u;
@@ -33,8 +34,14 @@ const auto SPACE_WIDTH = 25u;
 // SPRITES constants
 const auto TICK_PER_SPRITE_SPACESHIP = 8u;
 const auto TICK_PER_SPRITE_BACKGROUND = 1u;
-// MENU constats
+// MENU constants
 const auto MENU_SPACEING = 50u;
+// SPACESHIP constants
+const auto SPACESHIP_WIDTH = 56u;
+const auto SPACESHIP_HEIGHT = 98u;
+const auto SPACESHIP_INITIAL_Y = WINDOW_HEIGHT / 10;
+const auto SPACESHIP_SPEED = 4u;
+const auto SPACESHIP_ACCELERATION = 1u;
 
 class ProximaCentauri
 {
@@ -55,6 +62,10 @@ private:
     uint_fast32_t mapNumber;
     uint_fast32_t backgroundOffset;
     GameState state;
+    Uint8 upKey;
+    Uint8 downKey;
+    Uint8 leftKey;
+    Uint8 rightKey;
     Map *maps;
     SDL_Texture *starBackground;
     SDL_Texture *spaceshipSprite;
@@ -74,6 +85,11 @@ public:
     SDL_Texture *getSpaceshipSprite() const;
     SDL_Texture *getUpArrow() const;
     SDL_Texture *getDownArrow() const;
+    Uint8 getMoveUpKey();
+    Uint8 getMoveDownKey();
+    Uint8 getMoveLeftKey();
+    Uint8 getMoveRightKey();
+    void setLayout(OptionsModel::KeyboardLayout layout);
     void setPaused(bool paused);
     void setState(GameState state);
     void setCurrentMap(uint_fast32_t index);
