@@ -11,7 +11,7 @@ _MAP_SELECTION = view/menu/MapSelectionView.cpp model/menu/MapSelectionModel.cpp
 _OPTIONS = view/menu/OptionsView.cpp model/menu/OptionsModel.cpp controller/menu/OptionsController.cpp
 _GAME = view/game/GameView.cpp model/game/GameModel.cpp controller/game/GameController.cpp
 _MAP = model/game/map/Map.cpp
-_ENTITY = model/game/entity/Player.cpp
+_ENTITY = model/game/entity/Player.cpp model/game/entity/Entity.cpp
 _OTHERS = ProximaCentauri.cpp view/menu/MenuView.cpp
 
 SOURCE = main.cpp ${_OTHERS} ${_MAP} ${_TITLE_SCREEN} ${_MAP_SELECTION} ${_OPTIONS} ${_ENTITY} ${_GAME}

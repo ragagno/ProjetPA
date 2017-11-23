@@ -23,6 +23,7 @@ ProximaCentauri::ProximaCentauri()
     maps = nullptr;
     starBackground = nullptr;
     spaceshipSprite = nullptr;
+    enemySprite = nullptr;
     upArrow = nullptr;
     downArrow = nullptr;
     window = nullptr;
@@ -96,7 +97,7 @@ void ProximaCentauri::init()
         SDL_Surface *starBackgroundSurface = IMG_Load("resources/background.png");
         if (starBackgroundSurface == nullptr)
         {
-            std::cerr << "[ERROR][" << __FILE__ << ":" << __LINE__ << "]background.png could not be loader.\n";
+            std::cerr << "[ERROR][" << __FILE__ << ":" << __LINE__ << "]background.png could not be loaded.\n";
             exit(EXIT_FAILURE);
         }
         starBackground = SDL_CreateTextureFromSurface(renderer, starBackgroundSurface);
@@ -105,16 +106,25 @@ void ProximaCentauri::init()
         SDL_Surface *spaceshipSpriteSurface = IMG_Load("resources/spaceship.png");
         if (spaceshipSpriteSurface == nullptr)
         {
-            std::cerr << "[ERROR][" << __FILE__ << ":" << __LINE__ << "]spaceship.png could not be loader.\n";
+            std::cerr << "[ERROR][" << __FILE__ << ":" << __LINE__ << "]spaceship.png could not be loaded.\n";
             exit(EXIT_FAILURE);
         }
         spaceshipSprite = SDL_CreateTextureFromSurface(renderer, spaceshipSpriteSurface);
         SDL_FreeSurface(spaceshipSpriteSurface);
 
+        SDL_Surface *enemySpriteSurface = IMG_Load("resources/enemies.png");
+        if (enemySpriteSurface == nullptr)
+        {
+            std::cerr << "[ERROR][" << __FILE__ << ":" << __LINE__ << "]enemies.png could not be loaded.\n";
+            exit(EXIT_FAILURE);
+        }
+        enemySprite = SDL_CreateTextureFromSurface(renderer, enemySpriteSurface);
+        SDL_FreeSurface(enemySpriteSurface);
+
         SDL_Surface *upArrowSurface = IMG_Load("resources/up.png");
         if (upArrowSurface == nullptr)
         {
-            std::cerr << "[ERROR][" << __FILE__ << ":" << __LINE__ << "]up.png could not be loader.\n";
+            std::cerr << "[ERROR][" << __FILE__ << ":" << __LINE__ << "]up.png could not be loaded.\n";
             exit(EXIT_FAILURE);
         }
         upArrow = SDL_CreateTextureFromSurface(renderer, upArrowSurface);
@@ -123,7 +133,7 @@ void ProximaCentauri::init()
         SDL_Surface *downArrowSurface = IMG_Load("resources/down.png");
         if (downArrowSurface == nullptr)
         {
-            std::cerr << "[ERROR][" << __FILE__ << ":" << __LINE__ << "]down.png could not be loader.\n";
+            std::cerr << "[ERROR][" << __FILE__ << ":" << __LINE__ << "]down.png could not be loaded.\n";
             exit(EXIT_FAILURE);
         }
         downArrow = SDL_CreateTextureFromSurface(renderer, downArrowSurface);
@@ -249,6 +259,19 @@ SDL_Texture *ProximaCentauri::getSpaceshipSprite() const
     if (initialized)
     {
         return spaceshipSprite;
+    }
+    else
+    {
+        std::cerr << "[ERROR][" << __FILE__ << ":" << __LINE__ << "]Game is not initialized.\n";
+        exit(EXIT_FAILURE);
+    }
+}
+
+SDL_Texture *ProximaCentauri::getEnemySprite() const
+{
+    if (initialized)
+    {
+        return enemySprite;
     }
     else
     {

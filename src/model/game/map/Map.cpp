@@ -106,14 +106,6 @@ bool Map::loadPattern()
             std::string line;
             std::vector<std::string> temp;
 
-            std::getline(fin, line);
-            if (line.length() == 0 || fin.eof())
-            {
-                std::cerr << "[ERROR][" << __FILE__ << ":" << __LINE__ << "]Map file is invalid.\n";
-                fin.close();
-                return false;
-            }
-
             while (!fin.eof())
             {
                 std::getline(fin, line);

@@ -6,6 +6,7 @@ GameController::GameController::GameController()
 {
     nextState = ProximaCentauri::IN_GAME;
     initialized = false;
+    ticksFromLastLine = 0;
 
     model = new GameModel;
     view = new GameView;
@@ -120,6 +121,26 @@ void GameController::GameController::tick(long double lag)
                     model->getPlayer().deccelerate();
                 }
             }
+
+            model->tickEntities(lag);
+
+            if (!model->getPlayer().isAlive())
+            {
+                nextState = ProximaCentauri::TITLE_SCREEN;
+            }
+
+            ticksFromLastLine += lag;
+
+            if (ticksFromLastLine >= model->getCurrentLine() * TICKS_PER_LINE)
+            {
+                if (!model->nextLine())
+                {
+                    if (model->getEntities().empty())
+                    {
+                        nextState = ProximaCentauri::TITLE_SCREEN;
+                    }
+                }
+            }
         }
     }
     else
@@ -133,7 +154,7 @@ void GameController::GameController::render()
 {
     if (initialized)
     {
-        view->render(model->getPlayer());
+        view->render(model->getPlayer(), model->getEntities());
         if (model->isPaused())
         {
             view->renderPause(model->getSelectedIndex());
@@ -144,6 +165,7 @@ void GameController::GameController::render()
             nextState = ProximaCentauri::IN_GAME;
             view->reset();
             model->reset();
+            ticksFromLastLine = 0;
         }
     }
     else

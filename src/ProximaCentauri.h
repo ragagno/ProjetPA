@@ -42,6 +42,12 @@ const auto SPACESHIP_HEIGHT = 98u;
 const auto SPACESHIP_INITIAL_Y = WINDOW_HEIGHT / 10;
 const auto SPACESHIP_SPEED = 4u;
 const auto SPACESHIP_ACCELERATION = 1u;
+// ENTITIES constants
+const auto ENTITY_Y_SPAWN = -SPACESHIP_HEIGHT;
+// MAP constants
+const auto TICKS_PER_LINE = TARGET_TPS * 4u;
+// PLAYER constants
+const auto PLAYER_HEALTH = 1000u;
 
 class ProximaCentauri
 {
@@ -69,6 +75,7 @@ private:
     Map *maps;
     SDL_Texture *starBackground;
     SDL_Texture *spaceshipSprite;
+    SDL_Texture *enemySprite;
     SDL_Texture *upArrow;
     SDL_Texture *downArrow;
     SDL_Window *window;
@@ -83,6 +90,7 @@ public:
     const Map getCurrentMap() const;
     SDL_Texture *getStarBackground() const;
     SDL_Texture *getSpaceshipSprite() const;
+    SDL_Texture *getEnemySprite() const;
     SDL_Texture *getUpArrow() const;
     SDL_Texture *getDownArrow() const;
     Uint8 getMoveUpKey();

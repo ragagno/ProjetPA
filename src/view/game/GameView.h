@@ -2,7 +2,9 @@
 #define PROXIMACENTAURI_GAMEVIEW_H
 
 #include <SDL2/SDL_render.h>
+#include <vector>
 #include "../../model/game/entity/Player.h"
+#include "../../model/game/entity/Entity.h"
 
 class GameView
 {
@@ -17,7 +19,7 @@ public:
     GameView();
     void init(SDL_Renderer *renderer);
     ~GameView();
-    void render(Player player) const;
+    void render(const Player &player, std::vector<Entity *> entities) const;
     void renderPause(uint_fast32_t selectedIndex) const;
     void reset() const;
 };

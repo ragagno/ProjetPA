@@ -15,6 +15,7 @@ private:
     bool lastDown;
     bool lastLeft;
     bool lastRight;
+    long double ticksFromLastLine;
     GameModel *model;
     GameView *view;
 public:

@@ -49,8 +49,9 @@ GameView::~GameView()
 
 }
 
-void GameView::render(Player player) const
+void GameView::render(const Player &player, std::vector<Entity *> entities) const
 {
+    static auto spriteIndex = 0u;
     if (initialized)
     {
         if (ProximaCentauri::getInstance()->getBackgroundOffset() < WINDOW_HEIGHT)
@@ -70,9 +71,21 @@ void GameView::render(Player player) const
             SDL_RenderCopy(renderer, ProximaCentauri::getInstance()->getStarBackground(), &backgroundSrcRect2, &backgroundDstRect2);
         }
 
-        SDL_Rect playerSrcRect{0, 0, SPACESHIP_WIDTH, SPACESHIP_HEIGHT};
-        SDL_Rect playerDstRect{player.getX(), player.getY(), SPACESHIP_WIDTH, SPACESHIP_HEIGHT};
+        SDL_Rect playerDstRect{static_cast<int_fast32_t >(player.getX()), static_cast<int_fast32_t >(player.getY()), SPACESHIP_WIDTH, SPACESHIP_HEIGHT};
+        SDL_Rect playerSrcRect{static_cast<int_fast32_t>(spriteIndex / TICK_PER_SPRITE_SPACESHIP) * playerDstRect.w, 0, playerDstRect.w, playerDstRect.h};
         SDL_RenderCopy(renderer, ProximaCentauri::getInstance()->getSpaceshipSprite(), &playerSrcRect, &playerDstRect);
+
+        for (const Entity *entity : entities)
+        {
+            SDL_Rect entityDstRect{entity->getX(), entity->getY(), SPACESHIP_WIDTH, SPACESHIP_HEIGHT};
+            SDL_Rect entitySrcRect{static_cast<int_fast32_t>(spriteIndex / TICK_PER_SPRITE_SPACESHIP) * entityDstRect.w, static_cast<int_fast32_t>((entity->getSprite() - 1) * SPACESHIP_HEIGHT), entityDstRect.w, entityDstRect.h};
+            SDL_RenderCopy(renderer, ProximaCentauri::getInstance()->getEnemySprite(), &entitySrcRect, &entityDstRect);
+        }
+
+        if (++spriteIndex == 3 * TICK_PER_SPRITE_SPACESHIP)
+        {
+            spriteIndex = 0;
+        }
     }
     else
     {

@@ -3,17 +3,20 @@
 
 #include <cstdint>
 
+const long double SQRT2 = 1.41421356;
+
 class Player
 {
 private:
+    uint_fast32_t hp;
     long double x;
     long double y;
     long double speed;
 public:
     Player();
     ~Player();
-    uint_fast32_t getX() const;
-    uint_fast32_t getY() const;
+    int_fast32_t getX() const;
+    int_fast32_t getY() const;
     long double getSpeed() const;
     void u(long double lag);
     void d(long double lag);
@@ -26,6 +29,8 @@ public:
     void accelerate();
     void deccelerate();
     void normalize();
+    void damage(uint_fast32_t damage);
+    bool isAlive();
 };
 
 #endif //PROXIMACENTAURI_PLAYER_H

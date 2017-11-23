@@ -39,8 +39,8 @@ void MapSelectionView::init(SDL_Renderer *renderer)
             uint_fast32_t index = 0;
             do
             {
-                mapSurface = TTF_RenderUTF8_Blended(munro, mapObjects[i].getMapName().substr(0, mapObjects[i].getMapName().length() - (1 + index++)).c_str(), SDL_Color{0, 0, 0, 255});
-            } while (mapSurface->w > WINDOW_WIDTH - 2 * MENU_SPACEING);
+                mapSurface = TTF_RenderUTF8_Blended(munro, mapObjects[i].getMapName().substr(0, mapObjects[i].getMapName().length() - index++).c_str(), SDL_Color{0, 0, 0, 255});
+            } while (mapSurface->w > static_cast<int_fast32_t>(WINDOW_WIDTH - 2 * MENU_SPACEING));
 
             maps[i] = SDL_CreateTextureFromSurface(renderer, mapSurface);
 

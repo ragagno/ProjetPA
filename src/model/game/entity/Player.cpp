@@ -1,8 +1,10 @@
+#include <iostream>
 #include "Player.h"
 #include "../../../ProximaCentauri.h"
 
 Player::Player()
 {
+    hp = PLAYER_HEALTH;
     x = (WINDOW_WIDTH - SPACESHIP_WIDTH) / 2;
     y = WINDOW_HEIGHT - SPACESHIP_HEIGHT - SPACESHIP_INITIAL_Y;
     speed = 0;
@@ -13,14 +15,14 @@ Player::~Player()
 
 }
 
-uint_fast32_t Player::getX() const
+int_fast32_t Player::getX() const
 {
-    return static_cast<uint_fast32_t>(x);
+    return static_cast<int_fast32_t>(x);
 }
 
-uint_fast32_t Player::getY() const
+int_fast32_t Player::getY() const
 {
-    return static_cast<uint_fast32_t>(y);
+    return static_cast<int_fast32_t>(y);
 }
 
 long double Player::getSpeed() const
@@ -50,26 +52,26 @@ void Player::r(long double lag)
 
 void Player::ul(long double lag)
 {
-    u(lag);
-    l(lag);
+    u((lag / SQRT2) * lag);
+    l((lag / SQRT2) * lag);
 }
 
 void Player::ur(long double lag)
 {
-    u(lag);
-    r(lag);
+    u((lag / SQRT2) * lag);
+    r((lag / SQRT2) * lag);
 }
 
 void Player::dl(long double lag)
 {
-    d(lag);
-    l(lag);
+    d((lag / SQRT2) * lag);
+    l((lag / SQRT2) * lag);
 }
 
 void Player::dr(long double lag)
 {
-    d(lag);
-    r(lag);
+    d((lag / SQRT2) * lag);
+    r((lag / SQRT2) * lag);
 }
 
 void Player::accelerate()
@@ -108,4 +110,21 @@ void Player::normalize()
     {
         y = WINDOW_HEIGHT - SPACESHIP_HEIGHT;
     }
+}
+
+void Player::damage(uint_fast32_t damage)
+{
+    if (hp > damage)
+    {
+        hp -= damage;
+    }
+    else
+    {
+        hp = 0;
+    }
+}
+
+bool Player::isAlive()
+{
+    return hp > 0;
 }

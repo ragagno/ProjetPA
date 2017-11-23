@@ -1,5 +1,6 @@
 #include <iostream>
 #include "GameModel.h"
+#include "../../ProximaCentauri.h"
 
 GameModel::GameModel()
 {
@@ -7,6 +8,7 @@ GameModel::GameModel()
     initialized = false;
     paused = false;
     selectedPauseIndex = 0;
+    currentLine = 0;
 }
 
 void GameModel::init()
@@ -17,6 +19,7 @@ void GameModel::init()
     }
     else
     {
+        Entity::init();
         initialized = true;
     }
 }
@@ -39,6 +42,19 @@ bool GameModel::isPaused() const
     }
 }
 
+uint_fast32_t GameModel::getCurrentLine() const
+{
+    if (initialized)
+    {
+        return currentLine;
+    }
+    else
+    {
+        std::cerr << "[ERROR][" << __FILE__ << ":" << __LINE__ << "]Game model is not initialized.\n";
+        exit(EXIT_FAILURE);
+    }
+}
+
 uint_fast32_t GameModel::getSelectedIndex() const
 {
     if (initialized)
@@ -52,12 +68,73 @@ uint_fast32_t GameModel::getSelectedIndex() const
     }
 }
 
+std::vector<Entity *> GameModel::getEntities()
+{
+    return entities;
+}
+
+bool GameModel::nextLine()
+{
+    if (initialized)
+    {
+        if (ProximaCentauri::getInstance()->getCurrentMap().getPatternSize() < ++currentLine)
+        {
+            return false;
+        }
+        else
+        {
+            for (uint_fast32_t i = 0, max = ProximaCentauri::getInstance()->getCurrentMap().getPattern()[currentLine - 1].size(); i < max; ++i)
+            {
+                if (Entity::exists(ProximaCentauri::getInstance()->getCurrentMap().getPattern()[currentLine - 1][i]))
+                {
+                    entities.push_back(new Entity(Entity::getEntity(ProximaCentauri::getInstance()->getCurrentMap().getPattern()[currentLine - 1][i])));
+                    entities[entities.size() - 1]->setX(i);
+                }
+            }
+        }
+    }
+    else
+    {
+        std::cerr << "[ERROR][" << __FILE__ << ":" << __LINE__ << "]Game model is not initialized.\n";
+        exit(EXIT_FAILURE);
+    }
+    return true;
+}
+
 void GameModel::flipPause()
 {
     if (initialized)
     {
         selectedPauseIndex = 0;
         paused = !paused;
+    }
+    else
+    {
+        std::cerr << "[ERROR][" << __FILE__ << ":" << __LINE__ << "]Game model is not initialized.\n";
+        exit(EXIT_FAILURE);
+    }
+}
+
+void GameModel::tickEntities(long double lag)
+{
+    if (initialized)
+    {
+        for (auto it = entities.begin(); it < entities.end(); it++)
+        {
+            (*it)->move(lag);
+            if ((*it)->getY() > static_cast<int_fast32_t>(WINDOW_HEIGHT))
+            {
+                delete *it;
+                entities.erase(it);
+            }
+            if ((*it)->getX() < player.getX() + static_cast<int_fast32_t>(SPACESHIP_WIDTH) && (*it)->getX() + static_cast<int_fast32_t>(SPACESHIP_WIDTH) > player.getX() && (*it)->getY() < player.getY() + static_cast<int_fast32_t>(SPACESHIP_HEIGHT) && static_cast<int_fast32_t>(SPACESHIP_HEIGHT) + (*it)->getY() > player.getY())
+            {
+                player.damage((*it)->getDamageHit());
+                delete *it;
+                entities.erase(it);
+            }
+        }
+
     }
     else
     {
@@ -126,7 +203,8 @@ void GameModel::move(bool up, bool down, bool left, bool right, long double lag)
                 player.d(lag);
             }
         }
-        else{
+        else
+        {
             if (left)
             {
                 player.l(lag);
@@ -152,6 +230,12 @@ void GameModel::reset()
         paused = false;
         player = Player();
         selectedPauseIndex = 0;
+        currentLine = 0;
+        for (auto e : entities)
+        {
+            delete e;
+        }
+        entities = std::vector<Entity *>();
     }
     else
     {
