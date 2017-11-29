@@ -10,8 +10,10 @@ class GameView
 {
 private:
     bool initialized;
+    SDL_Rect replaySrcRect;
     SDL_Rect resumeSrcRect;
     SDL_Rect quitSrcRect;
+    SDL_Texture *replay;
     SDL_Texture *resume;
     SDL_Texture *quit;
     SDL_Renderer *renderer;
@@ -21,6 +23,8 @@ public:
     ~GameView();
     void render(const Player &player, std::vector<Entity *> entities) const;
     void renderPause(uint_fast32_t selectedIndex) const;
+    void renderDefeat(uint_fast32_t selectedIndex) const;
+    void renderVictory(uint_fast32_t selectedIndex) const;
     void reset() const;
 };
 

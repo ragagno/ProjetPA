@@ -19,6 +19,8 @@ Entity::Entity()
     spriteNumber = 0;
     attackFrequency = 0;
     damageType = PLASMA_BALL;
+
+    lastShoot = 0;
 }
 
 Entity::Entity(const Entity &initial)
@@ -31,6 +33,7 @@ Entity::Entity(const Entity &initial)
     spriteNumber = initial.spriteNumber;
     attackFrequency = initial.attackFrequency;
     damageType = initial.damageType;
+    lastShoot = 0;
 }
 
 Entity::~Entity()
@@ -71,6 +74,29 @@ uint_fast32_t Entity::getDamageHit() const
 void Entity::move(long double lag)
 {
     y += speed * lag;
+}
+
+void Entity::shoot(long double lag)
+{
+    lastShoot += lag;
+    if (lastShoot > attackFrequency)
+    {
+        lastShoot = 0;
+        switch (damageType)
+        {
+            case LASER_BEAM:
+                std::cout << "LASER" << std::endl;
+                // TODO: create laser
+                break;
+            case PLASMA_BALL:
+                std::cout << "PLASMA" << std::endl;
+                // TODO: create plasma ball
+                break;
+            default:
+                std::cerr << "[ERROR][" << __FILE__ << ":" << __LINE__ << "]unexpected damage type " << damageType << "\n";
+                exit(EXIT_FAILURE);
+        }
+    }
 }
 
 void Entity::init()

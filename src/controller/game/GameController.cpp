@@ -50,7 +50,7 @@ void GameController::GameController::tick(long double lag)
                         {
                             continue;
                         }
-                        if (model->isPaused())
+                        if (model->isPaused() || model->isDefeat() || model->isVictory())
                         {
                             model->up();
                         }
@@ -60,7 +60,7 @@ void GameController::GameController::tick(long double lag)
                         {
                             continue;
                         }
-                        if (model->isPaused())
+                        if (model->isPaused() || model->isDefeat() || model->isVictory())
                         {
                             model->down();
                         }
@@ -85,13 +85,46 @@ void GameController::GameController::tick(long double lag)
                                     exit(EXIT_FAILURE);
                             }
                         }
+                        else if (model->isVictory())
+                        {
+                            switch (model->getSelectedIndex())
+                            {
+                                case 0:
+                                    model->reset();
+                                    break;
+                                case 1:
+                                    nextState = ProximaCentauri::TITLE_SCREEN;
+                                    break;
+                                default:
+                                    std::cerr << "[ERROR][" << __FILE__ << ":" << __LINE__ << "]Unexpected index: " << model->getSelectedIndex() << "\n";
+                                    exit(EXIT_FAILURE);
+                            }
+                        }
+                        else if (model->isDefeat())
+                        {
+                            switch (model->getSelectedIndex())
+                            {
+                                case 0:
+                                    model->reset();
+                                    break;
+                                case 1:
+                                    nextState = ProximaCentauri::TITLE_SCREEN;
+                                    break;
+                                default:
+                                    std::cerr << "[ERROR][" << __FILE__ << ":" << __LINE__ << "]Unexpected index: " << model->getSelectedIndex() << "\n";
+                                    exit(EXIT_FAILURE);
+                            }
+                        }
                         break;
                     case SDLK_ESCAPE:
                         if (event.key.repeat)
                         {
                             continue;
                         }
-                        model->flipPause();
+                        if (!(model->isVictory() || model->isDefeat()))
+                        {
+                            model->flipPause();
+                        }
                         ProximaCentauri::getInstance()->setPaused(model->isPaused());
                         break;
                     default:
@@ -100,7 +133,7 @@ void GameController::GameController::tick(long double lag)
             }
         }
 
-        if (!model->isPaused())
+        if (!(model->isPaused() || model->isDefeat() || model->isVictory()))
         {
             const Uint8 *keys = SDL_GetKeyboardState(nullptr);
 
@@ -126,7 +159,7 @@ void GameController::GameController::tick(long double lag)
 
             if (!model->getPlayer().isAlive())
             {
-                nextState = ProximaCentauri::TITLE_SCREEN;
+                model->setDefeat();
             }
 
             ticksFromLastLine += lag;
@@ -137,7 +170,7 @@ void GameController::GameController::tick(long double lag)
                 {
                     if (model->getEntities().empty())
                     {
-                        nextState = ProximaCentauri::TITLE_SCREEN;
+                        model->setVictory();
                     }
                 }
             }
@@ -158,6 +191,14 @@ void GameController::GameController::render()
         if (model->isPaused())
         {
             view->renderPause(model->getSelectedIndex());
+        }
+        else if (model->isDefeat())
+        {
+            view->renderDefeat(model->getSelectedIndex());
+        }
+        else if (model->isVictory())
+        {
+            view->renderVictory(model->getSelectedIndex());
         }
         if (nextState != ProximaCentauri::IN_GAME)
         {

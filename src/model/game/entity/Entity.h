@@ -18,6 +18,7 @@ private:
     long double x;
     long double y;
     long double speed;
+    long double lastShoot;
     uint_fast32_t hp;
     uint_fast32_t damageHit;
     uint_fast32_t damageFire;
@@ -33,6 +34,7 @@ public:
     uint_fast32_t getSprite() const;
     uint_fast32_t getDamageHit() const;
     void move(long double lag);
+    void shoot(long double lag);
     static void init();
     static bool exists(char c);
     ~Entity();

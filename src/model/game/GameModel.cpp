@@ -7,6 +7,8 @@ GameModel::GameModel()
     player = Player();
     initialized = false;
     paused = false;
+    victory = false;
+    defeat = false;
     selectedPauseIndex = 0;
     currentLine = 0;
 }
@@ -47,6 +49,58 @@ uint_fast32_t GameModel::getCurrentLine() const
     if (initialized)
     {
         return currentLine;
+    }
+    else
+    {
+        std::cerr << "[ERROR][" << __FILE__ << ":" << __LINE__ << "]Game model is not initialized.\n";
+        exit(EXIT_FAILURE);
+    }
+}
+
+bool GameModel::isDefeat() const
+{
+    if (initialized)
+    {
+        return defeat;
+    }
+    else
+    {
+        std::cerr << "[ERROR][" << __FILE__ << ":" << __LINE__ << "]Game model is not initialized.\n";
+        exit(EXIT_FAILURE);
+    }
+}
+
+bool GameModel::isVictory() const
+{
+    if (initialized)
+    {
+        return victory;
+    }
+    else
+    {
+        std::cerr << "[ERROR][" << __FILE__ << ":" << __LINE__ << "]Game model is not initialized.\n";
+        exit(EXIT_FAILURE);
+    }
+}
+
+void GameModel::setDefeat()
+{
+    if (initialized)
+    {
+        defeat = true;
+    }
+    else
+    {
+        std::cerr << "[ERROR][" << __FILE__ << ":" << __LINE__ << "]Game model is not initialized.\n";
+        exit(EXIT_FAILURE);
+    }
+}
+
+void GameModel::setVictory()
+{
+    if (initialized)
+    {
+        victory = true;
     }
     else
     {
@@ -122,12 +176,13 @@ void GameModel::tickEntities(long double lag)
         for (auto it = entities.begin(); it < entities.end(); it++)
         {
             (*it)->move(lag);
+            (*it)->shoot(lag);
             if ((*it)->getY() > static_cast<int_fast32_t>(WINDOW_HEIGHT))
             {
                 delete *it;
                 entities.erase(it);
             }
-            if ((*it)->getX() < player.getX() + static_cast<int_fast32_t>(SPACESHIP_WIDTH) && (*it)->getX() + static_cast<int_fast32_t>(SPACESHIP_WIDTH) > player.getX() && (*it)->getY() < player.getY() + static_cast<int_fast32_t>(SPACESHIP_HEIGHT) && static_cast<int_fast32_t>(SPACESHIP_HEIGHT) + (*it)->getY() > player.getY())
+            else if ((*it)->getX() < player.getX() + static_cast<int_fast32_t>(SPACESHIP_WIDTH) && (*it)->getX() + static_cast<int_fast32_t>(SPACESHIP_WIDTH) > player.getX() && (*it)->getY() < player.getY() + static_cast<int_fast32_t>(SPACESHIP_HEIGHT) && static_cast<int_fast32_t>(SPACESHIP_HEIGHT) + (*it)->getY() > player.getY())
             {
                 player.damage((*it)->getDamageHit());
                 delete *it;
@@ -228,6 +283,8 @@ void GameModel::reset()
     if (initialized)
     {
         paused = false;
+        defeat = false;
+        victory = false;
         player = Player();
         selectedPauseIndex = 0;
         currentLine = 0;

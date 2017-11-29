@@ -10,6 +10,8 @@ class GameModel
 private:
     bool initialized;
     bool paused;
+    bool defeat;
+    bool victory;
     uint_fast32_t selectedPauseIndex;
     uint_fast32_t currentLine;
     std::vector<Entity *> entities;
@@ -19,6 +21,10 @@ public:
     void init();
     ~GameModel();
     bool isPaused() const;
+    bool isDefeat() const;
+    bool isVictory() const;
+    void setDefeat();
+    void setVictory();
     uint_fast32_t getSelectedIndex() const;
     uint_fast32_t getCurrentLine() const;
     Player &getPlayer();

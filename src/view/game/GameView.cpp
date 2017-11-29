@@ -25,16 +25,19 @@ void GameView::init(SDL_Renderer *renderer)
             exit(EXIT_FAILURE);
         }
 
+        SDL_Surface *replaySurface = TTF_RenderText_Blended(munro, "REPLAY", SDL_Color {0, 0, 0, 255});
         SDL_Surface *resumeSurface = TTF_RenderText_Blended(munro, "RESUME", SDL_Color {0, 0, 0, 255});
         SDL_Surface *quitSurface = TTF_RenderText_Blended(munro, "QUIT", SDL_Color {0, 0, 0, 255});
 
+        replay = SDL_CreateTextureFromSurface(renderer, replaySurface);
         resume = SDL_CreateTextureFromSurface(renderer, resumeSurface);
         quit = SDL_CreateTextureFromSurface(renderer, quitSurface);
 
+        replaySrcRect = {SDL_ttfDumbLeftMargin_64, SDL_ttfDumbTopMargin_64, replaySurface->w - static_cast<int_fast32_t>(SDL_ttfDumbRightMargin_64 + SDL_ttfDumbLeftMargin_64), replaySurface->h - static_cast<int_fast32_t>(SDL_ttfDumbTopMargin_64 + SDL_ttfDumbBottomMargin_64)};
         resumeSrcRect = {SDL_ttfDumbLeftMargin_64, SDL_ttfDumbTopMargin_64, resumeSurface->w - static_cast<int_fast32_t>(SDL_ttfDumbRightMargin_64 + SDL_ttfDumbLeftMargin_64), resumeSurface->h - static_cast<int_fast32_t>(SDL_ttfDumbTopMargin_64 + SDL_ttfDumbBottomMargin_64)};
-
         quitSrcRect = {SDL_ttfDumbLeftMargin_64, SDL_ttfDumbTopMargin_64, quitSurface->w - static_cast<int_fast32_t>(SDL_ttfDumbRightMargin_64 + SDL_ttfDumbLeftMargin_64), quitSurface->h - static_cast<int_fast32_t>(SDL_ttfDumbTopMargin_64 + SDL_ttfDumbBottomMargin_64)};
 
+        SDL_FreeSurface(replaySurface);
         SDL_FreeSurface(resumeSurface);
         SDL_FreeSurface(quitSurface);
 
@@ -124,6 +127,84 @@ void GameView::renderPause(uint_fast32_t selectedIndex) const
         SDL_RenderFillRect(renderer, &underlineRect);
 
         SDL_RenderCopy(renderer, resume, &resumeSrcRect, &resumeDstRect);
+        SDL_RenderCopy(renderer, quit, &quitSrcRect, &quitDstRect);
+    }
+    else
+    {
+        std::cerr << "[ERROR][" << __FILE__ << ":" << __LINE__ << "]Game view is not initialized.\n";
+        exit(EXIT_FAILURE);
+    }
+}
+
+void GameView::renderDefeat(uint_fast32_t selectedIndex) const
+{
+    if (initialized)
+    {
+        SDL_Rect replayDstRect = {static_cast<int_fast32_t>(WINDOW_WIDTH - replaySrcRect.w) / 2, static_cast<int_fast32_t>(WINDOW_HEIGHT - 3 * replaySrcRect.h) / 2, replaySrcRect.w, replaySrcRect.h};
+        SDL_Rect quitDstRect = {static_cast<int_fast32_t>(WINDOW_WIDTH - quitSrcRect.w) / 2, static_cast<int_fast32_t>(WINDOW_HEIGHT + quitSrcRect.h) / 2, quitSrcRect.w, quitSrcRect.h};
+
+        SDL_SetRenderDrawColor(renderer, 255, 0, 0, 127);
+        SDL_Rect menuBackgroundRect{replayDstRect.x - static_cast<int_fast32_t>(MENU_SPACEING), replayDstRect.y - static_cast<int_fast32_t>(MENU_SPACEING), replayDstRect.w + 2 * static_cast<int_fast32_t>(MENU_SPACEING), 2 * static_cast<int_fast32_t>(MENU_SPACEING) + (3 * replayDstRect.h + 3 * quitDstRect.h) / 2};
+        SDL_RenderFillRect(renderer, &menuBackgroundRect);
+
+        SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
+        SDL_Rect underlineRect{};
+
+        switch (selectedIndex)
+        {
+            case 0:
+                underlineRect = {replayDstRect.x, replayDstRect.y + replayDstRect.h + static_cast<int_fast32_t>(UNDERLINE_SPACING), replayDstRect.w, UNDERLINE_THICKNESS};
+                break;
+            case 1:
+                underlineRect = {quitDstRect.x, quitDstRect.y + quitDstRect.h + static_cast<int_fast32_t>(UNDERLINE_SPACING), quitDstRect.w, UNDERLINE_THICKNESS};
+                break;
+            default:
+                std::cerr << "[ERROR][" << __FILE__ << ":" << __LINE__ << "]Unexpected index: " << selectedIndex << "\n";
+                exit(EXIT_FAILURE);
+        }
+
+        SDL_RenderFillRect(renderer, &underlineRect);
+
+        SDL_RenderCopy(renderer, replay, &replaySrcRect, &replayDstRect);
+        SDL_RenderCopy(renderer, quit, &quitSrcRect, &quitDstRect);
+    }
+    else
+    {
+        std::cerr << "[ERROR][" << __FILE__ << ":" << __LINE__ << "]Game view is not initialized.\n";
+        exit(EXIT_FAILURE);
+    }
+}
+
+void GameView::renderVictory(uint_fast32_t selectedIndex) const
+{
+    if (initialized)
+    {
+        SDL_Rect replayDstRect = {static_cast<int_fast32_t>(WINDOW_WIDTH - replaySrcRect.w) / 2, static_cast<int_fast32_t>(WINDOW_HEIGHT - 3 * replaySrcRect.h) / 2, replaySrcRect.w, replaySrcRect.h};
+        SDL_Rect quitDstRect = {static_cast<int_fast32_t>(WINDOW_WIDTH - quitSrcRect.w) / 2, static_cast<int_fast32_t>(WINDOW_HEIGHT + quitSrcRect.h) / 2, quitSrcRect.w, quitSrcRect.h};
+
+        SDL_SetRenderDrawColor(renderer, 0, 255, 0, 127);
+        SDL_Rect menuBackgroundRect{replayDstRect.x - static_cast<int_fast32_t>(MENU_SPACEING), replayDstRect.y - static_cast<int_fast32_t>(MENU_SPACEING), replayDstRect.w + 2 * static_cast<int_fast32_t>(MENU_SPACEING), 2 * static_cast<int_fast32_t>(MENU_SPACEING) + (3 * replayDstRect.h + 3 * quitDstRect.h) / 2};
+        SDL_RenderFillRect(renderer, &menuBackgroundRect);
+
+        SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
+        SDL_Rect underlineRect{};
+
+        switch (selectedIndex)
+        {
+            case 0:
+                underlineRect = {replayDstRect.x, replayDstRect.y + replayDstRect.h + static_cast<int_fast32_t>(UNDERLINE_SPACING), replayDstRect.w, UNDERLINE_THICKNESS};
+                break;
+            case 1:
+                underlineRect = {quitDstRect.x, quitDstRect.y + quitDstRect.h + static_cast<int_fast32_t>(UNDERLINE_SPACING), quitDstRect.w, UNDERLINE_THICKNESS};
+                break;
+            default:
+                std::cerr << "[ERROR][" << __FILE__ << ":" << __LINE__ << "]Unexpected index: " << selectedIndex << "\n";
+                exit(EXIT_FAILURE);
+        }
+
+        SDL_RenderFillRect(renderer, &underlineRect);
+
+        SDL_RenderCopy(renderer, replay, &replaySrcRect, &replayDstRect);
         SDL_RenderCopy(renderer, quit, &quitSrcRect, &quitDstRect);
     }
     else
