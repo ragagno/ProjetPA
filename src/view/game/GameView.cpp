@@ -25,18 +25,26 @@ void GameView::init(SDL_Renderer *renderer)
             exit(EXIT_FAILURE);
         }
 
+        SDL_Surface *victorySurface = TTF_RenderText_Blended(munro, "VICTORY", SDL_Color {255, 255, 255, 255});
+        SDL_Surface *defeatSurface = TTF_RenderText_Blended(munro, "DEFEAT", SDL_Color {255, 255, 255, 255});
         SDL_Surface *replaySurface = TTF_RenderText_Blended(munro, "REPLAY", SDL_Color {0, 0, 0, 255});
         SDL_Surface *resumeSurface = TTF_RenderText_Blended(munro, "RESUME", SDL_Color {0, 0, 0, 255});
         SDL_Surface *quitSurface = TTF_RenderText_Blended(munro, "QUIT", SDL_Color {0, 0, 0, 255});
 
+        victory = SDL_CreateTextureFromSurface(renderer, victorySurface);
+        defeat = SDL_CreateTextureFromSurface(renderer, defeatSurface);
         replay = SDL_CreateTextureFromSurface(renderer, replaySurface);
         resume = SDL_CreateTextureFromSurface(renderer, resumeSurface);
         quit = SDL_CreateTextureFromSurface(renderer, quitSurface);
 
+        victorySrcRect = {SDL_ttfDumbLeftMargin_64, SDL_ttfDumbTopMargin_64, victorySurface->w - static_cast<int_fast32_t>(SDL_ttfDumbRightMargin_64 + SDL_ttfDumbLeftMargin_64), victorySurface->h - static_cast<int_fast32_t>(SDL_ttfDumbTopMargin_64 + SDL_ttfDumbBottomMargin_64)};
+        defeatSrcRect = {SDL_ttfDumbLeftMargin_64, SDL_ttfDumbTopMargin_64, defeatSurface->w - static_cast<int_fast32_t>(SDL_ttfDumbRightMargin_64 + SDL_ttfDumbLeftMargin_64), defeatSurface->h - static_cast<int_fast32_t>(SDL_ttfDumbTopMargin_64 + SDL_ttfDumbBottomMargin_64)};
         replaySrcRect = {SDL_ttfDumbLeftMargin_64, SDL_ttfDumbTopMargin_64, replaySurface->w - static_cast<int_fast32_t>(SDL_ttfDumbRightMargin_64 + SDL_ttfDumbLeftMargin_64), replaySurface->h - static_cast<int_fast32_t>(SDL_ttfDumbTopMargin_64 + SDL_ttfDumbBottomMargin_64)};
         resumeSrcRect = {SDL_ttfDumbLeftMargin_64, SDL_ttfDumbTopMargin_64, resumeSurface->w - static_cast<int_fast32_t>(SDL_ttfDumbRightMargin_64 + SDL_ttfDumbLeftMargin_64), resumeSurface->h - static_cast<int_fast32_t>(SDL_ttfDumbTopMargin_64 + SDL_ttfDumbBottomMargin_64)};
         quitSrcRect = {SDL_ttfDumbLeftMargin_64, SDL_ttfDumbTopMargin_64, quitSurface->w - static_cast<int_fast32_t>(SDL_ttfDumbRightMargin_64 + SDL_ttfDumbLeftMargin_64), quitSurface->h - static_cast<int_fast32_t>(SDL_ttfDumbTopMargin_64 + SDL_ttfDumbBottomMargin_64)};
 
+        SDL_FreeSurface(victorySurface);
+        SDL_FreeSurface(defeatSurface);
         SDL_FreeSurface(replaySurface);
         SDL_FreeSurface(resumeSurface);
         SDL_FreeSurface(quitSurface);
@@ -49,7 +57,11 @@ void GameView::init(SDL_Renderer *renderer)
 
 GameView::~GameView()
 {
-
+    SDL_DestroyTexture(victory);
+    SDL_DestroyTexture(defeat);
+    SDL_DestroyTexture(replay);
+    SDL_DestroyTexture(resume);
+    SDL_DestroyTexture(quit);
 }
 
 void GameView::render(const Player &player, std::vector<Entity *> entities) const
@@ -165,6 +177,9 @@ void GameView::renderDefeat(uint_fast32_t selectedIndex) const
         SDL_Rect menuBackgroundRect{replayDstRect.x - static_cast<int_fast32_t>(MENU_SPACEING), replayDstRect.y - static_cast<int_fast32_t>(MENU_SPACEING), replayDstRect.w + 2 * static_cast<int_fast32_t>(MENU_SPACEING), 2 * static_cast<int_fast32_t>(MENU_SPACEING) + (3 * replayDstRect.h + 3 * quitDstRect.h) / 2};
         SDL_RenderFillRect(renderer, &menuBackgroundRect);
 
+        SDL_Rect defeatDstRect = {static_cast<int_fast32_t>(WINDOW_WIDTH - defeatSrcRect.w) / 2, menuBackgroundRect.y - defeatSrcRect.h - static_cast<int_fast32_t>(MENU_SPACEING), defeatSrcRect.w, defeatSrcRect.h};
+        SDL_RenderCopy(renderer, defeat, &defeatSrcRect, &defeatDstRect);
+
         SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
         SDL_Rect underlineRect{};
 
@@ -203,6 +218,9 @@ void GameView::renderVictory(uint_fast32_t selectedIndex) const
         SDL_SetRenderDrawColor(renderer, 0, 255, 0, 127);
         SDL_Rect menuBackgroundRect{replayDstRect.x - static_cast<int_fast32_t>(MENU_SPACEING), replayDstRect.y - static_cast<int_fast32_t>(MENU_SPACEING), replayDstRect.w + 2 * static_cast<int_fast32_t>(MENU_SPACEING), 2 * static_cast<int_fast32_t>(MENU_SPACEING) + (3 * replayDstRect.h + 3 * quitDstRect.h) / 2};
         SDL_RenderFillRect(renderer, &menuBackgroundRect);
+
+        SDL_Rect victoryDstRect = {static_cast<int_fast32_t>(WINDOW_WIDTH - victorySrcRect.w) / 2, menuBackgroundRect.y - victorySrcRect.h - static_cast<int_fast32_t>(MENU_SPACEING), victorySrcRect.w, victorySrcRect.h};
+        SDL_RenderCopy(renderer, victory, &victorySrcRect, &victoryDstRect);
 
         SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
         SDL_Rect underlineRect{};

@@ -12,7 +12,11 @@ private:
     bool initialized;
     SDL_Rect replaySrcRect;
     SDL_Rect resumeSrcRect;
+    SDL_Rect victorySrcRect;
+    SDL_Rect defeatSrcRect;
     SDL_Rect quitSrcRect;
+    SDL_Texture *victory;
+    SDL_Texture *defeat;
     SDL_Texture *replay;
     SDL_Texture *resume;
     SDL_Texture *quit;
