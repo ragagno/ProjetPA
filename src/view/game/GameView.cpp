@@ -88,7 +88,7 @@ void GameView::render(const Player &player, std::vector<Entity *> entities) cons
         SDL_Rect playerHPBackground = {};
         SDL_Rect playerCurrentHPBackground = {};
 
-        if (playerDstRect.y + playerDstRect.h + static_cast<int_fast32_t>(PLAYER_BAR_HEIGHT) + 2 < WINDOW_HEIGHT)
+        if (playerDstRect.y + playerDstRect.h + static_cast<int_fast32_t>(PLAYER_BAR_HEIGHT) + 2 < static_cast<int_fast32_t>(WINDOW_HEIGHT))
         {
             playerHPBackground = {playerDstRect.x, playerDstRect.y + playerDstRect.h + static_cast<int_fast32_t>(PLAYER_BAR_HEIGHT) + 2, playerDstRect.w, PLAYER_BAR_HEIGHT};
             playerCurrentHPBackground = {playerDstRect.x, playerDstRect.y + playerDstRect.h + static_cast<int_fast32_t>(PLAYER_BAR_HEIGHT) + 2, static_cast<int_fast32_t>(player.getHP() * playerDstRect.w / PLAYER_HEALTH), PLAYER_BAR_HEIGHT};
