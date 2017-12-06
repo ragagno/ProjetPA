@@ -12,9 +12,10 @@ _OPTIONS = view/menu/OptionsView.cpp model/menu/OptionsModel.cpp controller/menu
 _GAME = view/game/GameView.cpp model/game/GameModel.cpp controller/game/GameController.cpp
 _MAP = model/game/map/Map.cpp
 _ENTITY = model/game/entity/Player.cpp model/game/entity/Entity.cpp
-_OTHERS = ProximaCentauri.cpp view/menu/MenuView.cpp
+_PROJECTILE = model/game/projectile/Laserbeam.cpp model/game/projectile/Plasmaball.cpp
+_OTHERS = main.cpp ProximaCentauri.cpp view/menu/MenuView.cpp
 
-SOURCE = main.cpp ${_OTHERS} ${_MAP} ${_TITLE_SCREEN} ${_MAP_SELECTION} ${_OPTIONS} ${_ENTITY} ${_GAME}
+SOURCE = ${_OTHERS} ${_MAP} ${_TITLE_SCREEN} ${_MAP_SELECTION} ${_OPTIONS} ${_ENTITY} ${_PROJECTILE} ${_GAME}
 LIBS = mingw32 SDL2main SDL2 SDL2_ttf SDL2_image
 
 #----------------
@@ -32,3 +33,6 @@ proxima-centauri: $(OBJS)
 obj/%.o: src/%.cpp
 	@echo Compling ${notdir $<}...
 	@${CC} ${CCFLAGS} ${CCFLAGS_CP} -c $< -o $@
+
+clean:
+	del obj\*.o /s
