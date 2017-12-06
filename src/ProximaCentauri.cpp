@@ -228,11 +228,11 @@ Map *ProximaCentauri::getMaps() const
     }
 }
 
-const Map ProximaCentauri::getCurrentMap() const
+const Map *ProximaCentauri::getCurrentMap() const
 {
     if (initialized)
     {
-        return maps[currentMap];
+        return &maps[currentMap];
     }
     else
     {

@@ -106,6 +106,7 @@ void GameController::GameController::tick(long double lag)
                             {
                                 case 0:
                                     model->reset();
+                                    ticksFromLastLine = 0;
                                     break;
                                 case 1:
                                     nextState = ProximaCentauri::TITLE_SCREEN;

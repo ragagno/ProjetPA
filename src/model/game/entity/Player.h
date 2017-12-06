@@ -17,6 +17,7 @@ public:
     ~Player();
     int_fast32_t getX() const;
     int_fast32_t getY() const;
+    int_fast32_t getHP() const;
     long double getSpeed() const;
     void u(long double lag);
     void d(long double lag);

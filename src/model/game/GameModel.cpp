@@ -131,17 +131,17 @@ bool GameModel::nextLine()
 {
     if (initialized)
     {
-        if (ProximaCentauri::getInstance()->getCurrentMap().getPatternSize() < ++currentLine)
+        if (ProximaCentauri::getInstance()->getCurrentMap()->getPatternSize() < ++currentLine)
         {
             return false;
         }
         else
         {
-            for (uint_fast32_t i = 0, max = ProximaCentauri::getInstance()->getCurrentMap().getPattern()[currentLine - 1].size(); i < max; ++i)
+            for (uint_fast32_t i = 0, max = ProximaCentauri::getInstance()->getCurrentMap()->getPattern()[currentLine - 1].size(); i < max; ++i)
             {
-                if (Entity::exists(ProximaCentauri::getInstance()->getCurrentMap().getPattern()[currentLine - 1][i]))
+                if (Entity::exists(ProximaCentauri::getInstance()->getCurrentMap()->getPattern()[currentLine - 1][i]))
                 {
-                    entities.push_back(new Entity(Entity::getEntity(ProximaCentauri::getInstance()->getCurrentMap().getPattern()[currentLine - 1][i])));
+                    entities.push_back(new Entity(Entity::getEntity(ProximaCentauri::getInstance()->getCurrentMap()->getPattern()[currentLine - 1][i])));
                     entities[entities.size() - 1]->setX(i);
                 }
             }

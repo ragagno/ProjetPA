@@ -48,6 +48,7 @@ const auto ENTITY_Y_SPAWN = -SPACESHIP_HEIGHT;
 const auto TICKS_PER_LINE = TARGET_TPS * 4u;
 // PLAYER constants
 const auto PLAYER_HEALTH = 1000u;
+const auto PLAYER_BAR_HEIGHT = 4u;
 const auto PROJECTILE_SPEED = 1u;
 
 class ProximaCentauri
@@ -88,7 +89,7 @@ public:
     uint_fast32_t getMapNumber() const;
     uint_fast32_t getBackgroundOffset() const;
     Map *getMaps() const;
-    const Map getCurrentMap() const;
+    const Map *getCurrentMap() const;
     SDL_Texture *getStarBackground() const;
     SDL_Texture *getSpaceshipSprite() const;
     SDL_Texture *getEnemySprite() const;

@@ -25,6 +25,11 @@ int_fast32_t Player::getY() const
     return static_cast<int_fast32_t>(y);
 }
 
+int_fast32_t Player::getHP() const
+{
+    return hp;
+}
+
 long double Player::getSpeed() const
 {
     return speed;

@@ -85,6 +85,24 @@ void GameView::render(const Player &player, std::vector<Entity *> entities) cons
             SDL_RenderCopy(renderer, ProximaCentauri::getInstance()->getEnemySprite(), &entitySrcRect, &entityDstRect);
         }
 
+        SDL_Rect playerHPBackground = {};
+        SDL_Rect playerCurrentHPBackground = {};
+
+        if (playerDstRect.y + playerDstRect.h + static_cast<int_fast32_t>(PLAYER_BAR_HEIGHT) + 2 < WINDOW_HEIGHT)
+        {
+            playerHPBackground = {playerDstRect.x, playerDstRect.y + playerDstRect.h + static_cast<int_fast32_t>(PLAYER_BAR_HEIGHT) + 2, playerDstRect.w, PLAYER_BAR_HEIGHT};
+            playerCurrentHPBackground = {playerDstRect.x, playerDstRect.y + playerDstRect.h + static_cast<int_fast32_t>(PLAYER_BAR_HEIGHT) + 2, static_cast<int_fast32_t>(player.getHP() * playerDstRect.w / PLAYER_HEALTH), PLAYER_BAR_HEIGHT};
+        }
+        else
+        {
+            playerHPBackground = {playerDstRect.x, playerDstRect.y - static_cast<int_fast32_t>(PLAYER_BAR_HEIGHT) - 2, playerDstRect.w, PLAYER_BAR_HEIGHT};
+            playerCurrentHPBackground = {playerHPBackground.x, playerHPBackground.y - 2, static_cast<int_fast32_t>(player.getHP() * playerDstRect.w / PLAYER_HEALTH), PLAYER_BAR_HEIGHT};
+        }
+        SDL_SetRenderDrawColor(renderer, 255, 255, 255, 25);
+        SDL_RenderFillRect(renderer, &playerHPBackground);
+        SDL_SetRenderDrawColor(renderer, 0, 255, 0, 255);
+        SDL_RenderFillRect(renderer, &playerCurrentHPBackground);
+
         if (++spriteIndex == 3 * TICK_PER_SPRITE_SPACESHIP)
         {
             spriteIndex = 0;
