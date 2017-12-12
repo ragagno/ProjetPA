@@ -4,6 +4,7 @@
 #include <vector>
 #include "entity/Player.h"
 #include "entity/Entity.h"
+#include "projectile/Plasmaball.h"
 
 class GameModel
 {
@@ -14,7 +15,9 @@ private:
     bool victory;
     uint_fast32_t selectedPauseIndex;
     uint_fast32_t currentLine;
+    uint_fast32_t last_fire;
     std::vector<Entity *> entities;
+    std::vector<Plasmaball> plasma;
     Player player;
 public:
     GameModel();
@@ -29,6 +32,7 @@ public:
     uint_fast32_t getCurrentLine() const;
     Player &getPlayer();
     std::vector<Entity *> getEntities();
+    const std::vector<Plasmaball> &getPlasma() const;
     bool nextLine();
     void flipPause();
     void tickEntities(long double lag);

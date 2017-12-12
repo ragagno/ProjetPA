@@ -1,4 +1,5 @@
 #include <iostream>
+#include <cmath>
 #include "GameModel.h"
 #include "../../ProximaCentauri.h"
 
@@ -11,6 +12,8 @@ GameModel::GameModel()
     defeat = false;
     selectedPauseIndex = 0;
     currentLine = 0;
+    entities = std::vector<Entity *>();
+    plasma = std::vector<Plasmaball>();
 }
 
 void GameModel::init()
@@ -124,7 +127,15 @@ uint_fast32_t GameModel::getSelectedIndex() const
 
 std::vector<Entity *> GameModel::getEntities()
 {
-    return entities;
+    if (initialized)
+    {
+        return entities;
+    }
+    else
+    {
+        std::cerr << "[ERROR][" << __FILE__ << ":" << __LINE__ << "]Game model is not initialized.\n";
+        exit(EXIT_FAILURE);
+    }
 }
 
 bool GameModel::nextLine()
@@ -173,20 +184,78 @@ void GameModel::tickEntities(long double lag)
 {
     if (initialized)
     {
-        for (auto it = entities.begin(); it < entities.end(); it++)
+        last_fire += lag;
+        if (last_fire >= PROJECTILE_FREQUENCY)
+        {
+            plasma.emplace_back(true, PROJECTILE_DAMAGE, 0, -PROJECTILE_SPEED, player.getX() + SPACESHIP_WIDTH / 2, player.getY());
+            last_fire = 0;
+        }
+        for (auto it = plasma.begin(); it < plasma.end(); ++it)
+        {
+            it->move(lag);
+            if (it->getX() < 0 || it->getX() > WINDOW_WIDTH || it->getY() < 0 || it->getY() > WINDOW_HEIGHT)
+            {
+                plasma.erase(it);
+                continue;
+            }
+            if (it->isPlayer())
+            {
+                for (auto itE = entities.begin(); itE < entities.end(); ++itE)
+                {
+                    if (it->getX() > (*itE)->getX() && it->getY() > (*itE)->getY() && it->getX() < (*itE)->getX() + SPACESHIP_WIDTH && it->getY() < (*itE)->getY() + SPACESHIP_HEIGHT)
+                    {
+                        if ((*itE)->damage(PROJECTILE_DAMAGE))
+                        {
+                            delete *itE;
+                            entities.erase(itE);
+                        }
+                        plasma.erase(it);
+                        break;
+                    }
+                }
+            }
+            else
+            {
+                if (it->getX() > player.getX() && it->getY() > player.getY() && it->getX() < player.getX() + SPACESHIP_WIDTH && it->getY() < player.getY() + SPACESHIP_HEIGHT)
+                {
+                    player.damage(it->getDamages());
+                    plasma.erase(it);
+                    continue;
+                }
+            }
+        }
+        for (auto it = entities.begin(); it < entities.end(); ++it)
         {
             (*it)->move(lag);
-            (*it)->shoot(lag);
             if ((*it)->getY() > static_cast<int_fast32_t>(WINDOW_HEIGHT))
             {
                 delete *it;
                 entities.erase(it);
+                continue;
             }
             else if ((*it)->getX() < player.getX() + static_cast<int_fast32_t>(SPACESHIP_WIDTH) && (*it)->getX() + static_cast<int_fast32_t>(SPACESHIP_WIDTH) > player.getX() && (*it)->getY() < player.getY() + static_cast<int_fast32_t>(SPACESHIP_HEIGHT) && static_cast<int_fast32_t>(SPACESHIP_HEIGHT) + (*it)->getY() > player.getY())
             {
                 player.damage((*it)->getDamageHit());
                 delete *it;
                 entities.erase(it);
+                continue;
+            }
+            int_fast32_t xE = (*it)->getX() + SPACESHIP_WIDTH / 2;
+            int_fast32_t yE = (*it)->getY() + SPACESHIP_HEIGHT;
+            int_fast32_t xP = player.getX() + SPACESHIP_WIDTH / 2;
+            int_fast32_t yP = player.getY() + SPACESHIP_HEIGHT / 2;
+            int_fast32_t a = xP - xE;
+            int_fast32_t o = yP - yE;
+            long double h = sqrt(o * o + a * a);
+            switch ((*it)->shoot(lag))
+            {
+                case Entity::LASER_BEAM + 1:
+                    break;
+                case Entity::PLASMA_BALL + 1:
+                    plasma.emplace_back(false, (*it)->getDamage(), (a / h) * PROJECTILE_SPEED, (o / h) * PROJECTILE_SPEED, xE, (*it)->getY() + SPACESHIP_HEIGHT);
+                    break;
+                default:
+                    break;
             }
         }
 
@@ -288,11 +357,13 @@ void GameModel::reset()
         player = Player();
         selectedPauseIndex = 0;
         currentLine = 0;
+        last_fire = 0;
+        plasma.clear();
         for (auto e : entities)
         {
             delete e;
         }
-        entities = std::vector<Entity *>();
+        entities.clear();
     }
     else
     {
@@ -306,6 +377,19 @@ Player &GameModel::getPlayer()
     if (initialized)
     {
         return player;
+    }
+    else
+    {
+        std::cerr << "[ERROR][" << __FILE__ << ":" << __LINE__ << "]Game model is not initialized.\n";
+        exit(EXIT_FAILURE);
+    }
+}
+
+const std::vector<Plasmaball> &GameModel::getPlasma() const
+{
+    if (initialized)
+    {
+        return plasma;
     }
     else
     {

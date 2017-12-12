@@ -76,7 +76,7 @@ void Entity::move(long double lag)
     y += speed * lag;
 }
 
-void Entity::shoot(long double lag)
+uint_fast32_t Entity::shoot(long double lag)
 {
     lastShoot += lag;
     if (lastShoot > attackFrequency)
@@ -86,17 +86,26 @@ void Entity::shoot(long double lag)
         {
             case LASER_BEAM:
                 std::cout << "LASER" << std::endl;
-                // TODO: create laser
-                break;
+                return LASER_BEAM + 1;
             case PLASMA_BALL:
                 std::cout << "PLASMA" << std::endl;
-                // TODO: create plasma ball
-                break;
+                return PLASMA_BALL + 1;
             default:
                 std::cerr << "[ERROR][" << __FILE__ << ":" << __LINE__ << "]unexpected damage type " << damageType << "\n";
                 exit(EXIT_FAILURE);
         }
     }
+    return 0;
+}
+
+bool Entity::damage(uint_fast32_t damages)
+{
+    if (hp <= damages)
+    {
+        return true;
+    }
+    hp -= damages;
+    return false;
 }
 
 void Entity::init()
@@ -279,4 +288,9 @@ void Entity::loadEntity(const std::string &filename)
     }
 
     fin.close();
+}
+
+uint_fast32_t Entity::getDamage() const
+{
+    return damageFire;
 }

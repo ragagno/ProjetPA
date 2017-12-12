@@ -64,7 +64,7 @@ GameView::~GameView()
     SDL_DestroyTexture(quit);
 }
 
-void GameView::render(const Player &player, std::vector<Entity *> entities) const
+void GameView::render(const Player &player, std::vector<Entity *> entities, std::vector<Plasmaball> plasma) const
 {
     static auto spriteIndex = 0u;
     if (initialized)
@@ -95,6 +95,13 @@ void GameView::render(const Player &player, std::vector<Entity *> entities) cons
             SDL_Rect entityDstRect{entity->getX(), entity->getY(), SPACESHIP_WIDTH, SPACESHIP_HEIGHT};
             SDL_Rect entitySrcRect{static_cast<int_fast32_t>(spriteIndex / TICK_PER_SPRITE_SPACESHIP) * entityDstRect.w, static_cast<int_fast32_t>((entity->getSprite() - 1) * SPACESHIP_HEIGHT), entityDstRect.w, entityDstRect.h};
             SDL_RenderCopy(renderer, ProximaCentauri::getInstance()->getEnemySprite(), &entitySrcRect, &entityDstRect);
+        }
+
+        for (const Plasmaball plasmaball : plasma)
+        {
+            SDL_Rect plasmaballDstRect{plasmaball.getX(), plasmaball.getY(), PROJECTILE_EDGE, PROJECTILE_EDGE};
+            SDL_Rect plasmaballSrcRect{0, 0, plasmaballDstRect.w, plasmaballDstRect.y};
+            SDL_RenderCopy(renderer, ProximaCentauri::getInstance()->getPlasmaball(), &plasmaballSrcRect, &plasmaballDstRect);
         }
 
         SDL_Rect playerHPBackground = {};

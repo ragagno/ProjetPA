@@ -49,7 +49,10 @@ const auto TICKS_PER_LINE = TARGET_TPS * 4u;
 // PLAYER constants
 const auto PLAYER_HEALTH = 1000u;
 const auto PLAYER_BAR_HEIGHT = 4u;
-const auto PROJECTILE_SPEED = 1u;
+const auto PROJECTILE_SPEED = 4u;
+const auto PROJECTILE_FREQUENCY = TARGET_TPS / 2u;
+const auto PROJECTILE_DAMAGE = 100u;
+const auto PROJECTILE_EDGE = 10u;
 
 class ProximaCentauri
 {
@@ -80,6 +83,7 @@ private:
     SDL_Texture *enemySprite;
     SDL_Texture *upArrow;
     SDL_Texture *downArrow;
+    SDL_Texture *plasmaball;
     SDL_Window *window;
     SDL_Renderer *renderer;
     Controller *controllers[_LENGTH];
@@ -95,6 +99,7 @@ public:
     SDL_Texture *getEnemySprite() const;
     SDL_Texture *getUpArrow() const;
     SDL_Texture *getDownArrow() const;
+    SDL_Texture *getPlasmaball() const;
     Uint8 getMoveUpKey();
     Uint8 getMoveDownKey();
     Uint8 getMoveLeftKey();

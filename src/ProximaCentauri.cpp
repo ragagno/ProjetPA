@@ -139,6 +139,15 @@ void ProximaCentauri::init()
         downArrow = SDL_CreateTextureFromSurface(renderer, downArrowSurface);
         SDL_FreeSurface(downArrowSurface);
 
+        SDL_Surface *plasmaballSurface = IMG_Load("resources/plasmaball.png");
+        if (plasmaballSurface == nullptr)
+        {
+            std::cerr << "[ERROR][" << __FILE__ << ":" << __LINE__ << "]plasmaball.png could not be loaded.\n";
+            exit(EXIT_FAILURE);
+        }
+        plasmaball = SDL_CreateTextureFromSurface(renderer, plasmaballSurface);
+        SDL_FreeSurface(plasmaballSurface);
+
         struct dirent *ep;
         std::vector<std::string> temp;
         DIR *dp;
@@ -298,6 +307,19 @@ SDL_Texture *ProximaCentauri::getDownArrow() const
     if (initialized)
     {
         return downArrow;
+    }
+    else
+    {
+        std::cerr << "[ERROR][" << __FILE__ << ":" << __LINE__ << "]Game is not initialized.\n";
+        exit(EXIT_FAILURE);
+    }
+}
+
+SDL_Texture *ProximaCentauri::getPlasmaball() const
+{
+    if (initialized)
+    {
+        return plasmaball;
     }
     else
     {

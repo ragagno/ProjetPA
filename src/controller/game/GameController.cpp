@@ -90,7 +90,9 @@ void GameController::GameController::tick(long double lag)
                             switch (model->getSelectedIndex())
                             {
                                 case 0:
+                                    view->reset();
                                     model->reset();
+                                    ticksFromLastLine = 0;
                                     break;
                                 case 1:
                                     nextState = ProximaCentauri::TITLE_SCREEN;
@@ -105,6 +107,7 @@ void GameController::GameController::tick(long double lag)
                             switch (model->getSelectedIndex())
                             {
                                 case 0:
+                                    view->reset();
                                     model->reset();
                                     ticksFromLastLine = 0;
                                     break;
@@ -188,7 +191,7 @@ void GameController::GameController::render()
 {
     if (initialized)
     {
-        view->render(model->getPlayer(), model->getEntities());
+        view->render(model->getPlayer(), model->getEntities(), model->getPlasma());
         if (model->isPaused())
         {
             view->renderPause(model->getSelectedIndex());

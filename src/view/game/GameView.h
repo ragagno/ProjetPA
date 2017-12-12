@@ -5,6 +5,7 @@
 #include <vector>
 #include "../../model/game/entity/Player.h"
 #include "../../model/game/entity/Entity.h"
+#include "../../model/game/projectile/Plasmaball.h"
 
 class GameView
 {
@@ -25,7 +26,7 @@ public:
     GameView();
     void init(SDL_Renderer *renderer);
     ~GameView();
-    void render(const Player &player, std::vector<Entity *> entities) const;
+    void render(const Player &player, std::vector<Entity *> entities, std::vector<Plasmaball>) const;
     void renderPause(uint_fast32_t selectedIndex) const;
     void renderDefeat(uint_fast32_t selectedIndex) const;
     void renderVictory(uint_fast32_t selectedIndex) const;

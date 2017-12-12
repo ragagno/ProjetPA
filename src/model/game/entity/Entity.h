@@ -27,17 +27,19 @@ private:
     FireType damageType;
 public:
     Entity(const Entity &initial);
+    ~Entity();
     void setX(uint_fast32_t x);
     static Entity getEntity(char c);
     int_fast32_t getX() const;
     int_fast32_t getY() const;
     uint_fast32_t getSprite() const;
     uint_fast32_t getDamageHit() const;
+    uint_fast32_t getDamage() const;
     void move(long double lag);
-    void shoot(long double lag);
+    uint_fast32_t shoot(long double lag);
+    bool damage(uint_fast32_t damages);
     static void init();
     static bool exists(char c);
-    ~Entity();
 private:
     Entity();
     void loadEntity(const std::string &filename);
