@@ -26,7 +26,7 @@ public:
     GameView();
     void init(SDL_Renderer *renderer);
     ~GameView();
-    void render(const Player &player, std::vector<Entity *> entities, std::vector<Plasmaball>) const;
+    void render(const Player &player, std::vector<Entity *> entities, std::vector<Plasmaball>, std::vector<Laserbeam>) const;
     void renderPause(uint_fast32_t selectedIndex) const;
     void renderDefeat(uint_fast32_t selectedIndex) const;
     void renderVictory(uint_fast32_t selectedIndex) const;

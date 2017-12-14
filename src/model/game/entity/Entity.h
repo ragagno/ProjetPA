@@ -1,7 +1,11 @@
 #ifndef PROXIMACENTAURI_ENTITY_H
 #define PROXIMACENTAURI_ENTITY_H
 
-#include <stdint-gcc.h>
+#include <cstdint>
+#include <string>
+#include "../projectile/Laserbeam.h"
+
+class Laserbeam;
 
 class Entity
 {
@@ -25,6 +29,7 @@ private:
     uint_fast32_t spriteNumber;
     uint_fast32_t attackFrequency;
     FireType damageType;
+    Laserbeam *laserbeam;
 public:
     Entity(const Entity &initial);
     ~Entity();
@@ -38,6 +43,7 @@ public:
     void move(long double lag);
     uint_fast32_t shoot(long double lag);
     bool damage(uint_fast32_t damages);
+    void terminateLaser();
     static void init();
     static bool exists(char c);
 private:

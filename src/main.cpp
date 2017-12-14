@@ -2,8 +2,6 @@
 #include <fstream>
 #include "ProximaCentauri.h"
 
-// TODO: music kind of like Boku no Hero : you can run
-
 int main(int argc, char *argv[])
 {
     for (int_fast32_t i = 1; i < argc; i++)

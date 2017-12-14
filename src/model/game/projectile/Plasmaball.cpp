@@ -26,6 +26,6 @@ int_fast32_t Plasmaball::getY() const
 
 void Plasmaball::move(long double lag)
 {
-    x += xVelocity;
-    y += yVelocity;
+    x += xVelocity * lag;
+    y += yVelocity * lag;
 }

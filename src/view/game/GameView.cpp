@@ -64,7 +64,7 @@ GameView::~GameView()
     SDL_DestroyTexture(quit);
 }
 
-void GameView::render(const Player &player, std::vector<Entity *> entities, std::vector<Plasmaball> plasma) const
+void GameView::render(const Player &player, std::vector<Entity *> entities, std::vector<Plasmaball> plasma, std::vector<Laserbeam> laser) const
 {
     static auto spriteIndex = 0u;
     if (initialized)
@@ -86,6 +86,20 @@ void GameView::render(const Player &player, std::vector<Entity *> entities, std:
             SDL_RenderCopy(renderer, ProximaCentauri::getInstance()->getStarBackground(), &backgroundSrcRect2, &backgroundDstRect2);
         }
 
+        for (const Plasmaball plasmaball : plasma)
+        {
+            SDL_Rect plasmaballDstRect{static_cast<int_fast32_t>(plasmaball.getX() + PROJECTILE_EDGE / 2), static_cast<int_fast32_t>(plasmaball.getY() + PROJECTILE_EDGE / 2), PROJECTILE_EDGE, PROJECTILE_EDGE};
+            SDL_Rect plasmaballSrcRect{0, 0, plasmaballDstRect.w, plasmaballDstRect.y};
+            SDL_RenderCopy(renderer, ProximaCentauri::getInstance()->getPlasmaball(), &plasmaballSrcRect, &plasmaballDstRect);
+        }
+
+        for (const Laserbeam laserbeam : laser)
+        {
+            SDL_Rect laserRect{static_cast<int_fast32_t>(laserbeam.getX()), static_cast<int_fast32_t>(laserbeam.getY()), 3, static_cast<int_fast32_t>(laserbeam.getL())};
+            SDL_SetRenderDrawColor(renderer, 0, 63, 255, 255);
+            SDL_RenderFillRect(renderer, &laserRect);
+        }
+
         SDL_Rect playerDstRect{static_cast<int_fast32_t >(player.getX()), static_cast<int_fast32_t >(player.getY()), SPACESHIP_WIDTH, SPACESHIP_HEIGHT};
         SDL_Rect playerSrcRect{static_cast<int_fast32_t>(spriteIndex / TICK_PER_SPRITE_SPACESHIP) * playerDstRect.w, 0, playerDstRect.w, playerDstRect.h};
         SDL_RenderCopy(renderer, ProximaCentauri::getInstance()->getSpaceshipSprite(), &playerSrcRect, &playerDstRect);
@@ -95,13 +109,6 @@ void GameView::render(const Player &player, std::vector<Entity *> entities, std:
             SDL_Rect entityDstRect{entity->getX(), entity->getY(), SPACESHIP_WIDTH, SPACESHIP_HEIGHT};
             SDL_Rect entitySrcRect{static_cast<int_fast32_t>(spriteIndex / TICK_PER_SPRITE_SPACESHIP) * entityDstRect.w, static_cast<int_fast32_t>((entity->getSprite() - 1) * SPACESHIP_HEIGHT), entityDstRect.w, entityDstRect.h};
             SDL_RenderCopy(renderer, ProximaCentauri::getInstance()->getEnemySprite(), &entitySrcRect, &entityDstRect);
-        }
-
-        for (const Plasmaball plasmaball : plasma)
-        {
-            SDL_Rect plasmaballDstRect{plasmaball.getX(), plasmaball.getY(), PROJECTILE_EDGE, PROJECTILE_EDGE};
-            SDL_Rect plasmaballSrcRect{0, 0, plasmaballDstRect.w, plasmaballDstRect.y};
-            SDL_RenderCopy(renderer, ProximaCentauri::getInstance()->getPlasmaball(), &plasmaballSrcRect, &plasmaballDstRect);
         }
 
         SDL_Rect playerHPBackground = {};

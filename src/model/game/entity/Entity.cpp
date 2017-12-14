@@ -19,8 +19,8 @@ Entity::Entity()
     spriteNumber = 0;
     attackFrequency = 0;
     damageType = PLASMA_BALL;
-
     lastShoot = 0;
+    laserbeam = nullptr;
 }
 
 Entity::Entity(const Entity &initial)
@@ -34,11 +34,15 @@ Entity::Entity(const Entity &initial)
     attackFrequency = initial.attackFrequency;
     damageType = initial.damageType;
     lastShoot = 0;
+    laserbeam = nullptr;
 }
 
 Entity::~Entity()
 {
-
+    if (laserbeam != nullptr)
+    {
+        laserbeam->kill();
+    }
 }
 
 void Entity::setX(uint_fast32_t x)
@@ -85,10 +89,8 @@ uint_fast32_t Entity::shoot(long double lag)
         switch (damageType)
         {
             case LASER_BEAM:
-                std::cout << "LASER" << std::endl;
                 return LASER_BEAM + 1;
             case PLASMA_BALL:
-                std::cout << "PLASMA" << std::endl;
                 return PLASMA_BALL + 1;
             default:
                 std::cerr << "[ERROR][" << __FILE__ << ":" << __LINE__ << "]unexpected damage type " << damageType << "\n";
@@ -293,4 +295,9 @@ void Entity::loadEntity(const std::string &filename)
 uint_fast32_t Entity::getDamage() const
 {
     return damageFire;
+}
+
+void Entity::terminateLaser()
+{
+    laserbeam = nullptr;
 }

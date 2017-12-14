@@ -191,7 +191,7 @@ void GameController::GameController::render()
 {
     if (initialized)
     {
-        view->render(model->getPlayer(), model->getEntities(), model->getPlasma());
+        view->render(model->getPlayer(), model->getEntities(), model->getPlasma(), model->getLaser());
         if (model->isPaused())
         {
             view->renderPause(model->getSelectedIndex());

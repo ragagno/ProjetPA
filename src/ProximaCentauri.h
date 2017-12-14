@@ -53,6 +53,7 @@ const auto PROJECTILE_SPEED = 4u;
 const auto PROJECTILE_FREQUENCY = TARGET_TPS / 2u;
 const auto PROJECTILE_DAMAGE = 100u;
 const auto PROJECTILE_EDGE = 10u;
+const auto LASER_LIFE = TARGET_TPS;
 
 class ProximaCentauri
 {

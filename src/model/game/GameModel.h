@@ -5,6 +5,7 @@
 #include "entity/Player.h"
 #include "entity/Entity.h"
 #include "projectile/Plasmaball.h"
+#include "projectile/Laserbeam.h"
 
 class GameModel
 {
@@ -18,6 +19,7 @@ private:
     uint_fast32_t last_fire;
     std::vector<Entity *> entities;
     std::vector<Plasmaball> plasma;
+    std::vector<Laserbeam> laser;
     Player player;
 public:
     GameModel();
@@ -33,6 +35,7 @@ public:
     Player &getPlayer();
     std::vector<Entity *> getEntities();
     const std::vector<Plasmaball> &getPlasma() const;
+    const std::vector<Laserbeam> &getLaser() const;
     bool nextLine();
     void flipPause();
     void tickEntities(long double lag);

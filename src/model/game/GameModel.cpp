@@ -185,15 +185,17 @@ void GameModel::tickEntities(long double lag)
     if (initialized)
     {
         last_fire += lag;
+
         if (last_fire >= PROJECTILE_FREQUENCY)
         {
             plasma.emplace_back(true, PROJECTILE_DAMAGE, 0, -PROJECTILE_SPEED, player.getX() + SPACESHIP_WIDTH / 2, player.getY());
             last_fire = 0;
         }
+
         for (auto it = plasma.begin(); it < plasma.end(); ++it)
         {
             it->move(lag);
-            if (it->getX() < 0 || it->getX() > WINDOW_WIDTH || it->getY() < 0 || it->getY() > WINDOW_HEIGHT)
+            if (it->getX() < 0 || it->getX() > static_cast<int_fast32_t>(WINDOW_WIDTH) || it->getY() < 0 || it->getY() > static_cast<int_fast32_t>(WINDOW_HEIGHT))
             {
                 plasma.erase(it);
                 continue;
@@ -202,7 +204,7 @@ void GameModel::tickEntities(long double lag)
             {
                 for (auto itE = entities.begin(); itE < entities.end(); ++itE)
                 {
-                    if (it->getX() > (*itE)->getX() && it->getY() > (*itE)->getY() && it->getX() < (*itE)->getX() + SPACESHIP_WIDTH && it->getY() < (*itE)->getY() + SPACESHIP_HEIGHT)
+                    if (it->getX() > (*itE)->getX() && it->getY() > (*itE)->getY() && it->getX() < static_cast<int_fast32_t>((*itE)->getX() + SPACESHIP_WIDTH) && it->getY() < static_cast<int_fast32_t>((*itE)->getY() + SPACESHIP_HEIGHT))
                     {
                         if ((*itE)->damage(PROJECTILE_DAMAGE))
                         {
@@ -216,7 +218,7 @@ void GameModel::tickEntities(long double lag)
             }
             else
             {
-                if (it->getX() > player.getX() && it->getY() > player.getY() && it->getX() < player.getX() + SPACESHIP_WIDTH && it->getY() < player.getY() + SPACESHIP_HEIGHT)
+                if (it->getX() > player.getX() && it->getY() > player.getY() && it->getX() < static_cast<int_fast32_t>(player.getX() + SPACESHIP_WIDTH) && it->getY() < static_cast<int_fast32_t>(player.getY() + SPACESHIP_HEIGHT))
                 {
                     player.damage(it->getDamages());
                     plasma.erase(it);
@@ -224,17 +226,35 @@ void GameModel::tickEntities(long double lag)
                 }
             }
         }
+
+        for (auto it = laser.begin(); it < laser.end(); ++it)
+        {
+            if (it->tick(lag))
+            {
+                it->unsetOrigin();
+                laser.erase(it);
+                continue;
+            }
+
+            if ((static_cast<int_fast32_t>(it->getX()) >= player.getX() && it->getX() <= player.getX() + SPACESHIP_WIDTH) && (player.getY() > static_cast<int_fast32_t>(it->getY())))
+            {
+                player.damage(it->getDamages());
+            }
+        }
+
         for (auto it = entities.begin(); it < entities.end(); ++it)
         {
             (*it)->move(lag);
             if ((*it)->getY() > static_cast<int_fast32_t>(WINDOW_HEIGHT))
             {
+                (*it)->terminateLaser();
                 delete *it;
                 entities.erase(it);
                 continue;
             }
             else if ((*it)->getX() < player.getX() + static_cast<int_fast32_t>(SPACESHIP_WIDTH) && (*it)->getX() + static_cast<int_fast32_t>(SPACESHIP_WIDTH) > player.getX() && (*it)->getY() < player.getY() + static_cast<int_fast32_t>(SPACESHIP_HEIGHT) && static_cast<int_fast32_t>(SPACESHIP_HEIGHT) + (*it)->getY() > player.getY())
             {
+                (*it)->terminateLaser();
                 player.damage((*it)->getDamageHit());
                 delete *it;
                 entities.erase(it);
@@ -250,6 +270,7 @@ void GameModel::tickEntities(long double lag)
             switch ((*it)->shoot(lag))
             {
                 case Entity::LASER_BEAM + 1:
+                    laser.emplace_back(*it, &player);
                     break;
                 case Entity::PLASMA_BALL + 1:
                     plasma.emplace_back(false, (*it)->getDamage(), (a / h) * PROJECTILE_SPEED, (o / h) * PROJECTILE_SPEED, xE, (*it)->getY() + SPACESHIP_HEIGHT);
@@ -396,4 +417,17 @@ const std::vector<Plasmaball> &GameModel::getPlasma() const
         std::cerr << "[ERROR][" << __FILE__ << ":" << __LINE__ << "]Game model is not initialized.\n";
         exit(EXIT_FAILURE);
     }
+}
+
+const std::vector<Laserbeam> &GameModel::getLaser() const
+{
+    if (initialized)
+    {
+        return laser;
+    }
+    else
+    {
+        std::cerr << "[ERROR][" << __FILE__ << ":" << __LINE__ << "]Game model is not initialized.\n";
+        exit(EXIT_FAILURE);
+    };
 }
