@@ -1,6 +1,6 @@
 #include "Plasmaball.h"
 
-Plasmaball::Plasmaball(bool isPlayer, uint_fast32_t damages, int_fast32_t xVelocity, int_fast32_t yVelocity, long double x, long double y) : player(isPlayer), damages(damages), xVelocity(xVelocity), yVelocity(yVelocity), x(x), y(y)
+Plasmaball::Plasmaball(bool isPlayer, uint_fast32_t damages, long double xVelocity, long double yVelocity, long double x, long double y) : player(isPlayer), damages(damages), xVelocity(xVelocity), yVelocity(yVelocity), x(x), y(y)
 {
 }
 

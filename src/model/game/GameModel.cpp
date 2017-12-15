@@ -188,7 +188,7 @@ void GameModel::tickEntities(long double lag)
 
         if (last_fire >= PROJECTILE_FREQUENCY)
         {
-            plasma.emplace_back(true, PROJECTILE_DAMAGE, 0, -PROJECTILE_SPEED, player.getX() + SPACESHIP_WIDTH / 2, player.getY());
+            plasma.emplace_back(true, PROJECTILE_DAMAGE, 0, -static_cast<long double>(PROJECTILE_SPEED), player.getX() + SPACESHIP_WIDTH / 2, player.getY());
             last_fire = 0;
         }
 
