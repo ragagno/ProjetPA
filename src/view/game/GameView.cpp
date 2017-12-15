@@ -88,7 +88,7 @@ void GameView::render(const Player &player, std::vector<Entity *> entities, std:
 
         for (const Plasmaball plasmaball : plasma)
         {
-            SDL_Rect plasmaballDstRect{static_cast<int_fast32_t>(plasmaball.getX() + PROJECTILE_EDGE / 2), static_cast<int_fast32_t>(plasmaball.getY() + PROJECTILE_EDGE / 2), PROJECTILE_EDGE, PROJECTILE_EDGE};
+            SDL_Rect plasmaballDstRect{static_cast<int_fast32_t>(plasmaball.getX() - PROJECTILE_EDGE / 2), static_cast<int_fast32_t>(plasmaball.getY() - PROJECTILE_EDGE / 2), PROJECTILE_EDGE, PROJECTILE_EDGE};
             SDL_Rect plasmaballSrcRect{0, 0, plasmaballDstRect.w, plasmaballDstRect.y};
             SDL_RenderCopy(renderer, ProximaCentauri::getInstance()->getPlasmaball(), &plasmaballSrcRect, &plasmaballDstRect);
         }
