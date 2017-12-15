@@ -208,6 +208,7 @@ void GameModel::tickEntities(long double lag)
                     {
                         if ((*itE)->damage(PROJECTILE_DAMAGE))
                         {
+                            (*itE)->terminateLaser();
                             delete *itE;
                             entities.erase(itE);
                         }
@@ -229,6 +230,12 @@ void GameModel::tickEntities(long double lag)
 
         for (auto it = laser.begin(); it < laser.end(); ++it)
         {
+            if (!it->isAlive())
+            {
+                laser.erase(it);
+                continue;
+            }
+
             if (it->tick(lag))
             {
                 it->unsetOrigin();
@@ -271,6 +278,7 @@ void GameModel::tickEntities(long double lag)
             {
                 case Entity::LASER_BEAM + 1:
                     laser.emplace_back(*it, &player);
+                    (*it)->setLaser(&laser.back());
                     break;
                 case Entity::PLASMA_BALL + 1:
                     plasma.emplace_back(false, (*it)->getDamage(), (a / h) * PROJECTILE_SPEED, (o / h) * PROJECTILE_SPEED, xE, (*it)->getY() + SPACESHIP_HEIGHT);

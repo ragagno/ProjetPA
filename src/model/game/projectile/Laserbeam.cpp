@@ -35,10 +35,15 @@ void Laserbeam::kill()
 bool Laserbeam::tick(long double lag)
 {
     ticksFromBirth += lag;
-    return ticksFromBirth > LASER_LIFE || ! alive;
+    return !alive || ticksFromBirth > LASER_LIFE;
 }
 
 void Laserbeam::unsetOrigin()
 {
     origin->terminateLaser();
+}
+
+bool Laserbeam::isAlive() const
+{
+    return alive;
 }

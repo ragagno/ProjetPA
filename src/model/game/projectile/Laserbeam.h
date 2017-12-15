@@ -22,6 +22,7 @@ public:
     void kill();
     bool tick(long double lag);
     void unsetOrigin();
+    bool isAlive() const;
 };
 
 #endif //PROXIMACENTAURI_LASERBEAM_H

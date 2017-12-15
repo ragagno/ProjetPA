@@ -39,10 +39,6 @@ Entity::Entity(const Entity &initial)
 
 Entity::~Entity()
 {
-    if (laserbeam != nullptr)
-    {
-        laserbeam->kill();
-    }
 }
 
 void Entity::setX(uint_fast32_t x)
@@ -299,5 +295,14 @@ uint_fast32_t Entity::getDamage() const
 
 void Entity::terminateLaser()
 {
+    if (laserbeam != nullptr)
+    {
+        laserbeam->kill();
+    }
     laserbeam = nullptr;
+}
+
+void Entity::setLaser(Laserbeam *laser)
+{
+    this->laserbeam = laser;
 }

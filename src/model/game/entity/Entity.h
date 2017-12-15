@@ -44,6 +44,7 @@ public:
     uint_fast32_t shoot(long double lag);
     bool damage(uint_fast32_t damages);
     void terminateLaser();
+    void setLaser(Laserbeam *laser);
     static void init();
     static bool exists(char c);
 private:
